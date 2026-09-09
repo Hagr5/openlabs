@@ -16,7 +16,7 @@ const FRAGMENTS = {
 // fragments) gives no information about the flag's content, and vice
 // versa. The flag is only ever revealed via the admin dashboard once all
 // three stages are complete.
-const FLAG = 'AEGIS{CH41N3D_API_TRUST_BR34CH}';
+const FLAG = 'duck{ch41ned_api_trust_br34ch}';
 
 // Fixed priority used to pick a hint target when more than one
 // vulnerability is still outstanding after the player completes one.

@@ -14,7 +14,7 @@ The challenge involves multiple API technologies, including REST, GraphQL, and g
 
 ## Difficulty
 
-**Intermediate**
+**Hard**
 
 Experience with Burp Suite and modifying HTTP requests is recommended.
 
@@ -62,7 +62,7 @@ docker compose restart
 ## Flag Format
 
 ```text
-AEGIS{...}
+duck{...}
 ```
 
 The complete flag requires progress through multiple parts of the application.
