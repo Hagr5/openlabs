@@ -1,24 +1,5 @@
-name: DuckVault
+name: duckvault
 track: web
-difficulty: easy
-author: Suhila Osama
-
-description: |
-  DuckVault is a small internal employee records portal.
-  The player starts with a low-privileged employee account and investigates
-  how the application loads records and uses internal API endpoints.
-
-objective: |
-  Find the hidden flag.
-
+difficulty: medium
+description: A records portal leaks an internal reference that leads to an unprotected export action.
 flag_hash: 9ed081a0cf9445de7cd9dd88ca4c7f024cf7297ac9ba7438d56f5a04f911408f
-
-service:
-  type: web
-  port: 8378
-
-run:
-  command: docker compose up -d
-
-reset:
-  command: docker compose down --volumes && docker compose up -d
