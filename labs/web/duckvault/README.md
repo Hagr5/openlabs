@@ -1,102 +1,47 @@
 # DuckVault
 
-## Overview
+Difficulty: `medium`  
+Track: `web`
 
-DuckVault is a small internal employee records portal.
+## Brief
 
-Employees use it to view their assigned documents and some related internal notes. In this challenge, you are given a normal employee account and your goal is to explore the application and find the hidden flag.
+DuckVault is an employee records portal.
 
-## Scenario
+You have a normal employee account. The portal shows assigned records and loads data from internal API endpoints.
 
-You are logged in as a low-privileged employee. The portal gives you access to your workspace and the records assigned to your account.
+Some records were moved from a legacy archive.
 
-Try to understand how the application works and how it loads its data.
+## Setup
 
-## Objective
-
-Find the hidden flag.
-
-## Difficulty
-
-Easy / Medium
-
-## Estimated Time
-
-25–35 minutes
-
-## What You Need
-
-Basic knowledge of:
-
-- Web pages and URLs
-- HTTP requests
-- GET and POST requests
-- Browser DevTools, curl, Postman, or Burp Suite
-
-## How to Run
-
-From the project folder, run:
+Start the lab.
 
 ```bash
-docker compose up --build
+docker compose up -d
 ```
 
-Keep this terminal open while using the challenge.
+Host port: `8378`.
 
-## How to Open
-
-Open this link in your browser:
+Open the service.
 
 ```text
-http://localhost:8000/login
+http://localhost:8378/login
 ```
 
-Login with:
+Use this account.
 
 ```text
 Username: intern
 Password: intern123
 ```
 
-## Health Check
+## Goal
 
-To make sure the app is running, open:
+Find the flag.
 
-```text
-http://localhost:8000/health
-```
-
-You should see:
-
-```json
-{
-  "status": "ok"
-}
-```
-
-## Reset
-
-To reset the challenge, run:
+Check your solve from the repository root.
 
 ```bash
-docker compose down --volumes
-docker compose up --build
+python3 scripts/check.py labs/web/duckvault
 ```
 
-## Flag Format
-
-```text
-DUCK{...}
-```
-
-## Rules
-
-- Only test this local lab.
-- Do not attack any real website or third-party service.
-- Do not use real accounts or real credentials.
-- Do not modify the source code while solving.
-- Do not use destructive testing.
-
-## Notes
-
-This challenge is made for API/Web security practice and runs locally using Docker.
+The flag format is `duck{...}`.
