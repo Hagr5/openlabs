@@ -1,6 +1,6 @@
 name: DuckVault
-category: web
-difficulty: easy-medium
+track: web
+difficulty: easy
 author: Suhila Osama
 
 description: |
@@ -9,16 +9,16 @@ description: |
   how the application loads records and uses internal API endpoints.
 
 objective: |
-  Find the hidden flag by analyzing the web application and its API behavior.
+  Find the hidden flag.
 
-flag_format: DUCK{...}
+flag_hash: 9ed081a0cf9445de7cd9dd88ca4c7f024cf7297ac9ba7438d56f5a04f911408f
 
-connection:
+service:
   type: web
-  url: http://localhost:8000/login
+  port: 8378
 
 run:
-  command: docker compose up --build
+  command: docker compose up -d
 
 reset:
-  command: docker compose down --volumes && docker compose up --build
+  command: docker compose down --volumes && docker compose up -d
