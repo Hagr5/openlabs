@@ -1,0 +1,50 @@
+services:
+  mongo:
+    image: mongo:7.0.14
+    restart: "no"
+    volumes:
+      - mongo_data:/data/db
+    networks:
+      - switf_network
+
+  backend:
+    build:
+      context: ./app/backend
+    restart: "no"
+    ports:
+      - "3000:3000"
+      - "4000:4000"
+      - "50051:50051"
+    environment:
+      - MONGODB_URI=mongodb://mongo:27017/switf01-hit3
+      - JWT_SECRET=${JWT_SECRET:-changeme_at_runtime}
+    volumes:
+      - shared_secret:/secret
+    depends_on:
+      - mongo
+    networks:
+      - switf_network
+
+  frontend:
+    build:
+      context: ./app/frontend
+    restart: "no"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
+      - NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000/graphql
+      - NEXT_PUBLIC_GRPC_URL=localhost:50051
+      - GRPC_URL=backend:50051
+      - JWT_SECRET=${JWT_SECRET:-changeme_at_runtime}
+    volumes:
+      - shared_secret:/secret
+    depends_on:
+      - backend
+    networks:
+      - switf_network
+
+volumes:
+  mongo_data:
+  shared_secret:
+
+networks:
+  switf_network:
