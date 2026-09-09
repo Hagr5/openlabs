@@ -1,0 +1,24 @@
+name: DuckVault
+category: web
+difficulty: easy-medium
+author: Suhila Osama
+
+description: |
+  DuckVault is a small internal employee records portal.
+  The player starts with a low-privileged employee account and investigates
+  how the application loads records and uses internal API endpoints.
+
+objective: |
+  Find the hidden flag by analyzing the web application and its API behavior.
+
+flag_format: DUCK{...}
+
+connection:
+  type: web
+  url: http://localhost:8000/login
+
+run:
+  command: docker compose up --build
+
+reset:
+  command: docker compose down --volumes && docker compose up --build

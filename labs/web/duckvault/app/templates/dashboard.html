@@ -1,0 +1,224 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DuckVault | Secure Workspace</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body>
+  <div class="app-layout">
+
+    <aside class="sidebar">
+      <div class="brand">duck<span>vault</span></div>
+      <div class="sidebar-subtitle">Internal Records Security Platform</div>
+
+      <nav class="nav">
+        <a class="active" href="/dashboard">▣ Workspace</a>
+        <span class="locked-nav">◇ Reports <em>Admin</em></span>
+        <span class="locked-nav">◇ Audit Logs <em>Locked</em></span>
+        <span class="locked-nav">◇ Identity Center <em>Read only</em></span>
+        <span class="locked-nav">◇ Admin Console <em>Restricted</em></span>
+      </nav>
+
+      <div class="sidebar-card premium-card">
+        <strong>Access Profile</strong>
+        <p>Signed in as a standard employee with limited record visibility.</p>
+
+        <div class="mini-progress">
+          <span></span>
+        </div>
+
+        <small>Scope: Employee Workspace</small>
+      </div>
+
+      <div class="sidebar-card">
+        <strong>Lab Notice</strong>
+        <p>This local environment simulates a real internal API security assessment.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="search-box">Search records, reports, owners, references...</div>
+
+        <div class="nav-actions">
+          <div class="status-pill">API Healthy</div>
+          <div class="user-pill">{{ username }}</div>
+          <form method="post" action="/logout">
+            <button class="ghost" type="submit">Sign out</button>
+          </form>
+        </div>
+      </header>
+
+      <section class="shell">
+
+        <section class="hero dashboard-hero">
+          <div class="hero-panel">
+            <p class="eyebrow">EMPLOYEE INTELLIGENCE WORKSPACE</p>
+
+            <h1 class="glow-text">Welcome back, {{ username }}</h1>
+
+            <p class="muted">
+              DuckVault centralizes assigned employee records, operational notes,
+              archived document references, and restricted administrative workflows.
+            </p>
+
+            <div class="metric-grid">
+              <div class="metric">
+                <span>Visible Records</span>
+                <strong>1</strong>
+              </div>
+
+              <div class="metric">
+                <span>Current Role</span>
+                <strong>Employee</strong>
+              </div>
+
+              <div class="metric">
+                <span>Session State</span>
+                <strong>Active</strong>
+              </div>
+            </div>
+          </div>
+
+          <aside class="side-panel status-panel">
+            <p class="eyebrow">LIVE SECURITY STATUS</p>
+
+            <div class="status-list">
+              <div class="status-item">
+                <span>Identity Gateway</span>
+                <strong>Online</strong>
+              </div>
+
+              <div class="status-item">
+                <span>Record API</span>
+                <strong>Healthy</strong>
+              </div>
+
+              <div class="status-item">
+                <span>Archive Engine</span>
+                <strong>Legacy Mode</strong>
+              </div>
+
+              <div class="status-item">
+                <span>Export Queue</span>
+                <strong>Restricted</strong>
+              </div>
+
+              <div class="status-item">
+                <span>Access Scope</span>
+                <strong>Standard</strong>
+              </div>
+            </div>
+          </aside>
+        </section>
+
+        <section class="dashboard-grid">
+
+          <div class="workspace-column">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">ASSIGNED DOCUMENTS</p>
+                <h2>Your record workspace</h2>
+              </div>
+              <span class="section-badge">1 visible</span>
+            </div>
+
+            <section id="documents" class="grid"></section>
+
+            <div class="api-hint-card">
+              <div>
+                <p class="eyebrow">DEVELOPER NOTE</p>
+                <h3>Document service behavior</h3>
+                <p class="muted">
+                  Assigned records are loaded from the internal API.
+                  Browser developer tools can help inspect how the workspace retrieves record data.
+                </p>
+              </div>
+
+              <div class="api-chip">GET /api/me/documents</div>
+            </div>
+          </div>
+
+          <aside class="insight-column">
+
+            <div class="insight-card">
+              <div class="insight-header">
+                <span>Access Timeline</span>
+                <strong>Live</strong>
+              </div>
+
+              <div class="timeline">
+                <div class="timeline-item">
+                  <span></span>
+                  <div>
+                    <strong>Session created</strong>
+                    <p>Employee identity verified</p>
+                  </div>
+                </div>
+
+                <div class="timeline-item">
+                  <span></span>
+                  <div>
+                    <strong>Workspace loaded</strong>
+                    <p>Assigned document scope applied</p>
+                  </div>
+                </div>
+
+                <div class="timeline-item warning">
+                  <span></span>
+                  <div>
+                    <strong>Legacy archive enabled</strong>
+                    <p>Older record sequence available</p>
+                  </div>
+                </div>
+
+                <div class="timeline-item">
+                  <span></span>
+                  <div>
+                    <strong>Export jobs restricted</strong>
+                    <p>Admin workflow protection active</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="insight-card modules-card">
+              <div class="insight-header">
+                <span>Restricted Modules</span>
+                <strong>Role Based</strong>
+              </div>
+
+              <div class="module-row">
+                <span>Reports</span>
+                <em>Admin required</em>
+              </div>
+
+              <div class="module-row">
+                <span>Audit Logs</span>
+                <em>Locked</em>
+              </div>
+
+              <div class="module-row">
+                <span>Export Jobs</span>
+                <em>Restricted</em>
+              </div>
+
+              <div class="module-row">
+                <span>Identity Center</span>
+                <em>Limited</em>
+              </div>
+            </div>
+
+          </aside>
+        </section>
+
+      </section>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DuckVault | Record Viewer</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+  <div class="app-layout">
+    <aside class="sidebar">
+      <a class="brand" href="/dashboard">duck<span>vault</span></a>
+      <div class="sidebar-subtitle">Record Viewer</div>
+
+      <nav class="nav">
+        <a class="active" href="/dashboard">▣ Workspace</a>
+        <span class="disabled">◇ Reports</span>
+        <span class="disabled">◇ Audit Logs</span>
+        <span class="disabled">◇ Identity Center</span>
+        <span class="disabled">◇ Admin Console</span>
+      </nav>
+
+      <div class="sidebar-card">
+        <strong>Viewer Mode</strong>
+        <p>Displaying a numbered record from the internal document service.</p>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="search-box">Record URL: /documents/{{ doc_id }}</div>
+
+        <div class="nav-actions">
+          <div class="status-pill">Session Active</div>
+          <a class="ghost btn" href="/dashboard">Back</a>
+        </div>
+      </header>
+
+      <section class="shell">
+        <section class="hero-panel" style="margin-bottom: 22px;">
+          <p class="eyebrow">DOCUMENT ACCESS CONSOLE</p>
+          <h1 class="glow-text">Record Viewer</h1>
+          <p class="muted">
+            Internal documents are loaded from the DuckVault record service.
+            Metadata, owner information, and classification are displayed below.
+          </p>
+        </section>
+
+        <article id="document" class="doc-card" data-doc-id="{{ doc_id }}">
+          Loading document…
+        </article>
+      </section>
+    </main>
+  </div>
+
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
