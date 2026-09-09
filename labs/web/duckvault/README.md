@@ -19,13 +19,9 @@ Start the lab.
 docker compose up -d
 ```
 
-Host port: `8378`.
+The lab runs on port `8378`.
 
-Open the service.
-
-```text
-http://localhost:8378/login
-```
+Open `http://localhost:8378/login`.
 
 Use this account.
 
