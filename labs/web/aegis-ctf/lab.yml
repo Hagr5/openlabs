@@ -1,0 +1,5 @@
+name: aegis-ctf
+track: web
+difficulty: medium
+description: Chained API trust vulnerabilities across REST, GraphQL, and gRPC.
+flag_hash: 853172e562234486f9cb1efab147e29e666674190225fd15968c3a1591dab939

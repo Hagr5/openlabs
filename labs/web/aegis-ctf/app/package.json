@@ -1,0 +1,21 @@
+{
+  "name": "aegis-ctf",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Project Aegis - multi-protocol API security CTF (REST + GraphQL + gRPC)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@grpc/grpc-js": "^1.10.9",
+    "@grpc/proto-loader": "^0.7.13",
+    "body-parser": "^1.20.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "express-graphql": "^0.12.0",
+    "graphql": "^15.9.0",
+    "jsonwebtoken": "^9.0.2",
+    "serve-index": "^1.9.2"
+  }
+}

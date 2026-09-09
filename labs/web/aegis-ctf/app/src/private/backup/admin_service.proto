@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package aegis;
+
+// Internal admin service. Not intended for external exposure; reachable
+// directly on the gRPC port with server reflection disabled.
+service AdminService {
+  // Lightweight health/version check. Requires a bearer token in metadata
+  // but does not require any particular role.
+  rpc GetSystemStatus (StatusRequest) returns (StatusResponse);
+
+  // Returns the final credential recovery fragment. Requires an admin-role
+  // token AND that all other recovery stages have already been completed.
+  rpc GetPasswordFragment (FragmentRequest) returns (FragmentResponse);
+}
+
+message StatusRequest {}
+
+message StatusResponse {
+  string status = 1;
+  string service_version = 2;
+}
+
+message FragmentRequest {}
+
+message FragmentResponse {
+  string fragment = 1;
+  string flag = 2;
+}

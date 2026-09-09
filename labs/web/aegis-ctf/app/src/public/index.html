@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AEGIS | Internal Portal</title>
+<link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <!-- TODO(dev): remove before prod push - QA test account still active: alex / Winter2024! -->
+  <div class="topbar">
+    <div class="brand">AEGIS <span>Internal Portal</span></div>
+    <div id="whoami" class="whoami"></div>
+  </div>
+
+  <main>
+    <section id="loginView" class="card">
+      <h1>Sign in</h1>
+      <p class="muted">Employee access only.</p>
+      <form id="loginForm">
+        <label>Username
+          <input type="text" id="username" autocomplete="username" required />
+        </label>
+        <label>Password
+          <input type="password" id="password" autocomplete="current-password" required />
+        </label>
+        <button type="submit">Login</button>
+      </form>
+      <p id="loginError" class="error"></p>
+      <p class="muted"><a href="#" id="showAdminLoginLink">Admin Dashboard &rarr;</a></p>
+    </section>
+
+    <section id="adminLoginView" class="card hidden">
+      <h1>Admin Dashboard</h1>
+      <p class="muted">Restricted access. There is no way to reach this dashboard unless every part of the ongoing security review has been completed.</p>
+      <form id="adminLoginForm">
+        <label>Username
+          <input type="text" id="adminUsername" value="admin" readonly />
+        </label>
+        <label>Password
+          <input type="password" id="adminPassword" autocomplete="off" required />
+        </label>
+        <button type="submit">Login</button>
+      </form>
+      <p id="adminLoginError" class="error"></p>
+      <p class="muted"><a href="#" id="backToEmployeeLoginLink">&larr; Back to employee login</a></p>
+    </section>
+
+    <section id="adminDashboardView" class="card hidden">
+      <h1>Admin Dashboard</h1>
+      <div class="profile-card">
+        <div class="profile-row"><span class="profile-label">Employee ID</span><span id="adm-id" class="profile-value">-</span></div>
+        <div class="profile-row"><span class="profile-label">Username</span><span id="adm-username" class="profile-value">-</span></div>
+        <div class="profile-row"><span class="profile-label">Display Name</span><span id="adm-display" class="profile-value">-</span></div>
+        <div class="profile-row"><span class="profile-label">Department</span><span id="adm-department" class="profile-value">-</span></div>
+      </div>
+      <p id="adm-message" class="muted"></p>
+      <div id="adm-flagBox" class="flagbox hidden"></div>
+      <button id="adminLogoutBtn" class="secondary">Log out</button>
+    </section>
+
+    <section id="appView" class="card hidden">
+      <div class="tabs">
+        <button class="tab active" data-tab="employee">Employee Portal</button>
+        <button class="tab" data-tab="security">Security Center</button>
+      </div>
+
+      <div id="tab-employee" class="tab-panel">
+        <h2>My Profile</h2>
+        <div class="profile-card">
+          <div class="profile-row"><span class="profile-label">Employee ID</span><span id="pf-id" class="profile-value">-</span></div>
+          <div class="profile-row"><span class="profile-label">Username</span><span id="pf-username" class="profile-value">-</span></div>
+          <div class="profile-row"><span class="profile-label">Display Name</span><span id="pf-display" class="profile-value">-</span></div>
+          <div class="profile-row"><span class="profile-label">Department</span><span id="pf-department" class="profile-value">-</span></div>
+          <div class="profile-row"><span class="profile-label">Access Tier</span><span id="pf-tier" class="profile-value">-</span></div>
+          <div class="profile-row"><span class="profile-label">Role</span><span id="pf-role" class="profile-value">-</span></div>
+        </div>
+        <form id="prefsForm" class="prefs-form">
+          <label>Display name
+            <input type="text" id="displayNameInput" />
+          </label>
+          <button type="submit">Save</button>
+          <span id="prefsMsg" class="muted"></span>
+        </form>
+      </div>
+
+      <div id="tab-security" class="tab-panel hidden">
+        <h2>Security Center</h2>
+        <p class="muted">Automated monitoring for suspicious account activity.</p>
+        <div id="progress" class="progress">
+          <div class="password-box-row">
+            <input type="text" id="passwordBox" class="password-box" readonly value="" />
+            <button id="copyPasswordBtn" class="secondary hidden">Copy</button>
+          </div>
+        </div>
+      </div>
+
+      <button id="logoutBtn" class="secondary">Log out</button>
+    </section>
+  </main>
+
+  <script src="/app.js"></script>
+</body>
+</html>
