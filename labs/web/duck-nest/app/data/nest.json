@@ -1,0 +1,76 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "username": "admin",
+      "password_hash": "2b78b9a19a20da5ad821e949702848381886bc0671e72440d479ae9a6cf84b64",
+      "role": "admin",
+      "full_name": "m. aran"
+    },
+    {
+      "id": 2,
+      "username": "intern",
+      "password_hash": "cea6d23fe6c08a56d2eb74a183d673c078af3769cb3cdf4ce7dae62191624d9d",
+      "role": "intern",
+      "full_name": "d. rill"
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "name": "Intern Onboarding",
+      "description": "Onboarding notes and internal pointers for new interns.",
+      "owner_id": 2
+    },
+    {
+      "id": 2,
+      "name": "Nest Refresh",
+      "description": "Planning for the refreshed office workspace rollout.",
+      "owner_id": 2
+    },
+    {
+      "id": 3,
+      "name": "Q3 Access Audit",
+      "description": "Restricted. Review of nest access and vault handling.",
+      "owner_id": 1
+    },
+    {
+      "id": 4,
+      "name": "Vault Rotation",
+      "description": "Scheduled rotation for shared vault credentials.",
+      "owner_id": 1
+    }
+  ],
+  "documents": [
+    {
+      "id": 1,
+      "project_id": 1,
+      "title": "welcome.md",
+      "content": "Welcome to the nest. Your tasks live in the projects you can see. Shadow the audit team while the access review is open."
+    },
+    {
+      "id": 2,
+      "project_id": 2,
+      "title": "notes.md",
+      "content": "Draft notes for the office refresh. Not final."
+    },
+    {
+      "id": 3,
+      "project_id": 3,
+      "title": "audit-findings.md",
+      "content": "Q3 access review, preliminary findings.\nReview object-level authorization on shared project reads.\nVault master credentials must only be reachable through an admin-owned project.\nCluster: nest/vault.\nSeverity: high. Owner: m. aran. Status: open."
+    },
+    {
+      "id": 4,
+      "project_id": 3,
+      "title": "vault-master.txt",
+      "content": "duck{483570ab4cb25d66a8d41058}"
+    },
+    {
+      "id": 5,
+      "project_id": 4,
+      "title": "rotation.md",
+      "content": "Vault keys rotate every 90 days. Next window depends on the audit findings."
+    }
+  ]
+}
