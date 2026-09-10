@@ -6,7 +6,9 @@ from app.auth import hash_password
 
 SEED_PLAYER_USERNAME = os.environ.get("SEED_PLAYER_USERNAME", "player")
 SEED_PLAYER_PASSWORD = os.environ.get("SEED_PLAYER_PASSWORD", "changeme123")
+PLAYER_USERNAME = SEED_PLAYER_USERNAME  # alias for tests
 DEMO_IMPORT_SOURCE = "http://sample-library:9200/library/sample.pdf"
+DEMO_VAULT_IMPORT_SOURCE = "http://internal-vault-api:9300/vault/entries"
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "sqlite:////srv/data/cloudvault.db")
 engine = create_engine(DATABASE_URL, connect_args={"check_same_thread": False})
@@ -42,8 +44,17 @@ def seed() -> None:
             status=ImportStatus.VALIDATED,
         )
         db.add(demo_job)
+
+        vault_job = Import(
+            owner_id=user.id,
+            source=DEMO_VAULT_IMPORT_SOURCE,
+            validated_source=DEMO_VAULT_IMPORT_SOURCE,
+            format=None,
+            status=ImportStatus.VALIDATED,
+        )
+        db.add(vault_job)
         db.commit()
-        print(f"[seed] created demo import job for '{SEED_PLAYER_USERNAME}'")
+        print(f"[seed] created demo import jobs for '{SEED_PLAYER_USERNAME}'")
     except Exception as e:
         print(f"[seed] ERROR: {e}")
     finally:
