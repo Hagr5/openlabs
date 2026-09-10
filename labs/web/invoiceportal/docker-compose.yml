@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  invoiceportal:
+    build: .
+    container_name: invoiceportal
+    ports:
+      - "5000:5000"
+    environment:
+      - FLAG=duck{4f89898762a95dac450ba416e8ba2dd0}
+      - JWT_SECRET=changeme2024
+      - DB_PATH=/data/invoiceportal.db
+    volumes:
+      - invoiceportal_data:/data
+    restart: unless-stopped
+
+volumes:
+  invoiceportal_data:
