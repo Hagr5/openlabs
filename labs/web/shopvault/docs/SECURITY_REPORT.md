@@ -1,4 +1,4 @@
-# ShopVault — Security Report
+# ShopVault Security Report
 
 This report documents the challenge, its component weaknesses, the
 intended attack path at a phase level, and the recommended remediation.
@@ -14,9 +14,9 @@ vertical privilege-escalation path that reaches a manager-only
 protected resource containing the flag.
 
 The primary vulnerability family is API chaining: individually
-moderate weaknesses — an authentication response discrepancy, a
+moderate weaknesses, an authentication response discrepancy, a
 client-trusted rate-limit identity, and a low-entropy HS256 signing
-secret — combine into a critical compromise.
+secret, combine into a critical compromise.
 
 ## 9.2 Challenge Overview
 
@@ -79,20 +79,20 @@ list is visible in `app/server.py` to anyone reviewing the source.
 Three component weaknesses are introduced. Each is a well-known
 class. The learning objective is the composition.
 
-**Component A — low-entropy HS256 signing secret.** The signing key
+**Component A, low-entropy HS256 signing secret.** The signing key
 is short, human-chosen, and thematically related to a codename that
 is exposed by an unauthenticated endpoint. HS256 is symmetric, so an
 offline dictionary or mask attack against a captured token recovers
 the key. With the key, arbitrary tokens can be forged and signed.
 (CWE-327, CWE-330)
 
-**Component B — observable authentication discrepancy.** Failed
+**Component B, observable authentication discrepancy.** Failed
 authentication responses differ between "unknown account" and "known
 account, wrong credential." An attacker can therefore enumerate valid
 usernames cheaply before spending effort on a password attack.
 (CWE-203)
 
-**Component C — client-trusted rate-limit identity.** The login
+**Component C, client-trusted rate-limit identity.** The login
 lockout is keyed on a client-supplied header rather than a
 server-side source. Rotating the header value resets the lockout,
 making a real credential attack against the one seeded account with
@@ -103,35 +103,35 @@ a wordlist-recoverable password practical. (CWE-345, CWE-346)
 High-level phase outline. Exact requests, values, and commands are
 deliberately omitted from this public document.
 
-1. **Reconnaissance** — enumerate the API surface and discover an
+1. **Reconnaissance**, enumerate the API surface and discover an
    undocumented endpoint that leaks a themed codename.
-2. **Username enumeration** — reason about plausible seeded usernames
+2. **Username enumeration**, reason about plausible seeded usernames
    from the service context, and confirm a valid one via the
    authentication response discrepancy.
-3. **Credential attack** — rotate the client-supplied lockout identity
+3. **Credential attack**, rotate the client-supplied lockout identity
    header to defeat the login lockout, then perform a wordlist-based
    password search against the confirmed low-privilege account.
-4. **Token analysis** — capture a legitimate low-privilege JWT and
+4. **Token analysis**, capture a legitimate low-privilege JWT and
    decode its structure to confirm the signing algorithm.
-5. **Offline key recovery** — use the codename from step 1 to seed a
+5. **Offline key recovery**, use the codename from step 1 to seed a
    narrow offline mask attack on the captured token. The codename
    reduces the effective keyspace from the full length of the secret
    down to a small set of digit-suffix lengths.
-6. **Token forgery** — sign a new JWT with the recovered key and a
+6. **Token forgery**, sign a new JWT with the recovered key and a
    privileged subject. Verify it against a low-impact administrative
    endpoint before proceeding.
-7. **Account takeover via legitimate administrative functionality** —
+7. **Account takeover via legitimate administrative functionality** , 
    use the forged token to invoke the administrative password-reset
    endpoint against the manager-role account.
-8. **Objective** — authenticate as the manager account and read the
+8. **Objective**, authenticate as the manager account and read the
    protected reporting endpoint.
 
 ## 9.8 Impact Assessment
 
-- **Confidentiality:** high — full user enumeration, access to
+- **Confidentiality:** high, full user enumeration, access to
   manager-only reporting, access to the flag
-- **Integrity:** high — arbitrary password reset for any account
-- **Availability:** low — no direct denial-of-service path in the
+- **Integrity:** high, arbitrary password reset for any account
+- **Availability:** low, no direct denial-of-service path in the
   intended chain
 - **Privileges gained:** unauthenticated to manager-level
 
@@ -148,11 +148,11 @@ deliberately omitted from this public document.
 
 ## 9.10 Root Cause
 
-- **Component A:** convenience over security — a memorable secret was
+- **Component A:** convenience over security, a memorable secret was
   chosen and tied thematically to an internal codename that was
   itself exposed by an endpoint.
-- **Component B:** a well-intentioned UX decision — distinguishing
-  failure modes to help legitimate users — that leaks account
+- **Component B:** a well-intentioned UX decision, distinguishing
+  failure modes to help legitimate users, that leaks account
   existence.
 - **Component C:** rate limiting implemented against a
   client-supplied identity without validating that the request
@@ -178,7 +178,7 @@ deliberately omitted from this public document.
 
 Vulnerable behavior was confirmed during development with a
 black-box methodology against a running container. Detailed evidence
-— requests, responses, tool output — is retained by the author.
+,  requests, responses, tool output, is retained by the author.
 
 Post-remediation retest procedure: re-run the lab's automated test
 suite after applying the §9.11 fixes. The tests that currently assert
@@ -192,20 +192,20 @@ Several plausible shortcuts were identified during design and
 black-box playtesting and were closed before submission. Categories
 rather than exact reproductions are listed here.
 
-- **Token payload tampering without re-signing** — not exploitable,
+- **Token payload tampering without re-signing**, not exploitable,
   because role is re-resolved from the database rather than read from
   the token payload.
-- **Direct brute force of the privileged accounts** — not practical,
+- **Direct brute force of the privileged accounts**, not practical,
   because the privileged accounts are seeded with long random
   passwords. Only the low-privilege account has a wordlist-recoverable
   password, and that account alone does not grant access to the flag.
-- **Signing-secret recovery from the service name alone** — not
+- **Signing-secret recovery from the service name alone**, not
   possible; the secret is tied to a separate codename that requires
   active endpoint discovery.
-- **Timing-based username enumeration** — mitigated on the "unknown
+- **Timing-based username enumeration**, mitigated on the "unknown
   account" branch with a dummy password-hash comparison, so that the
   message-based discrepancy is the sole reliable enumeration signal.
-- **Narrow API-specific wordlists** — the undiscoverable endpoint is
+- **Narrow API-specific wordlists**, the undiscoverable endpoint is
   intentionally not present in API-specific fuzzing wordlists; a
   broader general-purpose wordlist is required. This is judged
   acceptable and matches the intended reconnaissance difficulty.
@@ -217,7 +217,7 @@ unauthenticated-to-manager privilege-escalation path. The challenge
 was hardened through live black-box playtesting, with each closed
 shortcut backed by an automated regression test. The remaining path
 requires genuine reconnaissance, reasoned inference from limited
-information, and offline hash-cracking technique — matching the hard
+information, and offline hash-cracking technique, matching the hard
 difficulty rating.
 
 The remediation in §9.11 has not been applied to the running

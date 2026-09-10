@@ -6,14 +6,14 @@ Never use Flask dev server in the container.
 import os
 
 # Server socket
-bind = "0.0.0.0:8378"
+bind = "0.0.0.0:8080"
 backlog = 2048
 
 # Worker processes
-# CHALLENGE-CRITICAL: must stay 1. lockout_store (app/lockout.py) is an
-# in-process dict with no shared backend. Multiple workers/replicas would
-# split login attempts across processes and silently break the intended
-# lockout + X-Forwarded-For-bypass vulnerability.
+# workers=1: lockout_store is an in-process dict with no shared backend.
+# Keeping one worker ensures the lockout state stays consistent across
+# requests. Multiple workers would partition it by process.
+
 workers = 1
 worker_class = "sync"
 worker_connections = 1000

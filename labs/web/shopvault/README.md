@@ -16,7 +16,7 @@ Run these from the lab directory:
 docker compose up -d
 ```
 
-The API listens on `http://localhost:8378`. All interaction is over HTTP; there is no web UI.
+The API listens on `http://localhost:8080`. All interaction is over HTTP; there is no web UI.
 
 ## Goal
 

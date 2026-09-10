@@ -1,4 +1,4 @@
-# ShopVault API — Remediation & Security Hardening
+# ShopVault API Remediation
 
 ## 1. Fix Weak JWT Secret
 

@@ -1,4 +1,4 @@
-# ShopVault — Challenge Design
+# ShopVault Challenge Design
 
 This document records the design decisions behind the ShopVault lab.
 It is intended for maintainers and reviewers, not for players.
@@ -11,9 +11,9 @@ stated goals. Exploit mechanics are described at a high level only.
 
 ## 2. Learning Objective
 
-Demonstrate how three individually moderate weaknesses in a REST API —
+Demonstrate how three individually moderate weaknesses in a REST API , 
 an authentication response discrepancy, a client-trusted rate-limit
-identity, and a low-entropy HS256 signing secret — combine into a
+identity, and a low-entropy HS256 signing secret, combine into a
 vertical privilege-escalation path from unauthenticated to manager
 role.
 
