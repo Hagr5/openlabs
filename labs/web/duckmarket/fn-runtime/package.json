@@ -1,0 +1,12 @@
+{
+  "name": "@duckmarket/fn-runtime",
+  "version": "1.4.2",
+  "private": true,
+  "description": "DuckMarket managed Node.js function runtime",
+  "type": "commonjs",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {}
+}

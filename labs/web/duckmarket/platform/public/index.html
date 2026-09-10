@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DuckMarket — Premium Rubber Ducks &amp; Developer Merch</title>
+  <link rel="stylesheet" href="/assets/styles.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">🦆</span>
+      <span class="brand-name">DuckMarket</span>
+      <span class="brand-tag">by Duckurity</span>
+    </div>
+    <nav class="nav">
+      <a href="#catalog">Catalog</a>
+      <a href="#account">My Account</a>
+      <a href="#support">Support</a>
+    </nav>
+    <div class="session-slot" id="session-slot">
+      <button id="login-btn" class="btn btn-ghost">Sign in</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h1>Rubber ducks for serious engineering teams.</h1>
+      <p>
+        DuckMarket is Duckurity's flagship marketplace for desk companions,
+        debugging kits and incident-response plush. Ship calmer. Ship with a
+        duck.
+      </p>
+    </section>
+
+    <section id="catalog" class="catalog">
+      <h2>Catalog</h2>
+      <div class="product-grid" id="products">
+        <p class="muted">Loading catalog…</p>
+      </div>
+    </section>
+
+    <section id="account" class="account hidden" aria-hidden="true">
+      <h2>My Account</h2>
+      <div class="account-grid">
+        <div class="account-panel">
+          <h3>Profile</h3>
+          <form id="profile-form">
+            <label for="pf-first">First name</label>
+            <input id="pf-first" name="firstName" type="text" maxlength="64" required />
+            <label for="pf-last">Last name</label>
+            <input id="pf-last" name="lastName" type="text" maxlength="64" required />
+            <label for="pf-locale">Preferred locale</label>
+            <select id="pf-locale" name="locale">
+              <option value="en-US">English (United States)</option>
+              <option value="en-GB">English (United Kingdom)</option>
+              <option value="de-DE">Deutsch</option>
+              <option value="fr-FR">Français</option>
+              <option value="es-ES">Español</option>
+              <option value="nl-NL">Nederlands</option>
+              <option value="pt-BR">Português (Brasil)</option>
+              <option value="ja-JP">日本語</option>
+            </select>
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">Save profile</button>
+              <span class="muted" id="profile-saved"></span>
+            </div>
+          </form>
+        </div>
+        <div class="account-panel">
+          <h3>Session</h3>
+          <p class="muted">Signed in as <strong id="session-email"></strong>.</p>
+          <button id="logout-btn" class="btn btn-ghost">Sign out</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="support" class="support">
+      <h2>Support</h2>
+      <p>
+        Need help with an order? Write to <a href="mailto:support@duckurity.example">support@duckurity.example</a>.
+        For account, billing and API integration questions, see the Duckurity
+        developer portal.
+      </p>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <span>© 2026 Duckurity, Inc. All ducks reserved.</span>
+    <span>DuckMarket v1.4.2</span>
+  </footer>
+
+  <div class="modal hidden" id="login-modal" aria-hidden="true">
+    <div class="modal-card">
+      <h3>Sign in to DuckMarket</h3>
+      <form id="login-form">
+        <label for="login-email">Email</label>
+        <input id="login-email" name="email" type="email" autocomplete="username" required />
+        <label for="login-password">Password</label>
+        <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+        <p class="form-error hidden" id="login-error"></p>
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">Sign in</button>
+          <button type="button" class="btn btn-ghost" id="login-cancel">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script src="/assets/app.js"></script>
+</body>
+</html>
