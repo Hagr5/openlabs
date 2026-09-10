@@ -1,0 +1,45 @@
+---
+title: Authentication bypass
+description: The server trusts a client-supplied field instead of verifying identity against a real credential check.
+type: technique
+key: technique-auth-bypass
+slug: technique/auth-bypass
+intent: Learn what authentication bypass is and which labs exercise it.
+keywords:
+  primary: authentication bypass practice lab
+  secondary:
+    - broken authentication explained
+    - login logic flaw lab
+linksTo:
+  - labs/techvault
+  - labs
+  - play
+  - technique
+ogImage: /og/technique.png
+---
+
+## Overview
+
+Authentication bypass happens when a login or session check accepts something other than a genuine, verified credential — a field the client controls, a comparison that isn't actually enforced, or a code path that skips verification under specific input.
+
+## Examples
+
+Watch for login flows that echo back or accept unexpected fields, GraphQL mutations with more arguments than the UI sends, or endpoints that behave differently when a field is omitted versus empty. Test with malformed, missing, or unexpected input types.
+
+## Related labs
+
+Practise on a live target:
+
+- [TechVault](/labs/techvault) — a GraphQL login that doesn't verify what it should.
+
+Browse all [labs](/labs) when it is solved.
+
+## FAQ
+
+**Is this the same as broken access control?**
+
+No. Access control (like IDOR) is about authorization after you're already authenticated. Auth bypass is about getting authenticated (or treated as authenticated) without a valid credential.
+
+**Do I need special tooling?**
+
+A GraphQL client or `curl` is enough. Read [how to play](/play) for the loop.

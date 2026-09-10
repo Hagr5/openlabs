@@ -1,0 +1,19 @@
+{
+  "name": "techvault-api",
+  "version": "1.0.0",
+  "private": true,
+  "description": "TechVault laptop store — GraphQL API (CTF training lab)",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "seed": "node db/seed.js",
+    "reset": "node db/reset-cli.js"
+  },
+  "dependencies": {
+    "apollo-server-express": "^3.13.0",
+    "express": "^4.19.2",
+    "graphql": "^16.8.1",
+    "better-sqlite3": "^11.3.0",
+    "bcryptjs": "^2.4.3"
+  }
+}

@@ -1,0 +1,45 @@
+---
+title: Server-side request forgery (SSRF)
+description: The server fetches a URL you control, letting you reach internal services it can see but you normally can't.
+type: technique
+key: technique-ssrf
+slug: technique/ssrf
+intent: Learn what SSRF is and which labs exercise it.
+keywords:
+  primary: SSRF practice lab
+  secondary:
+    - server side request forgery explained
+    - internal network pivot lab
+linksTo:
+  - labs/techvault
+  - labs
+  - play
+  - technique
+ogImage: /og/technique.png
+---
+
+## Overview
+
+SSRF happens when a server-side feature fetches a URL that you supply, and that server has network access you don't. Point it at an internal hostname or port and the response comes back through the feature that was only meant to fetch public resources.
+
+## Examples
+
+Watch for any field that fetches a resource by URL: image imports, webhook URLs, PDF generators, link previews. Try internal hostnames, `localhost`, alternate ports, and cloud metadata addresses. Compare response timing and content for signs the request actually reached an internal target.
+
+## Related labs
+
+Practise on a live target:
+
+- [TechVault](/labs/techvault) — an internal service reachable only through a chained request.
+
+Browse all [labs](/labs) when it is solved.
+
+## FAQ
+
+**Is SSRF only useful for reading internal web pages?**
+
+No. It's often a stepping stone — reaching an internal API, metadata endpoint, or service that then exposes a further flaw.
+
+**Do I need special tooling?**
+
+A browser or `curl` is enough to start. Read [how to play](/play) for the loop.
