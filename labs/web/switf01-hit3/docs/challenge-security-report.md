@@ -415,12 +415,12 @@ grpcurl -plaintext \
     { "name": "admin3", "role": "admin" },
     { "name": "admin4", "role": "admin" },
     { "name": "admin5", "role": "admin" },
-    { "name": "duck{h1t_r3st_gr2ph_7pc_to_h1t_m3}", "role": "admin" }
+    { "name": "duck{<flag_redacted>}", "role": "admin" }
   ]
 }
 ```
 
-**Flag retrieved:** `duck{h1t_r3st_gr2ph_7pc_to_h1t_m3}`
+**Flag retrieved:** `duck{<flag_redacted>}`
 
 ---
 

@@ -121,7 +121,7 @@ grpcurl ListAdmins → 6th admin name = flag
 The flag is revealed when the participant successfully calls `SuperAdminService.AddUnlimitedAdmin` via gRPC and then lists admins via `AdminService.ListAdmins`. The sixth admin in the list carries the flag as their name:
 
 ```
-duck{h1t_r3st_gr2ph_7pc_to_h1t_m3}
+duck{<flag_redacted_see_lab.yml_hash>}
 ```
 
 The flag is stored server-side and is only revealed dynamically in the admin list after a successful addition. It is not present in source code, static files, configuration, or any API response reachable without completing the full chain.
