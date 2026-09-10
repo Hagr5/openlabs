@@ -41,6 +41,7 @@ if _missing():
 
 import base64
 import requests
+# pyrefly: ignore [missing-import]
 from grpc_requests import ReflectionClient
 
 # ─── Config ──────────────────────────────────────────────────────────────────
