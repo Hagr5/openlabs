@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>SnapSync</title>
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+<div class="topbar">
+  <div class="brand">
+    <span class="brand-mark"></span>
+    <span class="brand-name">SnapSync</span>
+    <span class="brand-sub">internal photo tool</span>
+  </div>
+  <div class="session" id="sessionInfo" style="display:none;">
+    <span class="role-badge" id="roleBadge"></span>
+    <span id="userLabel"></span>
+    <button class="link-btn" id="logoutBtn">Log out</button>
+  </div>
+</div>
+
+<div class="login-wrap" id="loginWrap">
+  <div class="login-card">
+    <h1 id="authTitle">Sign in</h1>
+    <p class="hint" id="authHint">Use your SnapSync account.</p>
+    <form id="authForm">
+      <div class="field">
+        <label for="username">Username</label>
+        <input id="username" name="username" autocomplete="username" />
+      </div>
+      <div class="field">
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" />
+      </div>
+      <button class="primary-btn" type="submit" id="authBtn">Sign in</button>
+      <div class="error-box" id="authError"></div>
+    </form>
+    <p class="hint" style="margin-top:16px;margin-bottom:0;">
+      <span id="authToggleLabel">Don't have an account?</span>
+      <button class="link-btn" id="authToggleBtn" type="button">Create one</button>
+    </p>
+  </div>
+</div>
+
+<div class="app-shell" id="appShell">
+  <div class="grid">
+    <div class="panel">
+      <h2>Upload a photo</h2>
+      <p class="panel-desc">JPEG only, up to 8&nbsp;MB. Photos are processed automatically after upload.</p>
+      <div class="dropzone" id="dropzone">Drag a JPEG here, or choose a file below</div>
+      <input type="file" id="fileInput" accept="image/jpeg" />
+      <button class="primary-btn" id="uploadBtn">Upload</button>
+      <div class="error-box" id="uploadError"></div>
+    </div>
+
+    <div class="panel">
+      <h2>My photos</h2>
+      <p class="panel-desc">Photos you've uploaded and their processed versions.</p>
+      <div class="photo-list" id="photoList">
+        <div class="empty-state">No photos yet. Upload one to get started.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="/app.js"></script>
+</body>
+</html>
