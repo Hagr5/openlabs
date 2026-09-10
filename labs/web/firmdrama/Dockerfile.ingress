@@ -1,0 +1,24 @@
+FROM python:3.12-alpine@sha256:b64631e04e4920160c50fbe8d8df828f7f35f06f425cb44aa09bca53e708a35a
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1
+
+RUN apk upgrade --no-cache \
+    && addgroup -S ingress && adduser -S -G ingress ingress
+
+# The proxy uses only the Python standard library. Remove the package installer
+# and bootstrap module so the final runtime carries no pip CVEs.
+RUN rm -rf /usr/local/bin/pip /usr/local/bin/pip3 \
+    /usr/local/lib/python3.12/ensurepip \
+    /usr/local/lib/python3.12/site-packages/pip \
+    /usr/local/lib/python3.12/site-packages/pip-*.dist-info
+
+WORKDIR /app
+COPY ingress_proxy.py ./ingress_proxy.py
+
+USER ingress
+EXPOSE 8000
+HEALTHCHECK --interval=10s --timeout=5s --start-period=5s --retries=6 \
+    CMD python3 -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"
+
+CMD ["python3", "/app/ingress_proxy.py"]

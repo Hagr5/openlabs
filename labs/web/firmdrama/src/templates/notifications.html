@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <title>RoomReserve | Notifications</title>
+</head>
+
+<body data-page="notifications">
+  {% include 'partials/nav.html' %}
+  <main class="page">
+    <section class="hero compact">
+      <div>
+        <p class="eyebrow">Updates</p>
+        <h1>Notifications</h1>
+        <p class="muted">Routine RoomReserve updates for your account and schedule.</p>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Latest</p>
+          <h2>Account activity</h2>
+        </div>
+      </div>
+      <div id="notification-list" class="conversation-list">
+        <p class="muted">Loading notifications…</p>
+      </div>
+    </section>
+  </main>
+  <script src="/static/js/app.js" defer></script>
+</body>
+
+</html>

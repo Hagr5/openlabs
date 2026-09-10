@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <title>RoomReserve | Dashboard</title>
+</head>
+
+<body data-page="dashboard">
+  {% include 'partials/nav.html' %}
+  <main class="page">
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Good morning, <span data-user-name>colleague</span></p>
+        <h1>Keep the room for the argument.</h1>
+        <p class="muted">Your meetings, room availability, and internal requests in one place.</p>
+      </div><span class="status-pill">● Systems operational</span>
+    </section>
+    <section class="metric-grid">
+      <article class="metric-card"><span class="metric-label">Your role</span><strong data-user-role>—</strong><small
+          data-user-department>Loading profile</small></article>
+      <article class="metric-card"><span class="metric-label">Upcoming rooms</span><strong
+          data-booking-count>—</strong><small>Confirmed bookings</small></article>
+      <article class="metric-card"><span class="metric-label">Access level</span><strong
+          data-user-access>Standard</strong><small>Session permissions</small></article>
+    </section>
+    <section class="content-grid">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Calendar</p>
+            <h2>Upcoming bookings</h2>
+          </div><a href="/calendar" class="text-link">View calendar →</a>
+        </div>
+        <div id="booking-list" class="booking-list">
+          <p class="muted">Loading bookings…</p>
+        </div>
+      </article>
+      <aside class="panel">
+        <p class="eyebrow">Firm notice</p>
+        <h2>Confidentiality first</h2>
+        <p class="muted">Use matter codes for every booking and confirm the room’s confidentiality level before inviting
+          external attendees.</p>
+        <div class="notice-line"><span class="dot"></span><span>RoomReserve is connected</span></div>
+      </aside>
+    </section>
+  </main>
+  <script src="/static/js/app.js" defer></script>
+</body>
+
+</html>

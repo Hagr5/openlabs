@@ -1,0 +1,12 @@
+# Keep text portable across Windows checkouts and Linux containers.
+* text=auto eol=lf
+
+# Binary assets must not undergo line-ending conversion.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.webp binary
+*.pdf binary
+*.zip binary

@@ -1,0 +1,14 @@
+<header class="topbar">
+  <a class="wordmark" href="/dashboard">ROOM<span>RESERVE</span></a>
+  <nav aria-label="Primary navigation">
+    <a class="{{ 'active' if active_page == 'dashboard' }}" href="/dashboard">Overview</a>
+    <a class="{{ 'active' if active_page == 'calendar' }}" href="/calendar">Calendar</a>
+    <a class="{{ 'active' if active_page == 'rooms' }}" href="/rooms">Rooms</a>
+    <a class="{{ 'active' if active_page == 'conversations' }}" href="/conversations">Conversations</a>
+    <a class="{{ 'active' if active_page == 'requests' }}" href="/requests">My requests</a>
+    <a class="{{ 'active' if active_page == 'notifications' }}" href="/notifications">Notifications</a>
+    <a class="{{ 'active' if active_page == 'profile' }}" href="/profile">Profile</a>
+    <a data-facilities-nav class="{{ 'active' if active_page == 'facilities' }}" href="/facilities" hidden>Facilities</a>
+    <button class="link-button" data-logout>Sign out</button>
+  </nav>
+</header>

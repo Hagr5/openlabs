@@ -1,0 +1,282 @@
+<p align="center">
+  <strong>Created by Ziad Osama El-Boshy</strong><br />
+  <sub>Challenge author &amp; creator</sub>
+</p>
+
+# Validation report
+
+**firmdrama · Evidence baseline · Updated 10 September 2026**
+
+> **Current decision (10 September):** The approved isolation correction and
+> published port 8080 pass clean-release and live-network checks. The original
+> Docker-host gateway finding is resolved on the tested platform. The eight-hour
+> delegation expiry is accepted. The approved host-side `reset.py` replaces the
+> SQL-only player reset and recreates both containers before reporting success.
+>
+> **Historical release-owner acceptance (9 September):** The author completed a manual
+> clean-environment installation and validation, tested the challenge flow, and
+> approved firmdrama for publication. The fresh-build, checker, application,
+> runtime, and OpenAPI results below support that decision. An independent
+> clean-environment acceptance review also completed; reviewer details were not
+> supplied for this record.
+
+[Evidence ledger](#evidence-ledger) · [Coverage](#validation-coverage) · [Release decision](#release-decision) · [Independent review](#optional-independent-reviewer-record)
+
+## Current deployment review
+
+The target is one local instance per player, downloaded from GitHub and checked
+with `scripts/check.py`. Shared-player grading, supervised recovery, and mandatory
+independent acceptance are outside this deployment requirement. The intended
+API-only vulnerabilities remain part of the challenge.
+
+| 10 September check | Result | Scope |
+| :--- | :--- | :--- |
+| Packaged application tests | 35 passed, 6 skipped | The six ingress checks are deliberately absent from the app image |
+| Host and running-image ingress tests | Six passed in each environment | Includes real client half-close plus mocked stalled-write and stalled-close checks |
+| Clean release workflow | Passed | Fresh `--pull --no-cache` build with isolated gateway mode and host port 8080; resets, API-only solver, runtime controls, effective topology, and source/image secrecy pass |
+| Final packaged source | 54 application files and ingress proxy match local source | SHA-256 comparison after the final rebuild |
+| Publication hygiene | 81 retained files scanned; no complete flags or private-key blocks detected | Limited pattern scan; ignore files unchanged and verified against the pre-fix copy |
+| Documentation links | 163 local links and anchors pass | Checked after the current documentation updates |
+| Player checker and reset helper | Both current flags accepted; wrong value rejected | Runtime values stayed in memory and were suppressed from output; 14 host regression tests cover one-time synchronization, reset locking, ordering, and failure handling |
+| OpenAPI validator | Passed: 20 operations, 34 schemas, 22 examples | Static route, schema, example, and distribution checks |
+| Updated ingress image, Docker Scout | 0 Critical / 0 High / 0 Medium / 0 Low | Digest prefix `f7f2f736b163`; package upgrade includes libuuid 2.42.3-r1 |
+| Application image, Docker Scout | 0 Critical / 0 High / 0 Medium / 0 Low | Digest prefix `733598548f0c`; 213 packages indexed |
+| Runtime identity and process controls | Passed | Both services non-root, CapEff zero, no-new-privileges, seccomp filtering; no Docker socket |
+| External TCP, public DNS, Windows-host literal IP, and separate-network peer probes | Blocked from application | Bounded controlled checks; not a universal network proof |
+| Docker-host listeners after isolation fix | Blocked from the real application on all five tested host addresses | Each listener had a successful host-side positive control; canary removed afterward |
+| Applied isolated gateway mode | Passed live-network and release checks | Docker Engine 29.6.2; effective network is internal, IPv4-only, isolated, and has no host gateway; internal app/ingress traffic remains functional |
+| Published endpoint | `http://127.0.0.1:8080` healthy; full API-only solve passed | Loopback-only mapping is 8080 to ingress 8000; container health checks and upstream still use 8000 |
+
+The applied setting is
+`com.docker.network.bridge.gateway_mode_ipv4: isolated` under the internal
+network's `driver_opts`. Docker documents why ordinary internal bridges still
+permit host-listener access in its
+[gateway-mode reference](https://docs.docker.com/engine/network/port-publishing/#gateway-modes).
+Temporary canary containers and networks were removed after testing. This review
+does not claim kernel-escape resistance or validation of a different hosting
+platform.
+
+## Evidence ledger
+
+| Date / scope | Check | Result | Evidence limit |
+| :--- | :--- | :--- | :--- |
+| 9 September 2026 | Independent clean-environment deployment, reset, and unaided solve | **Passed** | Reviewer identity, host details, and retained artifacts were not supplied |
+| 9 September 2026 | Release-owner clean-environment installation and manual validation | **Passed; approved for publication** | Owner attestation; this report does not retain unredacted flags, screenshots, or host-identifying evidence |
+| 9 September 2026 | Fresh Compose rebuild and recreation | **Passed; both services healthy** | Recreated local stack; not the full `--pull --no-cache` release workflow |
+| 9 September 2026 | Host flag synchronization and checker against fresh runtime values | **Checkpoint matched; final matched; known non-match rejected** | Plaintext flags were suppressed; the checker depends on the matching current `lab.yml` |
+| 9 September 2026 | Host hash/checker regression suite | **9 passed** in 0.051 s | Host-only metadata and CLI behavior; does not exercise the application |
+| 9 September 2026 | Packaged application suite | **27 passed, 3 skipped** in 6.72 s | Ingress checks are expected skips because the app image intentionally omits the proxy module |
+| 9 September 2026 | Running runtime-environment verifier | **Passed** | Verifies intended generated state and selected runtime controls, not an image vulnerability scan |
+| 9 September 2026 | OpenAPI static validator | **Passed: 20 operations, 34 schemas, 22 examples** | Static contract validation only; run from the isolated `firmdrama-docs-validate` Conda environment |
+| 7 September 2026 | Local ingress regression, Python 3.13.11 | **3 passed** in 0.617 s | Existing socket-level tests only |
+| 7 September 2026 | Running ingress regression, Python 3.12.14 | **3 passed** in 0.303 s | Test source streamed to the deployed ingress image |
+| 7 September 2026 | Deployed proxy / source comparison | **SHA-256 match** | Confirms the proxy file, not every image layer or dependency |
+| 7 September 2026 | `docker compose config --quiet` | **Passed** | Configuration validation, not a new build |
+| 7 September 2026 | Compose service health | **Both healthy** | Snapshot of the existing stack |
+| 7 September 2026 | Published `/health` | **Expected response** | Readiness through loopback ingress |
+| Prior author baseline | Packaged application suite after UI alignment | **27 passed, historically recorded** | Not rerun or adopted as current-revision proof |
+| 8 September 2026 | Focused local application checks | **8 passed** | Selected checks without a live database; see [maintainability review](#maintainability-review) |
+| 9 September 2026 | Full clean-state release validation | **Passed manually** | Release-owner attestation; the automated validator transcript is not retained |
+| 9 September 2026 | Current image-scan review | **Reviewed by release owner** | No scanner artifact is retained in this documentation package |
+| 9 September 2026 | Independent reviewer clean deployment, reset, and solve | **Passed** | Reviewer identity and host details were not supplied |
+
+On 7 September, the source and deployed `/app/ingress_proxy.py` shared this SHA-256 digest:
+
+```text
+bbff8e4be5d6cf5ef3539fee00dcd8753b9e3b061afff48a4c97bd1ff2a0f537
+```
+
+The historical 7 September health response through the then-current
+`http://127.0.0.1:8000/health` was:
+
+```json
+{"service":"firmdrama","status":"ok"}
+```
+
+## What the ingress check proves
+
+| Current test | Behavior checked |
+| :--- | :--- |
+| `test_upstream_idle_close_reaches_client_and_releases_slot` | Upstream closure reaches the client and frees the admitted connection slot |
+| `test_client_close_reaches_upstream` | Client closure reaches the upstream socket |
+| `test_live_connection_preserves_multiple_large_responses` | Multiple large responses arrive intact on a live connection |
+| `test_half_closed_client_receives_delayed_response` | Client write-side EOF still permits a complete delayed response |
+| `test_stalled_write_times_out` | A stalled drain is bounded by the idle timeout |
+| `test_stalled_close_aborts_transport` | A stalled writer close aborts its transport after the close timeout |
+
+Four tests exercise real loopback sockets with a controlled test upstream; two
+use controlled writer mocks for deterministic timeout checks.
+They do not exercise the application, its challenge path, a real browser's
+idle/retry behavior, TLS, saturation, every timeout, or every write failure.
+
+The ingress handler preserves a bounded response after client write-side EOF.
+Response completion or failure cancels and awaits remaining forwarding work,
+closes both writers with a deadline, and releases the slot. The older three-case
+results remain dated historical evidence; the current suite contains six cases.
+
+## Validation coverage
+
+Reproduction commands and environment prerequisites are maintained in the
+[operations validation workflow](operations.mdx#validation-workflow).
+The existing release validator checks generated state, packaged application
+tests, the existing evaluator workflow through ingress, runtime identity and
+permissions, network topology, loopback publication, read-only roots, capability
+drops, PID limits, and image-separation/secrecy assertions.
+
+| Scope | Coverage limit |
+| :--- | :--- |
+| Application image tests | Ingress tests skip because the proxy module is intentionally absent; run the separate socket suite |
+| Ingress socket suite | Covers the six cases listed above, not the application path, browser retries, TLS, saturation, or every failure case |
+| Image-separation assertions | Check selected paths and installer absence, not an exhaustive inventory of all executables |
+| Container validation | Does not replace an image vulnerability scan or independent human acceptance |
+| Pinned base image | Identifies the base; application package downloads can still change, so the entire build is not byte-for-byte pinned |
+
+The packaged application tests cover health, authentication, ordinary account
+actions, challenge boundaries, UI behavior, reset, flags, and surrounding
+hardening. The earlier **27-pass** application result is historical. The focused
+local results below do not establish a new full-suite, solver, reset, scan, or
+clean-build result.
+
+## Documentation verification
+
+The eight guides use one [documentation index](README.md). The latest local
+link check passed **151 links/anchors**, with all nine required assessment
+deliverables, report sections 9.1-9.14, and sanitized solution/evidence examples
+retained. On 9 September, the player README, operator runbook, design,
+solution, security report, metadata comments, and packaging index were aligned
+with the two-stage host checker and Mike's seeded dashboard relation. The
+OpenAPI validator passed after this review. The 8 September Mermaid and layout
+inspection remains the latest visual documentation evidence; reader-specific
+rendering can still vary.
+
+### OpenAPI reference verification
+
+On 8 September 2026, the [maintainer API reference](openapi.yaml) passed
+OpenAPI 3.1.1 validation: **20 operations, 34 schemas, and 22 synthetic examples**.
+The [validator](tools/validate_openapi.py) checks local references, explicit
+route coverage, literal statuses and error codes, and authentication/role
+declarations. Earlier negative checks also rejected eight invalid document
+variants and four invalid profile-update payloads.
+
+These are static documentation checks, not proof of live API behavior. Follow
+the [operations instructions](operations.mdx#maintainer-api-reference) to repeat
+them. The reference is included in public source and excluded from the running
+application and spoiler-free player handouts.
+
+### Publication hygiene verification
+
+The 8 September review confirmed Git exclusions for 19 representative
+generated/private paths while retaining 20 required examples. Following the
+refactor, a fresh BuildKit export contained all **52 required application files**,
+including the new response helper and test support modules. The unchanged
+ingress allowlist was previously verified to admit only its proxy module.
+Documentation, environments, logs, and host-only release tooling were absent
+from the application export. The limited retained-source
+scan found no runtime flags, private-key blocks, recognized GitHub/AWS
+credential patterns, or local user paths; it does not detect every secret format.
+
+Generated artifacts were moved outside the source package, and redundant
+asset-directory placeholders were removed. Source uses LF line endings. The
+complete project retains the evaluator materials, without a Git repository or
+remote being configured in the challenge directory.
+
+### Maintainability review
+
+On 8 September 2026, the application factory was simplified, shared JSON errors
+were moved to a dedicated module, stale scaffolding and obsolete settings were
+removed, and integration-client fixtures were consolidated. CSS and HTML
+changes were limited to formatting.
+
+| Check | Result | Limit |
+| :--- | :--- | :--- |
+| Existing test bodies | All 30 preserved; all 30 tests collected | Collection does not execute the integration suite |
+| Focused local tests | 8 passed | Health, unauthenticated page guards, static assets, security headers, and request-size handling; no live database |
+| Factory and response comparison | 32 registered routes and five ordinary response/header contracts unchanged | Selected contracts, not every database-backed response |
+| Shared test setup | One reset per requested client; browser client reuses that boundary | Verified with mocks, without resetting the running lab |
+| Template and CSS comparison | 12 rendered cases preserve structure/text; all 68 browser-parsed CSS rules match | Synthetic template context with unchanged JavaScript excluded from rendering comparisons |
+| Visual comparison | All 24 desktop/mobile screenshot pairs identical | Static page layouts at 1365 and 390 pixels, not interactive browser flows |
+
+These focused results support and complement the release owner's
+clean-environment acceptance. Repeat the automated release workflow, image
+scan review, and an independent solve for a material future change.
+
+## Release decision
+
+**The host-gateway isolation finding is resolved on the tested Docker platform.**
+The recreated network, loopback port 8080, full challenge path, and effective
+release controls pass. The host-side `reset.py` now recreates both containers after arbitrary execution;
+player reset no longer relies on SQL-only reseeding. Remaining
+image findings are recorded above. The following table records older acceptance
+only and does not replace these current results.
+
+**Historical 9 September acceptance by the release owner.** The owner reports a
+successful clean-environment deployment, reset, manual validation, and complete
+challenge test on 9 September 2026. The automated results above provide
+supporting evidence. An independent clean-environment acceptance review also
+completed; its identity and environment details were not supplied for this
+record.
+
+| Gate | Status | Evidence / next action |
+| :--- | :--- | :--- |
+| Documentation alignment | Reviewed 10 September | Player checker workflow, two-stage hashes, seeded calendar relation, and API contract reviewed; static OpenAPI validation passed |
+| Ingress socket regression | Passed | Three cases passed locally and in running ingress; [dated results](#evidence-ledger) |
+| Running service health | Passed, fresh stack | Both services healthy after the 9 September Compose recreation |
+| Clean build and application validation | Passed | Fresh Compose build, packaged suite, runtime verifier, and release-owner clean-environment validation passed |
+| Reset and intended-path verification | Passed | Reset, hash synchronization, two-stage checker, and the release-owner's full manual challenge test passed |
+| Runtime controls and flag secrecy | Accepted for publication | Existing runtime checks plus release-owner clean-environment validation; retain future automated release evidence for material changes |
+| Current image scan | Reviewed by release owner | No scanner artifact is retained in this documentation package; record dated sanitized evidence for a future material release |
+| Independent acceptance | Passed | Clean deployment, reset, and unaided solve completed; reviewer details were not supplied |
+
+## Optional independent acceptance procedure
+
+The reviewer receives a fresh challenge copy and uses only the player README
+for deployment instructions. Do not supply hidden routes, object IDs, payloads,
+or solution hints during the unaided acceptance exercise.
+
+| Step | Reviewer action | Success condition |
+|---:|---|---|
+| 1 | Start the stack from README | Health endpoint and browser are reachable |
+| 2 | Reset the lab | Clean account and fresh state are restored |
+| 3 | Solve using normal observable API behavior | Both runtime flag conditions are reached |
+| 4 | Repeat reset and a subset of checks | No stale privilege or consumed approval persists |
+| 5 | Record observations | No ambiguity, accidental shortcut, or missing README step |
+
+## Optional independent reviewer record
+
+An independent acceptance exercise completed for the current publication. The
+reviewer and environment details were not supplied; retain them for a future
+material release when available.
+
+| Field | Record |
+| :--- | :--- |
+| Reviewer | Completed; identity not supplied |
+| Review date and time zone | Completed 9 September 2026; time zone not supplied |
+| Submission / source revision identifier | Current 9 September 2026 publication package |
+| Host OS, Docker, and Compose versions | Not supplied |
+| Clean deployment from README | Passed |
+| Reset and fresh-state verification | Passed |
+| Unaided challenge completion | Passed |
+| Ambiguities or unintended paths | No unresolved issue reported |
+| Corrections and retest evidence | Recorded in the evidence ledger where applicable |
+| Final acceptance decision | Approved for publication after independent acceptance |
+
+The reviewer uses the [player README](../README.md) for setup and receives
+no hidden route, object-ID, or solution hints from the author. Attach only
+sanitized evidence. The release owner records the outcome and resolves any
+findings before accepting a future material change.
+
+## Evidence handling
+
+The [security-report appendix](security-report.mdx#appendix-a-sanitized-evidence)
+contains historical sanitized behavioral examples. They are not fresh captures
+from this review. Preserve reviewer identity, review date and time zone,
+environment and source identifiers, outcomes, and resolved issues in the record
+above. Keep runtime tokens, flags, approvals, and database contents out of saved
+logs and screenshots.
+
+For a future material change, record the complete workflow outcome, resolve
+findings, and obtain independent acceptance where practical.
+
+---
+
+[Documentation index](README.md) · [Operations](operations.mdx) · [Validation and acceptance](validation-report.mdx)
