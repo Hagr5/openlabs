@@ -1,0 +1,17 @@
+{
+  "name": "duckfleet-gateway",
+  "version": "2.4.1",
+  "private": true,
+  "description": "DuckFleet gRPC-Web gateway and console (Duckurity Fleet Operations)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "gen-descriptors": "node scripts/gen-descriptors.js"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@grpc/grpc-js": "^1.13.0",
+    "express": "^4.19.2",
+    "protobufjs": "^7.4.0"
+  }
+}

@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package admin;
+
+import "google/protobuf/empty.proto";
+
+service AdminService {
+  rpc GetFlag(google.protobuf.Empty) returns (FlagResponse);
+  rpc IssueToken(IssueTokenRequest) returns (IssueTokenResponse);
+}
+
+message IssueTokenRequest {
+  string user_id = 1;
+}
+
+message IssueTokenResponse {
+  string token = 1;
+  int64 expires_in = 2;
+}
+
+message FlagResponse {
+  string flag = 1;
+  string issued_to = 2;
+}

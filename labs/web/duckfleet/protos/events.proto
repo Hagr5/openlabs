@@ -1,0 +1,36 @@
+syntax = "proto3";
+
+package events;
+
+service EventService {
+  rpc Subscribe(SubscribeRequest) returns (stream PlatformEvent);
+}
+
+enum EventCategory {
+  FLEET = 0;
+  AUDIT = 1;
+  AUTH = 2;
+}
+
+message SubscribeRequest {
+  repeated EventCategory categories = 1;
+}
+
+message PlatformEvent {
+  string id = 1;
+  int64 timestamp = 2;
+  EventCategory category = 3;
+  string type = 4;
+  bytes payload = 5;
+}
+
+message SessionAudit {
+  string user_id = 1;
+  string email = 2;
+  string action = 3;
+}
+
+message TokenIssuedAudit {
+  string issued_for = 1;
+  string scope = 2;
+}

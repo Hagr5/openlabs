@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="DuckFleet — real-time delivery fleet telemetry and dispatch console by Duckurity." />
+  <title>DuckFleet — Fleet Operations Console</title>
+  <style>
+    :root {
+      --bg: #0c1116;
+      --panel: #141b23;
+      --panel-2: #1a232e;
+      --line: #26313e;
+      --text: #e8eef4;
+      --muted: #8fa0b3;
+      --accent: #f5b301;
+      --accent-ink: #1a1405;
+      --green: #35c26e;
+      --red: #e05656;
+      --blue: #4aa3ff;
+      --yellow: #e8b93e;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 80% -10%, #182430 0%, var(--bg) 55%) fixed, var(--bg);
+      color: var(--text);
+      font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+      min-height: 100vh;
+    }
+    header.topbar {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 28px;
+      border-bottom: 1px solid var(--line);
+      background: rgba(12, 17, 22, 0.85);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; }
+    .brand svg { width: 38px; height: 38px; }
+    .brand h1 { font-size: 20px; margin: 0; letter-spacing: 0.4px; }
+    .brand small { display: block; color: var(--muted); font-size: 11px; letter-spacing: 1.6px; text-transform: uppercase; }
+    .spacer { flex: 1; }
+    .session { display: none; align-items: center; gap: 10px; font-size: 13px; color: var(--muted); }
+    .session.visible { display: flex; }
+    .role-badge {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      color: var(--accent);
+      border-radius: 999px;
+      padding: 3px 12px;
+      font-size: 11px;
+      letter-spacing: 1px;
+      font-weight: 700;
+    }
+    button {
+      font: inherit;
+      cursor: pointer;
+      border: 1px solid transparent;
+      border-radius: 8px;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: var(--accent-ink);
+      font-weight: 700;
+      padding: 10px 18px;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--muted);
+      border-color: var(--line);
+      padding: 8px 14px;
+      font-size: 13px;
+    }
+    .btn-ghost:hover { color: var(--text); border-color: var(--muted); }
+    main { max-width: 1080px; margin: 0 auto; padding: 32px 24px 64px; }
+    .card {
+      background: linear-gradient(180deg, var(--panel-2), var(--panel));
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 28px;
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+    }
+    .login-card { max-width: 420px; margin: 48px auto; }
+    .login-card h2 { margin: 0 0 6px; font-size: 22px; }
+    .login-card p { margin: 0 0 20px; color: var(--muted); font-size: 14px; }
+    label { display: block; font-size: 12px; letter-spacing: 0.8px; text-transform: uppercase; color: var(--muted); margin: 14px 0 6px; }
+    input {
+      width: 100%;
+      background: #0e141b;
+      border: 1px solid var(--line);
+      color: var(--text);
+      border-radius: 8px;
+      padding: 11px 12px;
+      font: inherit;
+    }
+    input:focus { outline: none; border-color: var(--accent); }
+    .login-card .btn-primary { width: 100%; margin-top: 20px; }
+    .form-error {
+      display: none;
+      margin-top: 14px;
+      background: rgba(224, 86, 86, 0.12);
+      border: 1px solid rgba(224, 86, 86, 0.5);
+      color: #f2a3a3;
+      border-radius: 8px;
+      padding: 10px 12px;
+      font-size: 13px;
+    }
+    .form-error.visible { display: block; }
+    .fleet-head { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+    .fleet-head h2 { margin: 0; font-size: 20px; }
+    .live-dot {
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 0 rgba(53, 194, 110, 0.6);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(53, 194, 110, 0.55); }
+      70% { box-shadow: 0 0 0 9px rgba(53, 194, 110, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(53, 194, 110, 0); }
+    }
+    .live-label { font-size: 12px; letter-spacing: 1.4px; color: var(--green); font-weight: 700; }
+    .updated { margin-left: auto; font-size: 12px; color: var(--muted); }
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th {
+      text-align: left;
+      font-size: 11px;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--line);
+    }
+    td { padding: 11px 12px; border-bottom: 1px solid rgba(38, 49, 62, 0.6); }
+    tr:last-child td { border-bottom: none; }
+    tbody tr:hover { background: rgba(245, 179, 1, 0.04); }
+    .mono { font-family: "SFMono-Regular", Consolas, monospace; font-size: 12.5px; color: var(--muted); }
+    .pill {
+      display: inline-block;
+      border-radius: 999px;
+      padding: 3px 11px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+    }
+    .pill.EN_ROUTE { background: rgba(53, 194, 110, 0.14); color: #6fdc9c; border: 1px solid rgba(53, 194, 110, 0.4); }
+    .pill.IDLE { background: rgba(74, 163, 255, 0.12); color: #8fc3ff; border: 1px solid rgba(74, 163, 255, 0.4); }
+    .pill.CHARGING { background: rgba(232, 185, 62, 0.12); color: #f0cd6d; border: 1px solid rgba(232, 185, 62, 0.4); }
+    .pill.MAINTENANCE { background: rgba(224, 86, 86, 0.12); color: #f2a3a3; border: 1px solid rgba(224, 86, 86, 0.4); }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 12px;
+      padding: 24px;
+      border-top: 1px solid var(--line);
+    }
+    #view-login.hidden, #view-fleet.hidden { display: none; }
+    .banner { display: none; }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 48 48" aria-hidden="true">
+        <ellipse cx="22" cy="30" rx="14" ry="10" fill="#f5b301"/>
+        <circle cx="34" cy="20" r="8" fill="#f5b301"/>
+        <circle cx="36" cy="18" r="1.8" fill="#1a1405"/>
+        <path d="M41 19l7 2.4-7 2.6z" fill="#e07b39"/>
+        <path d="M10 30q-6 1-8 6 5-1 9-1z" fill="#e07b39"/>
+        <path d="M14 27q4-7 12-7-3 5-4 8z" fill="#c9920a"/>
+      </svg>
+      <div>
+        <h1>DuckFleet</h1>
+        <small>Duckurity Fleet Operations</small>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <div class="session" id="session">
+      <span id="session-user"></span>
+      <span class="role-badge" id="session-role"></span>
+      <button class="btn-ghost" id="logout-btn" type="button">Sign out</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="view-login" class="card login-card">
+      <h2>Dispatcher sign in</h2>
+      <p>Real-time telemetry for every vehicle in the pond.</p>
+      <form id="login-form" autocomplete="on">
+        <label for="email">Work email</label>
+        <input id="email" name="email" type="email" autocomplete="username"
+               placeholder="dispatch@duckurity.example" required />
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password"
+               placeholder="••••••••••" required />
+        <button class="btn-primary" type="submit" id="login-btn">Sign in</button>
+        <div class="form-error" id="login-error"></div>
+      </form>
+    </section>
+
+    <section id="view-fleet" class="card hidden">
+      <div class="fleet-head">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span class="live-label">LIVE</span>
+        <h2>Fleet overview</h2>
+        <span class="updated" id="updated-at"></span>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th>Unit</th>
+            <th>Vehicle</th>
+            <th>Status</th>
+            <th>Zone</th>
+            <th>Driver</th>
+          </tr>
+        </thead>
+        <tbody id="fleet-rows"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <footer>FleetOps Console v2.4.1 &middot; Duckurity Internal Systems</footer>
+
+  <script src="/vendor/protobuf.min.js"></script>
+  <script src="/descriptors.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

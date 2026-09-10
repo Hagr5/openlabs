@@ -1,0 +1,30 @@
+syntax = "proto3";
+
+package fleet;
+
+service FleetService {
+  rpc ListVehicles(ListVehiclesRequest) returns (ListVehiclesResponse);
+  rpc GetVehicle(GetVehicleRequest) returns (Vehicle);
+}
+
+message ListVehiclesRequest {
+  string zone = 1;
+  int32 page_size = 2;
+}
+
+message ListVehiclesResponse {
+  repeated Vehicle vehicles = 1;
+  int32 total = 2;
+}
+
+message GetVehicleRequest {
+  string id = 1;
+}
+
+message Vehicle {
+  string id = 1;
+  string name = 2;
+  string status = 3;
+  string zone = 4;
+  string driver_name = 5;
+}
