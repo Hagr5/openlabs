@@ -1,0 +1,61 @@
+services:
+  cloudvault-api:
+    build:
+      context: ./app
+      dockerfile: api/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      DATABASE_URL: "sqlite:////srv/data/cloudvault.db"
+      JWT_SECRET: "cloudvault-lab-jwt-secret-do-not-reuse-outside-this-lab"
+      JWT_EXPIRE_MINUTES: "120"
+      SEED_PLAYER_USERNAME: "player"
+      SEED_PLAYER_PASSWORD: "changeme123"
+      WORKER_URL: "http://import-worker:9000"
+      WORKER_SHARED_SECRET: "cloudvault-lab-worker-secret-do-not-reuse-outside-this-lab"
+    volumes:
+      - cloudvault-api-data:/srv/data
+    networks:
+      - public-net
+      - internal-net
+    depends_on:
+      - import-worker
+
+  import-worker:
+    build:
+      context: ./app
+      dockerfile: worker/Dockerfile
+    environment:
+      WORKER_SHARED_SECRET: "cloudvault-lab-worker-secret-do-not-reuse-outside-this-lab"
+    networks:
+      - internal-net
+
+  metadata-service:
+    build:
+      context: ./app
+      dockerfile: metadata/Dockerfile
+    networks:
+      - internal-net
+
+  sample-library:
+    build:
+      context: ./app
+      dockerfile: sample-library/Dockerfile
+    networks:
+      - internal-net
+
+  internal-vault-api:
+    build:
+      context: ./app
+      dockerfile: internal-vault-api/Dockerfile
+    environment:
+      VAULT_SESSION_SECRET: "cloudvault-lab-worker-secret-do-not-reuse-outside-this-lab"
+    networks:
+      - internal-net
+
+networks:
+  public-net:
+  internal-net:
+
+volumes:
+  cloudvault-api-data:
