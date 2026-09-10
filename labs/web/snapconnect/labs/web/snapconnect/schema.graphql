@@ -1,0 +1,56 @@
+# Reference SDL for the SnapConnect API.
+# The runtime schema is built in app/src/schema.php. This file documents the
+# same shape for readers of the source.
+
+"A file part mapped in from a multipart request."
+scalar Upload
+
+"A SnapConnect member."
+type User {
+  id: ID!
+  username: String!
+  "Visible only when the profile belongs to the caller."
+  email: String
+  displayName: String!
+  bio: String
+  avatarUrl: String
+  createdAt: String
+}
+
+"Session token for the SnapConnect API."
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+"Outcome of an avatar upload."
+type UploadResult {
+  success: Boolean!
+  url: String
+  message: String
+}
+
+type Query {
+  "API build identifier."
+  serverVersion: String
+
+  "The member identified by the bearer token."
+  me: User
+
+  "Look up a public profile by username."
+  user(username: String!): User
+}
+
+type Mutation {
+  "Exchange email and password for a session token."
+  login(email: String!, password: String!): AuthPayload!
+
+  "Create an account and receive a session token."
+  register(username: String!, email: String!, password: String!, displayName: String): AuthPayload!
+
+  "Update the profile of the current member."
+  updateProfile(displayName: String!, bio: String!): User!
+
+  "Attach a profile picture to the current member. Send the file as a multipart part mapped onto $file."
+  uploadAvatar(file: Upload!): UploadResult!
+}
