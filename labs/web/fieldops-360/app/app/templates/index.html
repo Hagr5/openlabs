@@ -1,0 +1,106 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <span class="kicker"><span class="dot"></span> Field Service Management Platform</span>
+      <h1>Run your field service business on one platform.</h1>
+      <p class="lead">Scheduling, dispatch, invoicing and customer outreach for HVAC, electrical
+         and plumbing companies. Built for crews that work after dark.</p>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="/Login">Open the portal</a>
+        <a class="btn btn-ghost" href="#features">Explore features</a>
+      </div>
+      <div class="hero-meta">
+        <div><strong>2,400+</strong><span>Trade businesses</span></div>
+        <div><strong>1.9M</strong><span>Jobs completed</span></div>
+        <div><strong>99.98%</strong><span>Uptime SLA</span></div>
+      </div>
+    </div>
+    <div class="window" aria-hidden="true">
+      <div class="window-bar"><i></i><i></i><i></i><span class="addr">portal/Dashboard</span></div>
+      <div class="window-body">
+        <div class="window-side"><b class="on"></b><b></b><b></b><b></b><b></b></div>
+        <div class="window-main">
+          <div class="window-kpis">
+            <div><b>12</b><span>Open jobs</span></div>
+            <div><b>8</b><span>Completed</span></div>
+            <div><b>$4.2k</b><span>Revenue MTD</span></div>
+          </div>
+          <div class="window-chart">
+            <i style="height:38%"></i><i style="height:64%"></i><i style="height:45%"></i>
+            <i style="height:82%"></i><i style="height:58%"></i><i style="height:94%"></i>
+            <i style="height:70%"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="logos">
+    <span>ACME CLIMATE CONTROL</span><span>BRIGHTSPARK ELECTRICAL</span><span>CASCADE PLUMBING</span>
+    <span>NORTHLINE UTILITY</span><span>GREENVIEW SOLAR</span>
+  </div>
+
+  <section class="section" id="platform">
+    <div class="section-head">
+      <span class="kicker"><span class="dot"></span> The Platform</span>
+      <h2>Everything your dispatch desk needs, nothing it doesn't.</h2>
+      <p>One console for the office, one app for the crew. FieldOps 360 keeps every job,
+         invoice and customer conversation in sync across your whole company.</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <h3>Scheduling &amp; Dispatch</h3>
+        <p>Drag-and-drop calendar, smart technician assignment and route-aware dispatch that gets the right crew to the right door.</p>
+      </div>
+      <div class="feature">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
+        <h3>Customer Invoicing</h3>
+        <p>Email professional invoices in one click and watch payments land. Built-in open tracking tells you the moment an invoice is read.</p>
+      </div>
+      <div class="feature">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg></div>
+        <h3>Campaign Insights</h3>
+        <p>Seasonal tune-up campaigns with per-recipient open tracking on every email you send. See which neighborhoods convert.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="features">
+    <div class="section-head">
+      <span class="kicker"><span class="dot"></span> Why FieldOps</span>
+      <h2>Built for multi-company trust.</h2>
+      <p>Strict tenant isolation, audited access controls and a security posture your enterprise customers will actually sign off on.</p>
+    </div>
+    <div class="grid-3">
+      <div class="feature">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+        <h3>Multi-tenant Security</h3>
+        <p>Strict data isolation per company, enforced at every layer. Your customers' data never crosses tenant lines.</p>
+      </div>
+      <div class="feature">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09a1.65 1.65 0 0 0-1-1.51 1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09a1.65 1.65 0 0 0 1.51-1 1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h0a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51h0a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v0a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg></div>
+        <h3>Granular Controls</h3>
+        <p>Role-based access for technicians, office staff and platform administrators, with SSO for enterprise plans.</p>
+      </div>
+      <div class="feature">
+        <div class="icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+        <h3>Fast by Default</h3>
+        <p>Sub-100ms console interactions and a mobile crew app that works in basements. Sync catches up when the signal does.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="cta-band">
+      <div>
+        <h2>Ready to work after dark?</h2>
+        <p>Sign in to the customer portal and see your operation at a glance.</p>
+      </div>
+      <a class="btn" href="/Login">Sign in to portal</a>
+    </div>
+  </section>
+</main>
+{% endblock %}

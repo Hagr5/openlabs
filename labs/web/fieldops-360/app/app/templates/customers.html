@@ -1,0 +1,29 @@
+{% extends "shell.html" %}
+{% block title %}Customers — FieldOps 360{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Customers</h1>
+    <p>{{ customers|length }} service customers on record for {{ tenant_name }}.</p>
+  </div>
+</section>
+
+<div class="panel">
+  <div class="table-wrap">
+    <table>
+      <tr><th>Customer</th><th>Address</th><th>Phone</th><th>Email</th><th>Jobs</th><th>Last service</th><th>Status</th></tr>
+      {% for c in customers %}
+      <tr>
+        <td><span class="cell-user"><span class="avatar sm">{{ c.name[:1] }}</span><span><span class="who">{{ c.name }}</span></span></span></td>
+        <td style="white-space:normal">{{ c.address }}</td>
+        <td class="mono">{{ c.phone }}</td>
+        <td class="mono" style="white-space:normal">{{ c.email }}</td>
+        <td class="mono">{{ c.jobs_count }}</td>
+        <td class="mono">{{ c.last_service[:10] }}</td>
+        <td><span class="badge active">Active</span></td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+</div>
+{% endblock %}

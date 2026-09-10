@@ -1,0 +1,7 @@
+.git
+**/__pycache__
+**/*.pyc
+.DS_Store
+docker-compose.yml
+README.md
+lab.yml

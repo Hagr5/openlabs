@@ -1,0 +1,46 @@
+{% extends "shell.html" %}
+{% block title %}Jobs — FieldOps 360{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Jobs</h1>
+    <p>{{ tenant_name }} work orders. Internal notes are available to office administrators only.</p>
+  </div>
+</section>
+
+<div class="toolbar">
+  <form class="searchbox" method="get" action="/Jobs">
+    <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+    <input type="text" name="q" placeholder="Filter by job, customer, technician..." value="{{ query }}">
+  </form>
+  <div class="spacer"></div>
+  <span class="result-count">{{ jobs|length }} job{{ 's' if jobs|length != 1 }}{% if query %} matching "{{ query }}"{% endif %}</span>
+</div>
+
+<div class="panel">
+  {% if jobs %}
+  <div class="table-wrap">
+    <table>
+      <tr><th>Job</th><th>Customer</th><th>Type</th><th>Priority</th><th>Status</th><th>Scheduled</th><th>Technician</th><th>Amount</th></tr>
+      {% for j in jobs %}
+      <tr>
+        <td class="mono">{{ j.job_id }}</td>
+        <td><span class="cell-user"><span class="avatar sm">{{ j.customer[:1] }}</span><span><span class="who">{{ j.customer }}</span></span></span></td>
+        <td>{{ j.service_type }}</td>
+        <td><span class="badge {{ j.priority|lower }}">{{ j.priority }}</span></td>
+        <td><span class="badge {{ j.status|lower|replace(' ', '-') }}">{{ j.status }}</span></td>
+        <td class="mono">{{ j.scheduled_for }}</td>
+        <td><span class="cell-user"><span class="avatar sm">{{ j.tech_initials }}</span><span><span class="who">{{ j.technician }}</span></span></span></td>
+        <td class="mono">${{ '%.2f'|format(j.amount_usd) }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  </div>
+  {% else %}
+  <div class="empty">
+    <h3>No jobs found</h3>
+    <p>{% if query %}Nothing matches "{{ query }}". <a href="/Jobs">Clear filter</a>{% else %}No work orders yet{% endif %}</p>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

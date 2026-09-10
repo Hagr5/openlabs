@@ -1,0 +1,91 @@
+{% extends "shell.html" %}
+{% block title %}Overview — FieldOps 360{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Good to see you, {{ session.display_name.split()[0] }}</h1>
+    <p>{{ tenant_name }} &middot; live workspace overview</p>
+  </div>
+  <a class="btn btn-primary" href="/Jobs">View all jobs</a>
+</section>
+
+<section class="stats">
+  <div class="stat">
+    <div class="top"><span class="lbl">Open jobs</span>
+      <span class="icon"><svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/></svg></span>
+    </div>
+    <span class="num">{{ summary.open_jobs }}</span>
+    <div class="delta up">+2 this week</div>
+  </div>
+  <div class="stat">
+    <div class="top"><span class="lbl">Completed</span>
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4L12 14.01l-3-3"/></svg></span>
+    </div>
+    <span class="num">{{ summary.completed_jobs }}</span>
+    <div class="delta flat">all time</div>
+  </div>
+  <div class="stat">
+    <div class="top"><span class="lbl">Revenue MTD</span>
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+    </div>
+    <span class="num">${{ '%.0f'|format(summary.revenue_usd) }}</span>
+    <div class="delta up">+18% vs last month</div>
+  </div>
+  <div class="stat">
+    <div class="top"><span class="lbl">Customers</span>
+      <span class="icon"><svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></span>
+    </div>
+    <span class="num">{{ summary.customers }}</span>
+    <div class="delta flat">{{ summary.technicians }} technicians</div>
+  </div>
+</section>
+
+<div class="cols">
+  <div>
+    <div class="panel">
+      <div class="panel-head"><h3>Jobs per day</h3><span class="result-count">last {{ chart|length }} active days</span></div>
+      <div class="panel-body">
+        <div class="chart">
+          {% for c in chart %}
+          <div class="bar"><b>{{ c.count }}</b><i style="height: {{ c.pct }}%"></i><span>{{ c.label }}</span></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="panel" style="margin-top:18px">
+      <div class="panel-head"><h3>Recent jobs</h3><a href="/Jobs">View all &rarr;</a></div>
+      <div class="table-wrap">
+        <table>
+          <tr><th>Job</th><th>Customer</th><th>Type</th><th>Status</th><th>Scheduled</th><th>Amount</th></tr>
+          {% for j in recent %}
+          <tr>
+            <td class="mono">{{ j.job_id }}</td>
+            <td><span class="cell-user"><span class="avatar sm">{{ j.customer[:1] }}</span><span><span class="who">{{ j.customer }}</span></span></span></td>
+            <td>{{ j.service_type }}</td>
+            <td><span class="badge {{ j.status|lower|replace(' ', '-') }}">{{ j.status }}</span></td>
+            <td class="mono">{{ j.scheduled_for }}</td>
+            <td class="mono">${{ '%.2f'|format(j.amount_usd) }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="panel">
+    <div class="panel-head"><h3>Up next</h3></div>
+    <div class="panel-body">
+      {% for u in summary.upcoming %}
+      <div class="up-item">
+        <div class="cal"><b>{{ u.scheduled_for[8:10] }}</b><span>{{ u.scheduled_for[5:7] }}</span></div>
+        <div class="t">
+          <strong>{{ u.service_type }}</strong>
+          <span>{{ u.customer }} &middot; <span class="mono">{{ u.job_id }}</span></span>
+        </div>
+      </div>
+      {% else %}
+      <div class="empty"><p>Nothing scheduled.</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

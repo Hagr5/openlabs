@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Sign in — FieldOps 360{% endblock %}
+{% block content %}
+<div class="auth-wrap">
+  <div class="auth-card">
+    <div class="auth-side">
+      <a class="brand" href="/" style="color:#fff">
+        <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 21V10l9-7 9 7v11a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg></span>
+        FieldOps<em>360</em>
+      </a>
+      <h2>Welcome back.</h2>
+      <p>Your jobs, crew and customers — exactly where you left them.</p>
+      <div class="quote">
+        <p>"We moved 4,100 service calls to FieldOps in one week. Dispatch finally runs itself."</p>
+        <span>— Operations Director, ACME Climate Control</span>
+      </div>
+    </div>
+    <div class="auth-form">
+      <h3>Sign in to your portal</h3>
+      <p class="sub">Use your company credentials</p>
+      {% if error %}<div class="error">{{ error }}</div>{% endif %}
+      <form method="post" action="/Login">
+        <label for="username">Username</label>
+        <input id="username" name="username" type="text" autocomplete="username" placeholder="you@company.example" required>
+        <label for="password">Password</label>
+        <input id="password" name="password" type="password" autocomplete="current-password" placeholder="••••••••••" required>
+        <button class="btn btn-primary btn-block" type="submit">Sign in</button>
+      </form>
+      <div class="cred-box">
+        <div class="cred-title">
+          <span>Sandbox tenant access</span>
+          <button type="button" class="btn-link" onclick="fillDemoCredentials()">Fill for me</button>
+        </div>
+        <code class="u">demo@acme-hvac.example</code>
+        <code class="p">Demo1234!</code>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

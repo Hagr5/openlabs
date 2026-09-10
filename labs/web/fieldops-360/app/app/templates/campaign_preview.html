@@ -1,0 +1,45 @@
+{% extends "shell.html" %}
+{% block title %}Preview {{ campaign.ref }} — FieldOps 360{% endblock %}
+{% block content %}
+<section class="page-head">
+  <div>
+    <h1>Email preview</h1>
+    <p>Message {{ campaign.id }} &middot; sent {{ campaign.sent_at }} &middot; delivered via FieldOps 360 Email</p>
+  </div>
+  <a class="btn btn-ghost" href="/Campaigns">Back to campaigns</a>
+</section>
+
+<div class="panel">
+  <div class="panel-head"><h3>Delivered message</h3><span class="result-count">rendered from stored HTML</span></div>
+  <div class="panel-body">
+    <div class="email-meta">
+      <div><span>From</span><strong>{{ tenant_name }} &lt;{{ campaign.sender }}&gt;</strong></div>
+      <div><span>To</span><strong>{{ campaign.recipient_name }} &lt;{{ campaign.recipient }}&gt;</strong></div>
+      <div><span>Subject</span><strong>{{ campaign.subject }}</strong></div>
+      <div><span>Tracking</span><strong>Open tracking enabled on this message</strong></div>
+    </div>
+    <div class="email-card">
+      <div class="email-brand">{{ tenant_name }}</div>
+      <p class="email-greet">Hi {{ campaign.recipient_name.split()[0] }},</p>
+      <p class="email-body">{{ campaign.body }}</p>
+      {% if campaign.amount_usd is not none %}
+      <div class="email-invoice">
+        <span>Amount due</span>
+        <strong>${{ '%.2f'|format(campaign.amount_usd) }}</strong>
+      </div>
+      {% endif %}
+      <div class="email-cta"><a href="#">View details in your account</a></div>
+      <p class="email-sign">Thanks for your business,<br>The {{ tenant_name }} team</p>
+      <div class="email-foot">
+        This message was sent by {{ tenant_name }} using FieldOps 360 Email Delivery.
+        <a href="#">Manage preferences</a> &middot; <a href="#">Unsubscribe</a>
+      </div>
+      <img src="/OpenEmail/{{ campaign.company }}/{{ campaign.recipient }}/{{ campaign.ref }}" width="1" height="1" alt="" style="display:block;border:0;">
+    </div>
+    <details class="email-source">
+      <summary>View email source (as delivered)</summary>
+      <pre>{{ source }}</pre>
+    </details>
+  </div>
+</div>
+{% endblock %}
