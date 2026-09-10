@@ -1,6 +1,6 @@
 # SnapConnect
 
-MEDIUM · web
+EASY · web
 
 ## Brief
 
@@ -8,7 +8,7 @@ SnapConnect is a small social app. Members get a profile with a handle, a bio, a
 
 The app keeps a secret in `/var/www/flag.txt`. That path is outside the web root, so no URL reaches it. Read the file through the application and you have the flag.
 
-Difficulty is medium. Expect to spend 30 to 45 minutes.
+Difficulty is easy. Expect to spend 15 to 30 minutes.
 
 ## Prerequisites
 
