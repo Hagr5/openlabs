@@ -301,7 +301,7 @@ log = logging.getLogger("shopvault")
 
 @app.route("/api/auth/login", methods=["POST"])
 def login():
-    # Log attempt (without password!)
+    # Log the attempt without the password
     log.warning(f"login_attempt username={username} ip={request.remote_addr}")
     
     # ... authentication
