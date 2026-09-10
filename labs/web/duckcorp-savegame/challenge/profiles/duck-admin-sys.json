@@ -1,0 +1,43 @@
+{
+    "playerName": "DuckCorp Admin",
+    "avatarName": "duck-admin-sys",
+    "level": 99,
+    "points": 999999,
+    "inventory": {
+        "items": [
+            {"name": "root shell", "quantity": 1},
+            {"name": "master key", "quantity": 1}
+        ],
+        "currency": {"name": "Duck Coin", "quantity": 99999999}
+    },
+    "questsCompleted": [
+        "Configure SSRF protection (Failed)",
+        "Setup Nginx Server"
+    ],
+    "highScores": [
+        {"score": 999999, "date": "2026-01-01"}
+    ],
+    "options": {
+        "difficulty": "god-mode",
+        "graphicsQuality": "ultra",
+        "soundVolume": 1.0
+    },
+    "Rig_data": {
+        "rig_name": "Admin-Prod-Server",
+        "rig_serial_number": "DC-PROD-001",
+        "rig_features": ["full-access", "bypass-waf"]
+    },
+    "suit_details": {
+        "name": "Root Cloak",
+        "type": "admin suit",
+        "features": ["invisibility", "sudo"],
+        "upgrades": [
+            {"name": "SSRF vulnerability", "level": 99}
+        ]
+    },
+    "integrity_checks": {
+        "md5_hash": "admin_hash_placeholder",
+        "sha256_hash": "admin_hash_placeholder"
+    },
+    "secret_info": "The actual flag is hidden in the root directory (/root/flag). You must use the SSRF or Path Traversal to read it!"
+}

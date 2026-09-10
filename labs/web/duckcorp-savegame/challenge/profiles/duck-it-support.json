@@ -1,0 +1,43 @@
+{
+    "playerName": "IT Support",
+    "avatarName": "duck-it-support",
+    "level": 15,
+    "points": 35000,
+    "inventory": {
+        "items": [
+            {"name": "Ethernet Cable", "quantity": 5},
+            {"name": "Ticket Scanner", "quantity": 1}
+        ],
+        "currency": {"name": "Duck Coin", "quantity": 2000}
+    },
+    "questsCompleted": [
+        "Reset Admin Password",
+        "Fix the Printer"
+    ],
+    "highScores": [
+        {"score": 30000, "date": "2026-09-05"}
+    ],
+    "options": {
+        "difficulty": "normal",
+        "graphicsQuality": "low",
+        "soundVolume": 1.0
+    },
+    "Rig_data": {
+        "rig_name": "Support-Desk",
+        "rig_serial_number": "DC-IT-404",
+        "rig_features": ["remote-desktop"]
+    },
+    "suit_details": {
+        "name": "Support Uniform",
+        "type": "utility suit",
+        "features": ["multi-tool"],
+        "upgrades": [
+            {"name": "patience", "level": 10}
+        ]
+    },
+    "integrity_checks": {
+        "md5_hash": "ad0234829205b9033196ba818f7a872b",
+        "sha256_hash": "8c41f6f8df03407cdd4df44b41ac9b996715fbc746c039bd0de321d26ec8a8fc"
+    },
+    "notes": "Check server logs for unusual activity. Someone might be probing the /profiles endpoint using curl."
+}
