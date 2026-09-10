@@ -35,7 +35,7 @@ export class SeedService implements OnModuleInit {
     const [swilam, admin, superadmin, john_doe, sara_m, mark_t] = await this.userModel.insertMany([
       {
         username: 'swilam',
-        password: await bcrypt.hash('switf123', 10),
+        password: await bcrypt.hash('swift123', 10),
         email: 'swilam@SwiTF01-hit3.local',
         role: 'user',
       },

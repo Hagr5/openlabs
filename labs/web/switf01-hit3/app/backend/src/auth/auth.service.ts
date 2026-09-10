@@ -61,8 +61,6 @@ export class AuthService {
     return { authorizationCode: code, email: user.email };
   }
 
-
-
   // ── Token exchange ─────────────────────────────────────────────────────────
 
   async exchangeToken(dto: TokenDto): Promise<{ access_token: string; token_type: string; role: string }> {

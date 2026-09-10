@@ -21,7 +21,6 @@ export class AuthController {
     return this.authService.login(dto);
   }
 
-
   /**
    * Token exchange — authorizationCode → signed JWT.
    */

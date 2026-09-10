@@ -12,7 +12,6 @@ services:
       context: ./app/backend
     restart: "no"
     ports:
-      - "3000:3000"
       - "4000:4000"
       - "50051:50051"
     environment:
@@ -29,6 +28,8 @@ services:
     build:
       context: ./app/frontend
     restart: "no"
+    ports:
+      - "3000:3000"
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
       - NEXT_PUBLIC_GRAPHQL_URL=http://localhost:4000/graphql

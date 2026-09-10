@@ -12,10 +12,11 @@ COPY docker-entrypoint.sh ./
 RUN chmod +x docker-entrypoint.sh
 
 RUN addgroup -S appgroup && adduser -S appuser -G appgroup
-USER appuser
+RUN mkdir -p /secret && chown appuser:appgroup /secret
 
 EXPOSE 4000
 EXPOSE 50051
 
+USER appuser
 ENTRYPOINT ["./docker-entrypoint.sh"]
 CMD ["npm", "run", "start"]
