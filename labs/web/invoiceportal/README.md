@@ -1,5 +1,3 @@
-# README
-
 # InvoicePortal
 
 `medium` · `web` 
@@ -18,6 +16,14 @@ Run these from the lab directory:
 docker compose up -d
 ```
 
+The application will be available at: http://localhost:5000/ 
+
+## Reset 
+
+```
+docker compose down -v && docker compose up -d 
+```
+
 ## **API Endpoints**
 
 | **Endpoint** | **Method** | **Auth** | **Description** |
@@ -31,7 +37,7 @@ docker compose up -d
 
 ## **Goal**
 
-Find the flag, and verify:
+Find the flag,Flag format duck{...}, and verify:
 
 ```
 python3 ../../../scripts/check.py .
