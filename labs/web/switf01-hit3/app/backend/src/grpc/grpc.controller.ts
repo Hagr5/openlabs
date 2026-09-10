@@ -45,7 +45,7 @@ interface AdminList {
 export class GrpcController {
   constructor(
     @InjectModel(Admin.name) private adminModel: Model<AdminDocument>,
-  ) {}
+  ) { }
 
   // ── AdminService.AddAdmin ────────────────────────────────────────────────
   // Enforces a hard limit of 5 admins (role: 'admin').
@@ -63,7 +63,7 @@ export class GrpcController {
       });
     }
 
-    const email = data.email || `${data.name}@SwiTF01-hit3.local`;
+    const email = data.email || `${data.name}@switf.local`;
     await this.adminModel.create({
       name: data.name,
       role: 'admin',
@@ -119,7 +119,7 @@ export class GrpcController {
 
   @GrpcMethod('SuperAdminService', 'AddUnlimitedAdmin')
   async addUnlimitedAdmin(data: AddAdminRequest): Promise<AddAdminResponse> {
-    const email = data.email || `${data.name}@SwiTF01-hit3.local`;
+    const email = data.email || `${data.name}@switf.local`;
     await this.adminModel.create({
       name: data.name,
       role: 'admin',

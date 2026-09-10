@@ -47,11 +47,25 @@ export class AdminResolver {
     }
 
     if (name) {
-      return this.adminModel
+      const results = await this.adminModel
         .find({ name: { $regex: escapeRegex(name) } })
         .exec();
+      // Mask superadmin email — safe-path only.
+      // rawFilter path (above) returns the real email, enabling Vulnerability 3.
+      return results.map((admin) => {
+        if (admin.role === 'superadmin') {
+          return Object.assign(admin, { email: '****' });
+        }
+        return admin;
+      });
     }
 
-    return this.adminModel.find().exec();
+    const all = await this.adminModel.find().exec();
+    return all.map((admin) => {
+      if (admin.role === 'superadmin') {
+        return Object.assign(admin, { email: '****' });
+      }
+      return admin;
+    });
   }
 }

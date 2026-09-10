@@ -63,7 +63,7 @@ JWT_RES=$(curl -s -X POST "$BASE_URL/auth/token" \
     "authorizationCode": "'"$AUTH_CODE"'",
     "grantType": "authorization_code",
     "codeVerifier": "'"$VERIFIER"'",
-    "email": "admin@SwiTF01-hit3.local"
+    "email": "admin@switf.local"
   }')
 
 ACCESS_TOKEN=$(echo "$JWT_RES" | grep -o '"access_token":"[^"]*' | cut -d'"' -f4)
@@ -96,7 +96,7 @@ NOSQLI_RES=$(curl -s -X POST "$GRAPHQL_URL" \
     "variables": { "filter": { "role": { "$eq": "superadmin" } } }
   }')
 
-SUPERADMIN_EMAIL=$(echo "$NOSQLI_RES" | grep -o '"email":"[^"]*' | cut -d'"' -f4 | grep 'superswilam@SwiTF01-hit3.local')
+SUPERADMIN_EMAIL=$(echo "$NOSQLI_RES" | grep -o '"email":"[^"]*' | cut -d'"' -f4 | grep 'superswilam@switf.local')
 
 if [ -n "$SUPERADMIN_EMAIL" ]; then
   pass "NoSQLi successful, obtained superadmin email: $SUPERADMIN_EMAIL"
@@ -125,7 +125,7 @@ SA_ACCESS_TOKEN=$(echo "$SA_JWT_RES" | grep -o '"access_token":"[^"]*' | cut -d'
 
 # Call gRPC AddUnlimitedAdmin using grpcurl with auth token
 ADD_RES=$(grpcurl -plaintext -H "authorization: Bearer $SA_ACCESS_TOKEN" \
-  -d '{"name": "6th Admin", "email": "sixth@SwiTF01-hit3.local"}' \
+  -d '{"name": "6th Admin", "email": "sixth@switf.local"}' \
   "$GRPC_URL" admin.SuperAdminService/AddUnlimitedAdmin 2>&1)
 
 if echo "$ADD_RES" | grep -q 'success'; then

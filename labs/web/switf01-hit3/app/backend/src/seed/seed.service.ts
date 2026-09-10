@@ -16,7 +16,7 @@ export class SeedService implements OnModuleInit {
     @InjectModel(Admin.name) private adminModel: Model<AdminDocument>,
     @InjectModel(Project.name) private projectModel: Model<ProjectDocument>,
     @InjectModel(Task.name) private taskModel: Model<TaskDocument>,
-  ) {}
+  ) { }
 
   async onModuleInit() {
     await this.seed();
@@ -36,37 +36,37 @@ export class SeedService implements OnModuleInit {
       {
         username: 'swilam',
         password: await bcrypt.hash('swift123', 10),
-        email: 'swilam@SwiTF01-hit3.local',
+        email: 'swilam@switf.local',
         role: 'user',
       },
       {
         username: 'admin',
         password: await bcrypt.hash('Adm1n@SwiTF01-hit32026!', 10),
-        email: 'admin@SwiTF01-hit3.local',
+        email: 'admin@switf.local',
         role: 'admin',
       },
       {
-        username: 'superadmin',
+        username: 'superswilam',
         password: await bcrypt.hash('Sup3rAdm1n@SwiTF01-hit32026!', 10),
-        email: 'superswilam@SwiTF01-hit3.local',
+        email: 'superswilam@switf.local',
         role: 'superadmin',
       },
       {
         username: 'john_doe',
         password: await bcrypt.hash('pass123', 10),
-        email: 'john_doe@SwiTF01-hit3.local',
+        email: 'john_doe@switf.local',
         role: 'user',
       },
       {
         username: 'sara_m',
         password: await bcrypt.hash('pass123', 10),
-        email: 'sara_m@SwiTF01-hit3.local',
+        email: 'sara_m@switf.local',
         role: 'user',
       },
       {
         username: 'mark_t',
         password: await bcrypt.hash('pass123', 10),
-        email: 'mark_t@SwiTF01-hit3.local',
+        email: 'mark_t@switf.local',
         role: 'user',
       },
     ]);
@@ -75,14 +75,14 @@ export class SeedService implements OnModuleInit {
     // Pre-seed 5 regular admins so the UI shows the limit is already reached,
     // plus the superadmin entry (whose email is hidden in the UI).
     await this.adminModel.insertMany([
-      { name: 'admin1', email: 'admin1@SwiTF01-hit3.local', role: 'admin' },
-      { name: 'admin2', email: 'admin2@SwiTF01-hit3.local', role: 'admin' },
-      { name: 'admin3', email: 'admin3@SwiTF01-hit3.local', role: 'admin' },
-      { name: 'admin4', email: 'admin4@SwiTF01-hit3.local', role: 'admin' },
-      { name: 'admin5', email: 'admin5@SwiTF01-hit3.local', role: 'admin' },
+      { name: 'admin1', email: 'admin1@switf.local', role: 'admin' },
+      { name: 'admin2', email: 'admin2@switf.local', role: 'admin' },
+      { name: 'admin3', email: 'admin3@switf.local', role: 'admin' },
+      { name: 'admin4', email: 'admin4@switf.local', role: 'admin' },
+      { name: 'admin5', email: 'admin5@switf.local', role: 'admin' },
       {
         name: 'superadmin',
-        email: 'superswilam@SwiTF01-hit3.local',
+        email: 'superswilam@switf.local',
         role: 'superadmin',
       },
     ]);
