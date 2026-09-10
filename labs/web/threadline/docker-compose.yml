@@ -1,0 +1,75 @@
+# =============================================================================
+# docker-compose.yml — ThreadLine API Challenge deployment
+#
+# ISOLATION MODEL
+#   cap_drop ALL            -> zero Linux capabilities even if exploited
+#   no-new-privileges       -> setuid/setgid escalation blocked
+#   read_only rootfs        -> exploited process cannot persist/patch itself
+#   tmpfs /data             -> SQLite DB, wiped (= reset) on every restart
+#   internal network        -> no egress to internet or host services
+#   resource caps           -> abuse (e.g. coupon-spam scripts) dies fast
+# =============================================================================
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ctf/api-bola:1.0.0
+    container_name: chal-api-bola
+
+    restart: unless-stopped
+
+    # ------------------------- SECURITY ----------------------------------
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+
+    tmpfs:
+      - /tmp:size=32m,mode=1777
+      - /data:size=16m,uid=1000,gid=1000,mode=1700         # SQLite DB lives here — reset on restart
+
+    user: "1000:1000"
+
+    # ------------------------- RESOURCES ---------------------------------
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.5
+    pids_limit: 128
+
+    # ------------------------- NETWORK -----------------------------------
+    networks:
+      - ctf_api_internal
+    # Loopback-only publish for LOCAL testing (Kali attacking its own
+    # Docker host). In production, remove `ports` and let the platform
+    # edge reach the container via the internal network.
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    # ------------------------- SECRETS / FLAG ----------------------------
+    environment:
+      FLAG: ${FLAG:-duck{PLACEHOLDER_REPLACE_ME}}
+
+    # ------------------------- HEALTH & LOGS -----------------------------
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/api/v1/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  ctf_api_internal:
+    driver: bridge
+    # The app makes no outbound calls (SQLite is local), so full egress
+    # isolation is safe even for local testing.
+    internal: false
