@@ -1,0 +1,88 @@
+# =============================================================================
+# docker-compose.yml — CTF Web Challenge deployment
+#
+# ISOLATION MODEL (container-level ring around the app)
+#   cap_drop ALL            -> zero Linux capabilities even if exploited
+#   no-new-privileges       -> setuid/setgid escalation blocked
+#   read_only rootfs        -> exploited process cannot persist/patch itself
+#   tmpfs writable dirs     -> wiped on restart, size-capped
+#   internal network        -> no egress to internet or host services
+#   resource caps           -> fork bombs / memory bombs die fast
+#
+# The platform edge (VPN or proxy) owns external exposure.
+# =============================================================================
+
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ctf/web-duckvault:1.0.0
+    container_name: chal-web-duckvault
+
+    restart: unless-stopped
+    # tini is already the image ENTRYPOINT; init:true would double-init.
+
+    # ------------------------- SECURITY ----------------------------------
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+
+    # Writable paths, size-capped so an attacker cannot fill the host disk.
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+      - /home/ctf/tmp:size=32m,mode=1700
+
+    user: "1000:1000"
+
+    # ------------------------- RESOURCES ---------------------------------
+    mem_limit: 256m
+    memswap_limit: 256m        # disable swap -> OOM kills are immediate
+    mem_reservation: 128m
+    cpus: 0.5
+    pids_limit: 128            # caps workers * threads + headroom
+
+    # ------------------------- NETWORK -----------------------------------
+    networks:
+      - ctf_web_internal
+    # Loopback-only publish for LOCAL testing. In production, remove `ports`
+    # entirely and let the platform edge reach the container via the
+    # internal network — never publish to 0.0.0.0 in production.
+    ports:
+      - "127.0.0.1:8000:8000"
+
+    # ------------------------- SECRETS / FLAG ----------------------------
+    # Compose auto-loads the .env file sitting next to this compose file,
+    # so `cp .env.example .env` is all local setup requires. Platform
+    # orchestrators override FLAG via their secret manager (static or
+    # per-team dynamic flags — zero image changes).
+    environment:
+      FLAG: ${FLAG:-REPLACE_ME_SET_FLAG_IN_ENV_FILE}
+      FLASK_ENV: production
+      DB_PATH: /tmp/duckvault.db
+
+    # Flag file as a read-only bind mount (fallback channel for FLAG env).
+    volumes:
+      - ./flag.txt:/app/flag.txt:ro
+
+    # ------------------------- HEALTH & LOGS -----------------------------
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+    # Rotation prevents an attacker spamming /hello from filling host disk.
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  ctf_web_internal:
+    name: docker_template_ctf_web_internal
+    driver: bridge
