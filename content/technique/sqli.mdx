@@ -1,0 +1,25 @@
+---
+title: SQL Injection
+slug: sqli
+---
+
+# SQL Injection
+
+SQL Injection occurs when untrusted input is incorporated into a database query without appropriate parameterization or validation.
+
+In this technique, player-controlled input can alter the intended SQL query and may allow access to database records beyond the application's normal search behavior.
+
+## Typical Impact
+
+Depending on the application's database and query structure, SQL injection may allow an attacker to:
+
+- Alter database query logic.
+- Retrieve records that are not normally exposed.
+- Enumerate database schema information.
+- Access sensitive application data.
+
+## Defensive Guidance
+
+Applications should use parameterized queries or prepared statements instead of constructing SQL statements through string concatenation.
+
+Input validation should be used as an additional defensive layer, but should not replace parameterized database access.
