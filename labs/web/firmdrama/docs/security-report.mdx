@@ -204,7 +204,7 @@ completion condition. The final value is independently generated on reset,
 stored in the simulated file, and returned only after the intended legacy v1
 preview result. Both match the full-string regular expression `^duck\{[a-z]{24}\}$`; documentation never retains
 their runtime values. For local delivery, the zero-dependency
-[`scripts/check.py`](../scripts/check.py) compares one captured value with the
+[`scripts/check.py`](../../../../scripts/check.py) compares one captured value with the
 current SHA-256 digests in `lab.yml` and labels a checkpoint or final match
 without receiving either plaintext value from the application.
 

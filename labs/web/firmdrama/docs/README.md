@@ -85,7 +85,7 @@ and documentation coverage are distinct from completed release acceptance.
 | 02 | Docker deployment | [Application Dockerfile](../Dockerfile), [ingress Dockerfile](../Dockerfile.ingress), [Compose](../docker-compose.yml), [proxy](../ingress_proxy.py) | [Operations](operations.mdx) and validation |
 | 03 | Player-facing README | [README.md](../README.md) | All required player-facing guidance |
 | 04 | Source and configuration | [Source](../src/), [database](../database/), [scripts](../scripts/), [environment example](../.env.example) | Build and configuration review |
-| 05 | Controlled challenge flags and hashes | [Runtime generator](../scripts/generate_flags.py), [reset](../reset.py), [hash initializer](../scripts/sync_flag_hash.py), [local checker](../scripts/check.py), [lab metadata](../lab.yml) | [Flag lifecycle](challenge-design.mdx#determinism-and-flag-design), [hash synchronization](operations.mdx#keep-the-lab-metadata-hashes-current), and reset coverage |
+| 05 | Controlled challenge flags and hashes | [Runtime generator](../scripts/generate_flags.py), [reset](../reset.py), [hash initializer](../scripts/sync_flag_hash.py), [shared checker](../../../../scripts/check.py), [lab metadata](../lab.yml) | [Flag lifecycle](challenge-design.mdx#determinism-and-flag-design), [hash synchronization](operations.mdx#keep-the-lab-metadata-hashes-current), and reset coverage |
 | 06 | Official solution / report | [Official solution](official-solution.mdx), [security report](security-report.mdx) | Sections 9.1-9.14; [sanitized evidence](security-report.mdx#appendix-a-sanitized-evidence) |
 | 07 | Remediation documentation | [Remediation guide](remediation.mdx) | Secure-state design and retest matrix |
 | 08 | Health / automated validation | `/health`, [tests](../tests/), [release validator](../scripts/validate_release.ps1) | [Dated results and coverage limits](validation-report.mdx) |
@@ -125,7 +125,6 @@ firmdrama/
 |-- src/                          # include static assets and templates
 |-- database/
 |-- scripts/
-|   |-- check.py                  # host-side two-stage flag checker
 |   |-- sync_flag_hash.py          # host-side current-hash synchronizer
 |   `-- validate_release.ps1       # host-side release workflow
 |-- tests/
@@ -141,7 +140,7 @@ firmdrama/
     |-- openapi.yaml               # complete maintainer JSON API reference
     |-- tools/
     |   |-- validate_openapi.py    # static documentation checks
-    |   |-- test_check.py           # host-side checker regression checks
+    |   |-- test_check.py           # shared checker regression checks
     |   |-- test_host_reset.py      # host-side reset-helper regression checks
     |   |-- test_sync_flag_hash.py  # host-side hash synchronizer regression checks
     |   `-- requirements.txt      # host-only documentation dependencies

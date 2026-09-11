@@ -132,10 +132,11 @@ flags. Each flag uses this format:
 
 ## Check a captured flag
 
-After collecting either flag, verify it locally from the `firmdrama` directory:
+After collecting either flag, verify it locally from the `firmdrama` directory
+with the shared repository checker:
 
 ```powershell
-python scripts/check.py
+python ../../../scripts/check.py .
 ```
 
 Paste one captured value at the prompt. The checker reports `checkpoint solved`
