@@ -1,6 +1,6 @@
 ---
 title: Server-side template injection (SSTI)
-description: The server renders your text as template source, so a template expression runs under the application's own privileges.
+description: Learn why user input must be treated as template data, never as template source, and how to recognise unsafe rendering.
 type: technique
 key: technique-ssti
 slug: technique/ssti
@@ -20,26 +20,121 @@ ogImage: /og/technique.png
 
 ## Overview
 
-Server-side template injection happens when user-supplied text is interpolated into template source instead of passed as data. A renderer that evaluates `{{ expression }}` inside the input runs the expression on the server. Depending on the engine, that leads to property reads, file reads, or code execution.
+Server-side template injection happens when an application treats user input as template *source* instead of template *data*. Template engines turn a fixed template and a data context into HTML, email, a PDF, a report, or another response. If a user-controlled value becomes part of the template source before rendering, the engine can evaluate template syntax inside that value.
+
+This is different from simply showing submitted text in a page. A safe application keeps its template fixed and passes untrusted text as a value. An unsafe application builds a new template string from that text and then asks the engine to execute it.
+
+:::callout{type="important" title="Escaping is not the primary fix"}
+HTML escaping protects the output context. It does not make it safe to compile untrusted text as a server-side template. Keep template source fixed.
+:::
+
+## Why template engines are sensitive
+
+Template languages provide expressions, variables, loops, conditions, filters, and helper functions. Those features are useful to developers. Once untrusted input reaches the template compiler, the same features can expose data from the rendering context or invoke behaviour the author never intended.
+
+Potential impact depends on the engine, configuration, available context, and host privileges. A finding might only alter rendered content. It can also disclose server-side values, access files, make internal requests, or lead to server-side code execution in a weakly isolated environment. Do not assume the maximum impact without evidence.
 
 ## Examples
 
-Watch preview, invoice, report, and mail-render features. Send `{{7*7}}`. A response of `49` means the input is template source, and the engine is starting to run what you write.
+### A support-email preview
+
+Imagine a support tool that previews a customer message before sending it. The unsafe implementation builds template source through string concatenation:
+
+```python
+# Unsafe: message becomes part of the Jinja source code.
+source = "<h1>Support reply</h1><p>" + message + "</p>"
+html = render_template_string(source)
+```
+
+The safe implementation keeps the page structure in a reviewed template file and supplies `message` as data:
+
+```python
+# Safer: preview.html is fixed template source.
+html = render_template("preview.html", message=message)
+```
+
+Inside `preview.html`, the developer renders `{{ message }}`. The syntax belongs to the trusted template, not to the submitted message.
+
+### A report generator
+
+Report, invoice, and PDF features often combine user labels with a template engine. A service that formats a title with a language-level string interpolation and then compiles the result as a template creates the same risk. The correct design passes the title, recipient, and report data as named variables to a fixed template.
+
+### A user-selectable template
+
+Some products let administrators choose from several approved email layouts. That can be safe when the server maps a short key such as `"receipt"` to an allowlisted template file. It becomes risky when a client can submit raw template text or influence a template path without strict validation. Template-path traversal is a separate issue, but both flaws come from treating template selection as untrusted input.
+
+## How to recognise it in an authorized lab
+
+Look for endpoints that render or preview text. Common candidates include emails, notifications, invoices, document generators, report builders, CMS previews, localization features, and printable receipts.
+
+:::steps
+1. Submit a harmless literal marker and find where it appears in the response.
+2. Use error messages, documentation, response conventions, or client code to form a hypothesis about the template engine.
+3. Submit one harmless arithmetic expression that matches the suspected syntax, such as `{{ 7 * 7 }}` for Jinja-style engines.
+4. Compare the rendered output with the literal baseline. A computed result is evidence that the input reached an expression evaluator.
+5. Confirm the rendering context and input field with a minimal, repeatable request.
+6. Stop at the evidence needed by the lab. Avoid destructive payloads, resource-intensive expressions, and changes outside the authorized target.
+:::
+
+A result such as `49` is a strong signal only when the application returns the rendered server response. A client-side script, a calculation feature, or a different transformation can create misleading output. Capture the request and response. Record why the behaviour indicates server-side template evaluation.
+
+## Template syntax is engine-specific
+
+Do not use one syntax everywhere. Template languages differ.
+
+| Family | Common expression form | Typical use |
+| --- | --- | --- |
+| Jinja and Twig | `{{ 7 * 7 }}` | Python and PHP applications |
+| FreeMarker | `${7 * 7}` | Java applications |
+| EJS | `<%= 7 * 7 %>` | Node.js applications |
+
+The table is a starting point, not an engine fingerprint. Syntax can be customized, expressions can be disabled, and errors can be hidden. Choose a benign probe only after gathering evidence. Never treat an error string as a full map of the server environment.
+
+## SSTI, XSS, and similar issues
+
+### SSTI versus XSS
+
+Cross-site scripting runs in a visitor's browser. SSTI runs while the server renders a template. XSS defenses such as Content Security Policy and HTML output encoding do not replace a server-side template-source boundary.
+
+### SSTI versus expression injection
+
+Some products evaluate expressions in spreadsheets, search filters, workflow rules, or client-side frameworks. The testing method can look similar. Identify the interpreter and where it runs before classifying the issue.
+
+### Reflected text is not enough
+
+If a submitted string appears in a response unchanged, it may simply be normal reflection. The key evidence is that the server interpreted template syntax contained in the input.
+
+## How developers prevent it
+
+Use static templates stored with the application. Pass user-controlled values as data to the renderer. Keep template selection to a server-side allowlist. Do not use concatenation, runtime compilation, or a dynamic-template API with untrusted text.
+
+- Separate template source, template selection, and template data.
+- Enable output encoding for the target format, such as HTML, even after fixing SSTI.
+- Keep the rendering process low-privilege and restrict its access to secrets and local files.
+- Treat user-authored templates as a high-risk product feature. Isolate and sandbox them rather than mixing them with application templates.
+- Add tests that submit template delimiters as ordinary user data and assert that they remain literal.
+- Review email, PDF, preview, export, and notification paths during code review.
 
 ## Related labs
 
-Practise on a live target:
+Apply this technique after studying it:
 
-- [Firmdrama](/labs/firmdrama) — a legacy `v1` ticket preview that evaluates submitted text as Jinja source.
+- [Firmdrama](/labs/firmdrama)
 
-Browse all [labs](/labs) when it is solved.
+Browse all [labs](/labs), then read [how to play](/play) before starting a lab.
 
 ## FAQ
 
-**Is SSTI the same as a cross-site scripting bug?**
+:::faq
+::faq-item{question="Is SSTI always remote code execution?"}
+No. The result depends on the engine, available objects, sandboxing, and process privileges. A safe report describes the behaviour that was actually proven.
 
-No. XSS runs in a visitor's browser. SSTI runs on the server at the application's privilege level, so the stakes are far higher.
+::faq-item{question="Does autoescaping prevent SSTI?"}
+No. Autoescaping protects how a value is placed into output. SSTI begins earlier, when the value is made part of template source.
 
-**Do I need special tooling?**
+::faq-item{question="Why use arithmetic as a first test?"}
+It is a small, non-destructive way to distinguish literal rendering from expression evaluation when the syntax matches the suspected engine.
 
-No. A browser or `curl` is enough to detect it. Read [how to play](/play) for the loop.
+::faq-item{question="What should I include in a lab writeup?"}
+Include the benign baseline, the minimal expression, the rendered result, the likely engine evidence, and the security boundary that the server crossed.
+:::

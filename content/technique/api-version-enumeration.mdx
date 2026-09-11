@@ -1,6 +1,6 @@
 ---
 title: API version enumeration
-description: A current API version hides older deployments. Enumerate the versions and find retired routes still answering requests.
+description: Learn how to map versioned API surfaces and spot legacy endpoints that no longer meet the current security policy.
 type: technique
 key: technique-api-version-enumeration
 slug: technique/api-version-enumeration
@@ -20,26 +20,120 @@ ogImage: /og/technique.png
 
 ## Overview
 
-Improper inventory management means the API catalog is incomplete. The documented version stays current while older versions keep serving traffic, often outside the same review and hardening process. Enumerating `v1`, `v2`, `v3`, or `/api` prefixes surfaces routes nobody told you about.
+API version enumeration is the process of finding and comparing the versions of an API that an application still exposes. A version in a path, hostname, header, or media type is not a vulnerability by itself. The security issue appears when an older surface remains reachable with weaker authorization, validation, rate limits, logging, or business rules.
+
+This is an inventory problem before it is an exploitation problem. Teams often document the current version while a legacy deployment remains live for an old mobile app, a partner integration, or a forgotten internal client. OWASP describes this wider failure as [improper inventory management](https://owasp.org/API-Security/editions/2023/en/0xa9-improper-inventory-management/).
+
+:::callout{type="important" title="A version is a separate security surface"}
+Do not assume that a check fixed in one version exists in every version. Compare behaviour with the same authenticated context and request intent.
+:::
+
+## How APIs expose versions
+
+The version number is not always a path segment. Record the complete request shape before concluding that a version does not exist.
+
+| Location | Production-style form |
+| --- | --- |
+| Path | `/api/v2/orders` |
+| Hostname | `v1.api.example.test/orders` |
+| Header | `API-Version: 2024-06-01` |
+| Media type | `Accept: application/vnd.example.v1+json` |
+| Query parameter | `/orders?api-version=2024-06-01` |
+| Deployment name | `https://legacy.example.test/api/orders` |
+
+Versions can also be implied by client bundles, OpenAPI documents, SDK package names, deprecation headers, changelogs, browser network traffic, and error messages. These are discovery clues. Confirm them through the permitted lab interface.
 
 ## Examples
 
-Look for a version marker in the URL (`/api/v3/...`), a header, or a hostname. Step the number down. Compare behavior across versions. A retired version may skip the checks the current one enforces.
+### A legacy endpoint has a weaker ownership check
+
+Consider a project-management service. Its current API checks that a user belongs to the project before returning an export. An older endpoint still accepts the same object reference but looks it up globally after authentication. The version is not the flaw. The missing object-level authorization in the older handler is the flaw.
+
+This pattern is common when two services, middleware stacks, or codebases own different versions. A fix added to the current service does not automatically protect a legacy service.
+
+### A retired operation remains published
+
+A payment provider removes a bulk update operation from its new API documentation. The old operation still answers requests because an API gateway route was never disabled. It may lack newer schema validation, auditing, or per-field authorization. The lesson is to compare the complete route and its controls, not only the version label.
+
+### Version selection falls back silently
+
+Some APIs select a version through an `Accept` or custom header. A proxy, SDK, or client bug can drop that header and route a request to a default version. If the default is older and less protected, the fallback becomes part of the security boundary. Capture response headers and content types as well as the response body.
+
+## A methodical approach in an authorized lab
+
+Begin with the documented or visible API. Use it as the baseline for route names, methods, authentication, and expected schemas.
+
+:::steps
+1. Identify every visible version marker in routes, hosts, headers, media types, and documentation.
+2. Build a small version matrix. Keep the method, session, body, and object reference constant for each comparison.
+3. Test only plausible versions and naming patterns supported by the lab evidence.
+4. Record status codes, response headers, fields, schemas, and authorization behaviour for each response.
+5. Treat `401`, `403`, `405`, redirects, and distinct error messages as useful inventory signals. They can prove that a route exists even when access is denied.
+6. Compare controls, not only content. Note differences in ownership checks, validation, pagination, rate limits, and error handling.
+:::
+
+Keep the matrix small and explainable. Broad unbounded scans add noise and can miss version forms that use headers or hostnames. A reproducible request set is more valuable than a long list of guesses.
+
+## How to compare responses
+
+Use a consistent table in your notes:
+
+| Version selector | Route and method | Authentication result | Schema or policy difference |
+| --- | --- | --- | --- |
+| Current baseline | `GET /api/...` | Expected result | Current control observed |
+| Candidate legacy version | Same intent | Denied, accepted, or different | Difference to investigate |
+
+Do not treat a `404` as conclusive. A gateway may rewrite errors, hide a route, or require a different version selector. A `405 Method Not Allowed` can be strong evidence that a path is real but the method is wrong. A response with a different content type or deprecation header can also identify a distinct handler.
+
+## Common mistakes
+
+### Assuming `v1`, `v2`, and `v3` are the only shapes
+
+Many APIs use dates, vendor media types, dedicated hosts, or unversioned legacy paths. Follow the application's own naming evidence.
+
+### Calling every old version vulnerable
+
+A deprecated endpoint can be secure. Report a concrete security regression such as a missing authorization check, an exposed operation, or weaker input validation. "An older version responds" is useful inventory information, not a complete vulnerability finding.
+
+### Comparing different requests
+
+If the method, body, object reference, or session changes between tests, the result is ambiguous. Hold them steady while changing the version selector.
+
+### Forgetting non-production surfaces
+
+Staging, beta, partner, mobile, and legacy hosts may use different authentication and deployment policies. They matter only when they are in your authorized scope.
+
+## How developers prevent it
+
+Maintain an inventory of all hosts, versions, routes, owners, and data classifications. Retire old routes at the gateway and application layers. Apply shared authentication, authorization, validation, logging, and rate-limit controls across every surviving version.
+
+- Publish an accurate deprecation and retirement schedule.
+- Remove unused routes instead of merely hiding them from documentation.
+- Test old and current versions with the same authorization test suite.
+- Reject unsupported version selectors predictably.
+- Monitor traffic to deprecated versions before removal.
+- Include gateways, serverless functions, partner APIs, and mobile backends in the inventory.
 
 ## Related labs
 
-Practise on a live target:
+Apply this technique after studying it:
 
-- [Firmdrama](/labs/firmdrama) — a role-gated Facilities API where the current `v3` works, `v2` is gone, and legacy `v1` still answers.
+- [Firmdrama](/labs/firmdrama)
 
-Browse all [labs](/labs) when it is solved.
+Browse all [labs](/labs), then read [how to play](/play) before starting a lab.
 
 ## FAQ
 
-**Is version enumeration the same as a shadow API?**
+:::faq
+::faq-item{question="Is API version enumeration the same as finding a shadow API?"}
+It is one way to find an undocumented or poorly inventoried surface. A shadow API can also be an unversioned service, a forgotten host, or an internal endpoint exposed by mistake.
 
-Shadow APIs are one symptom of poor inventory. This page covers the versioned-surface shape: finding a deprecated deployment that should have been retired.
+::faq-item{question="Does a 404 prove that a version does not exist?"}
+No. The version may use a header, a hostname, a date format, or a gateway that intentionally hides route details. Use the application's evidence and compare request shapes.
 
-**Do I need special tooling?**
+::faq-item{question="What makes an old version a security finding?"}
+A demonstrated difference that weakens security, such as a missing authorization check, an exposed retired operation, or absent input validation. Version age alone is not enough.
 
-No. `curl` and a scriptable HTTP client are enough. Read [how to play](/play) for the loop.
+::faq-item{question="What should a writeup include?"}
+Include the baseline request, the exact version selector, the controlled comparison, the observed policy difference, and the affected authorization boundary.
+:::

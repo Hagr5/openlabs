@@ -1,6 +1,6 @@
 ---
 title: Mass assignment
-description: An update endpoint binds every field you send without an allowlist, so a protected property reaches an object it should never receive.
+description: Learn how automatic request binding can let a client change protected object properties.
 type: technique
 key: technique-mass-assignment
 slug: technique/mass-assignment
@@ -20,26 +20,152 @@ ogImage: /og/technique.png
 
 ## Overview
 
-Mass assignment happens when a server binds request fields straight onto a database object without an allowlist. The form and the update API accept the same shape, so anything you add to the request is saved. A locked property such as `role_id`, `is_admin`, or `verified` silently changes the object.
+Mass assignment happens when a server takes a client-controlled object and automatically copies its properties onto an internal model. It is also called auto-binding or over-posting. The convenience becomes dangerous when the model contains properties that the client must not set.
+
+For example, a profile form may only let a user change their display name and time zone. The underlying account record may also contain `is_staff`, `account_tier`, `owner_id`, `credit_limit`, or `email_verified`. If the update endpoint accepts the entire record, an added property can reach the database even though the UI never exposes it.
+
+OWASP groups these failures under [broken object property level authorization](https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/). Mass assignment describes the unsafe binding mechanism that often enables them.
+
+:::callout{type="important" title="The request body is the trust boundary"}
+The fields shown by a form are not an allowlist. A client can send any valid JSON property, including one that the front end never renders.
+:::
+
+## Why it happens
+
+Frameworks make it easy to deserialize JSON into an object, merge a patch into a model, or map fields onto an ORM record. That is useful for public fields. It is unsafe when the same model also contains permissions, ownership, approval state, financial limits, or internal workflow flags.
+
+Risk grows when an API does any of the following:
+
+- Binds an entire request object directly to a database entity.
+- Uses a generic `update`, `merge`, or `setattr` loop.
+- Reuses one schema for API input, API output, and storage.
+- Supports `PATCH`, JSON Patch, GraphQL mutations, or bulk-edit features without per-field policy checks.
+- Returns sensitive fields in a response and accepts the same shape on update.
 
 ## Examples
 
-Watch profile update, bulk edit, and registration endpoints. The UI sends ten fields. The update path binds eleven. Try adding `"role_id": "499"` or any field that appears in a response but never appears in the form. Compare the object before and after the request.
+### A profile update that trusts every field
+
+Imagine a customer portal that accepts this normal request:
+
+```http
+PATCH /api/profile
+Content-Type: application/json
+
+{
+  "display_name": "Nora",
+  "time_zone": "Africa/Cairo"
+}
+```
+
+An unsafe handler loops through every submitted property:
+
+```python
+# Unsafe: each client-supplied name becomes a model update.
+for name, value in request.json.items():
+    setattr(account, name, value)
+database.save(account)
+```
+
+The issue is not the visible fields. It is the absence of a server-side list of properties this actor may change. A production-style test might add one suspected protected field to an otherwise valid request and then verify whether the server persisted it on the current test account.
+
+### A registration flow that sets account state
+
+Registration endpoints can have the same flaw. A service may legitimately accept `name`, `email`, and `password`, while the stored object also includes `plan`, `is_partner`, and `approval_status`. If registration binds the full object, a new account can be created with an unintended state.
+
+### A generic patch endpoint
+
+JSON Patch makes each property explicit, but it does not enforce policy on its own:
+
+```json
+[
+  {"op": "replace", "path": "/display_name", "value": "Nora"},
+  {"op": "replace", "path": "/account_tier", "value": "enterprise"}
+]
+```
+
+The API must validate every patch path and every requested value. Checking only that the JSON is well formed leaves protected properties reachable.
+
+## How to recognise it in an authorized lab
+
+Start with a normal create or update request. Establish which fields are intended to be editable for the current account.
+
+:::steps
+1. Save a clean baseline request and the resulting object state.
+2. Compare the UI fields, API documentation, request body, and response body.
+3. List fields that look server-owned, role-related, financial, approval-related, or ownership-related.
+4. Add one candidate property to the original valid request. Do not change unrelated fields.
+5. Fetch the current test object's state again and compare the specific property.
+6. Record whether the property was rejected, ignored, normalized, or persisted.
+:::
+
+Test one property at a time. An error may mean a validation rule worked, a type was wrong, or the field was not recognised. A successful HTTP status can also mean the field was silently ignored. Verify the saved state through an allowed response or action.
+
+Useful places to inspect include account settings, invitations, checkout flows, bulk editors, support tickets, content-management forms, and GraphQL mutations. Look for fields that exist in responses but not in the normal form. Treat them as hypotheses, not proof.
+
+## What mass assignment is not
+
+### It is not only an admin flag
+
+Changing `is_admin` is an obvious example, but protected fields can also control ownership, spending limits, verification, discounts, approval status, feature access, or workflow state. A property can be security-sensitive without having an alarming name.
+
+### It is not the same as IDOR
+
+IDOR asks whether the requester may act on a particular object. Mass assignment asks whether the requester may change a particular property. One endpoint can have both problems. A secure design checks object ownership and limits writable properties.
+
+### It is not proven by an echoed response
+
+Some APIs reflect unrecognized properties in a temporary response. Others serialize calculated fields that cannot be written. Prove a finding by observing persistent server-side state or a meaningful server-controlled behaviour change in the lab.
+
+## Impact
+
+The impact depends on the property. A changed marketing preference may have little effect. A changed role, owner, approval state, or payment limit can undermine an entire business process. Automatic binding can also expose data on reads when an API returns properties that were meant to stay internal.
+
+Describe the impact as a specific unauthorized state transition. For example: "a standard account can set a server-managed approval state on its own profile." That is stronger and more useful than saying that arbitrary fields are accepted.
+
+## How developers prevent it
+
+Use dedicated input schemas. Define the few fields that an endpoint accepts, then construct the update explicitly. Keep permissions and server-managed state outside the client-controlled update object.
+
+```python
+# Safer: the endpoint chooses each permitted field.
+changes = {
+    "display_name": body.display_name,
+    "time_zone": body.time_zone,
+}
+account.update(changes)
+database.save(account)
+```
+
+- Allowlist writable fields for each endpoint and role.
+- Use separate request, response, and persistence models.
+- Reject unknown properties where the framework permits it.
+- Validate JSON Patch paths and GraphQL mutation arguments explicitly.
+- Derive ownership, roles, prices, and approvals on the server.
+- Add negative tests for every protected property and sensitive state transition.
+
+[CWE-915](https://cwe.mitre.org/data/definitions/915.html) covers this class as improperly controlled modification of dynamically determined object attributes.
 
 ## Related labs
 
-Practise on a live target:
+Apply this technique after studying it:
 
-- [Firmdrama](/labs/firmdrama) — a meeting-room portal whose profile save accepts a protected role property and a misplaced delegation.
+- [Firmdrama](/labs/firmdrama)
 
-Browse all [labs](/labs) when it is solved.
+Browse all [labs](/labs), then read [how to play](/play) before starting a lab.
 
 ## FAQ
 
-**Is mass assignment the same as broken object property level authorization?**
+:::faq
+::faq-item{question="Is mass assignment the same as broken object property level authorization?"}
+Mass assignment is a common way an API permits an unauthorized property change. Broken object property level authorization is the broader outcome: the API fails to enforce who may read or modify a sensitive property.
 
-Mass assignment is one way to reach it. The parent issue is that the server never restricts which properties can change together. This page covers the update-binding shape.
+::faq-item{question="Does hiding a field in the UI fix it?"}
+No. The server must reject or ignore the field. A client can edit a request outside the UI.
 
-**Do I need special tooling?**
+::faq-item{question="What is the safest first test?"}
+Use your own authorized test object, preserve a normal request, add one low-impact candidate property, and verify the stored result. Do not send broad property lists.
 
-No. Any HTTP client that can edit a request body is enough. Read [how to play](/play) for the loop.
+::faq-item{question="Can PATCH be secure?"}
+Yes. PATCH is safe when the server allowlists paths and applies authorization and validation to every supported property.
+:::
