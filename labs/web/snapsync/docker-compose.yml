@@ -1,6 +1,7 @@
 services:
   main-app:
     build: ./main-app
+    restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
@@ -18,6 +19,7 @@ services:
 
   internal-processing-svc:
     build: ./internal-service
+    restart: unless-stopped
     # Intentionally NOT published to the host - only reachable from
     # main-app over the internal docker network, simulating a private
     # internal service.
@@ -42,4 +44,4 @@ volumes:
 
 secrets:
   flag:
-    file: ./flag.txt
+    file: ./internal-service/flag.txt
