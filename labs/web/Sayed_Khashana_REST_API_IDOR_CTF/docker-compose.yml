@@ -1,0 +1,10 @@
+services:
+  northstar:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - northstar-data:/app/data
+    restart: unless-stopped
+volumes:
+  northstar-data:

@@ -1,0 +1,14 @@
+{
+  "name": "northstar-document-hub-ctf",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Self-contained REST API authorization testing challenge",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node tests/validate.js",
+    "audit": "node tests/integrity-audit.js"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
