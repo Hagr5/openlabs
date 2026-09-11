@@ -1,54 +1,57 @@
-# SnapConnect — CTF challenge
+# SnapConnect
 
-## Name
+EASY · web
 
-SnapConnect
+## Brief
 
-## Scenario
+SnapConnect is a small social app. Members get a profile with a handle, a bio, and an avatar, and everything runs through a GraphQL API at `POST /graphql`.
 
-SnapConnect is a small social app. Members get a profile with a handle, a bio, and an avatar, and everything runs through a GraphQL API. Registration is open; no credentials are handed out.
+The app keeps a secret in `/var/www/flag.txt`. That path is outside the web root, so no URL reaches it. Read the file through the application and you have the flag.
 
-You are testing the app before its public launch.
-
-## Objective
-
-The app keeps a secret in `/var/www/flag.txt`, outside the web root. Read the file through the application.
-
-- Flag format: `duck{...}`
-- Difficulty: medium. Estimated solve time 30 to 45 minutes.
+Difficulty is easy. Expect to spend 15 to 30 minutes.
 
 ## Prerequisites
 
-GraphQL queries, mutations, and introspection. The `graphql-multipart-request` format. A tool that sends raw HTTP, such as `curl`, Burp, or Insomnia.
+- GraphQL queries, mutations, and introspection
+- The `graphql-multipart-request` format
+- A tool that sends raw HTTP, such as `curl`, Burp, or Insomnia
 
-## Startup
+## Setup and goal
 
-```bash
-docker compose up -d --build
-docker compose ps          # wait for "Up ... (healthy)"
-curl http://localhost:8081/health.php
+Start the lab:
+
+```
+ docker compose up -d --build
 ```
 
-## Connection
-
 - App: `http://localhost:8081`
+- Health: `http://localhost:8081/health.php`
 - API: `POST http://localhost:8081/graphql`
 - API reference: `http://localhost:8081/docs`
-- Health: `http://localhost:8081/health.php`
+
+Registration is open. Create an account to get a session token.
+
+Read `/var/www/flag.txt` through the service. Verify your solve from the repository root:
+
+```
+python3 scripts/check.py labs/web/snapconnect
+```
 
 ## Reset
 
-```bash
-./scripts/reset.sh                                # full: rebuild, clear uploads and sessions
-docker compose down -v && docker compose up -d    # equivalent manual form
 ```
+docker compose down -v
+docker compose up -d --build
+```
+
+Reset clears uploads and sessions and reseeds the database.
+
+## Flag format
+
+`duck{...}` with lowercase letters, digits, and underscores between the braces.
 
 ## Rules
 
-1. Test only this lab instance.
-2. No brute force. Nothing in the app falls to guessing.
-3. All data is fake.
-
----
-
-Organizer: `docs/` contains spoilers. Do not distribute to players.
+- The lab runs on your machine. Point your tools at `localhost:8081` only.
+- No brute force is needed.
+- Destroying the service is not the goal. The container resets anyway.

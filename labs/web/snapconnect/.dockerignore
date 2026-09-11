@@ -1,0 +1,9 @@
+docs/
+tests/
+README.md
+lab.yml
+schema.graphql
+reset.sh
+.dockerignore
+.gitignore
+.git
