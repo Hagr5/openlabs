@@ -1,0 +1,14 @@
+{
+  "name": "duckfleet-tests",
+  "version": "1.0.0",
+  "private": true,
+  "description": "DuckFleet challenge validation suite (dev tooling, not part of the lab)",
+  "type": "module",
+  "license": "UNLICENSED",
+  "scripts": {
+    "validate": "node tests/validate.mjs"
+  },
+  "devDependencies": {
+    "protobufjs": "^7.4.0"
+  }
+}
