@@ -1,0 +1,19 @@
+{
+  "name": "snapsync-main-app",
+  "version": "1.0.0",
+  "private": true,
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.3.0",
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^2.0.0",
+    "pem-jwk": "^2.0.0",
+    "piexifjs": "^1.0.6",
+    "uuid": "^9.0.1"
+  }
+}

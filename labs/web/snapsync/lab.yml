@@ -1,0 +1,5 @@
+name: snapsync
+track: web
+difficulty: medium
+description: A staff photo tool where a forged token and a hidden internal route reach the flag.
+flag_hash: 4b10b73c7f0b998be48f28c3c318fe142a4704e27012bc1d47602f117358dea8
