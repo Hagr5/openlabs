@@ -24,9 +24,9 @@ Server-side template injection happens when an application treats user input as 
 
 This is different from simply showing submitted text in a page. A safe application keeps its template fixed and passes untrusted text as a value. An unsafe application builds a new template string from that text and then asks the engine to execute it.
 
-:::callout{type="important" title="Escaping is not the primary fix"}
-HTML escaping protects the output context. It does not make it safe to compile untrusted text as a server-side template. Keep template source fixed.
-:::
+> **Escaping is not the primary fix**
+>
+> HTML escaping protects the output context. It does not make it safe to compile untrusted text as a server-side template. Keep template source fixed.
 
 ## Why template engines are sensitive
 
@@ -67,14 +67,12 @@ Some products let administrators choose from several approved email layouts. Tha
 
 Look for endpoints that render or preview text. Common candidates include emails, notifications, invoices, document generators, report builders, CMS previews, localization features, and printable receipts.
 
-:::steps
 1. Submit a harmless literal marker and find where it appears in the response.
 2. Use error messages, documentation, response conventions, or client code to form a hypothesis about the template engine.
 3. Submit one harmless arithmetic expression that matches the suspected syntax, such as `{{ 7 * 7 }}` for Jinja-style engines.
 4. Compare the rendered output with the literal baseline. A computed result is evidence that the input reached an expression evaluator.
 5. Confirm the rendering context and input field with a minimal, repeatable request.
 6. Stop at the evidence needed by the lab. Avoid destructive payloads, resource-intensive expressions, and changes outside the authorized target.
-:::
 
 A result such as `49` is a strong signal only when the application returns the rendered server response. A client-side script, a calculation feature, or a different transformation can create misleading output. Capture the request and response. Record why the behaviour indicates server-side template evaluation.
 
@@ -125,16 +123,18 @@ Browse all [labs](/labs), then read [how to play](/play) before starting a lab.
 
 ## FAQ
 
-:::faq
-::faq-item{question="Is SSTI always remote code execution?"}
+### Is SSTI always remote code execution?
+
 No. The result depends on the engine, available objects, sandboxing, and process privileges. A safe report describes the behaviour that was actually proven.
 
-::faq-item{question="Does autoescaping prevent SSTI?"}
+### Does autoescaping prevent SSTI?
+
 No. Autoescaping protects how a value is placed into output. SSTI begins earlier, when the value is made part of template source.
 
-::faq-item{question="Why use arithmetic as a first test?"}
+### Why use arithmetic as a first test?
+
 It is a small, non-destructive way to distinguish literal rendering from expression evaluation when the syntax matches the suspected engine.
 
-::faq-item{question="What should I include in a lab writeup?"}
+### What should I include in a lab writeup?
+
 Include the benign baseline, the minimal expression, the rendered result, the likely engine evidence, and the security boundary that the server crossed.
-:::

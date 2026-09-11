@@ -11,7 +11,7 @@
 
 **RoomReserve · Behind every meeting is a story.**
 
-[The story](#scenario) · [Your objective](#objective) · [Get started](#quick-start) · [Check a flag](#check-a-captured-flag) · [Reset](#reset-the-lab) · [Rules](#player-rules)
+[The story](#brief) · [Your goal](#goal) · [Setup](#setup) · [Check a flag](#check-a-captured-flag) · [Reset](#reset-the-lab) · [Rules](#player-rules)
 
 </div>
 

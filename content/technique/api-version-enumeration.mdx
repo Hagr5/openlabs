@@ -24,9 +24,9 @@ API version enumeration is the process of finding and comparing the versions of 
 
 This is an inventory problem before it is an exploitation problem. Teams often document the current version while a legacy deployment remains live for an old mobile app, a partner integration, or a forgotten internal client. OWASP describes this wider failure as [improper inventory management](https://owasp.org/API-Security/editions/2023/en/0xa9-improper-inventory-management/).
 
-:::callout{type="important" title="A version is a separate security surface"}
-Do not assume that a check fixed in one version exists in every version. Compare behaviour with the same authenticated context and request intent.
-:::
+> **A version is a separate security surface**
+>
+> Do not assume that a check fixed in one version exists in every version. Compare behaviour with the same authenticated context and request intent.
 
 ## How APIs expose versions
 
@@ -63,14 +63,12 @@ Some APIs select a version through an `Accept` or custom header. A proxy, SDK, o
 
 Begin with the documented or visible API. Use it as the baseline for route names, methods, authentication, and expected schemas.
 
-:::steps
 1. Identify every visible version marker in routes, hosts, headers, media types, and documentation.
 2. Build a small version matrix. Keep the method, session, body, and object reference constant for each comparison.
 3. Test only plausible versions and naming patterns supported by the lab evidence.
 4. Record status codes, response headers, fields, schemas, and authorization behaviour for each response.
 5. Treat `401`, `403`, `405`, redirects, and distinct error messages as useful inventory signals. They can prove that a route exists even when access is denied.
 6. Compare controls, not only content. Note differences in ownership checks, validation, pagination, rate limits, and error handling.
-:::
 
 Keep the matrix small and explainable. Broad unbounded scans add noise and can miss version forms that use headers or hostnames. A reproducible request set is more valuable than a long list of guesses.
 
@@ -124,16 +122,18 @@ Browse all [labs](/labs), then read [how to play](/play) before starting a lab.
 
 ## FAQ
 
-:::faq
-::faq-item{question="Is API version enumeration the same as finding a shadow API?"}
+### Is API version enumeration the same as finding a shadow API?
+
 It is one way to find an undocumented or poorly inventoried surface. A shadow API can also be an unversioned service, a forgotten host, or an internal endpoint exposed by mistake.
 
-::faq-item{question="Does a 404 prove that a version does not exist?"}
+### Does a 404 prove that a version does not exist?
+
 No. The version may use a header, a hostname, a date format, or a gateway that intentionally hides route details. Use the application's evidence and compare request shapes.
 
-::faq-item{question="What makes an old version a security finding?"}
+### What makes an old version a security finding?
+
 A demonstrated difference that weakens security, such as a missing authorization check, an exposed retired operation, or absent input validation. Version age alone is not enough.
 
-::faq-item{question="What should a writeup include?"}
+### What should a writeup include?
+
 Include the baseline request, the exact version selector, the controlled comparison, the observed policy difference, and the affected authorization boundary.
-:::

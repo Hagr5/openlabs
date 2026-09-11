@@ -26,9 +26,9 @@ For example, a profile form may only let a user change their display name and ti
 
 OWASP groups these failures under [broken object property level authorization](https://owasp.org/API-Security/editions/2023/en/0xa3-broken-object-property-level-authorization/). Mass assignment describes the unsafe binding mechanism that often enables them.
 
-:::callout{type="important" title="The request body is the trust boundary"}
-The fields shown by a form are not an allowlist. A client can send any valid JSON property, including one that the front end never renders.
-:::
+> **The request body is the trust boundary**
+>
+> The fields shown by a form are not an allowlist. A client can send any valid JSON property, including one that the front end never renders.
 
 ## Why it happens
 
@@ -90,14 +90,12 @@ The API must validate every patch path and every requested value. Checking only 
 
 Start with a normal create or update request. Establish which fields are intended to be editable for the current account.
 
-:::steps
 1. Save a clean baseline request and the resulting object state.
 2. Compare the UI fields, API documentation, request body, and response body.
 3. List fields that look server-owned, role-related, financial, approval-related, or ownership-related.
 4. Add one candidate property to the original valid request. Do not change unrelated fields.
 5. Fetch the current test object's state again and compare the specific property.
 6. Record whether the property was rejected, ignored, normalized, or persisted.
-:::
 
 Test one property at a time. An error may mean a validation rule worked, a type was wrong, or the field was not recognised. A successful HTTP status can also mean the field was silently ignored. Verify the saved state through an allowed response or action.
 
@@ -156,16 +154,18 @@ Browse all [labs](/labs), then read [how to play](/play) before starting a lab.
 
 ## FAQ
 
-:::faq
-::faq-item{question="Is mass assignment the same as broken object property level authorization?"}
+### Is mass assignment the same as broken object property level authorization?
+
 Mass assignment is a common way an API permits an unauthorized property change. Broken object property level authorization is the broader outcome: the API fails to enforce who may read or modify a sensitive property.
 
-::faq-item{question="Does hiding a field in the UI fix it?"}
+### Does hiding a field in the UI fix it?
+
 No. The server must reject or ignore the field. A client can edit a request outside the UI.
 
-::faq-item{question="What is the safest first test?"}
+### What is the safest first test?
+
 Use your own authorized test object, preserve a normal request, add one low-impact candidate property, and verify the stored result. Do not send broad property lists.
 
-::faq-item{question="Can PATCH be secure?"}
+### Can PATCH be secure?
+
 Yes. PATCH is safe when the server allowlists paths and applies authorization and validation to every supported property.
-:::
