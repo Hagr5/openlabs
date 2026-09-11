@@ -28,7 +28,7 @@ services:
       - /home/ctf/tmp:size=32m,mode=1700
 
 
-    user: "1000:1000"
+    user: 1000:1000
 
 
     # -------------------------

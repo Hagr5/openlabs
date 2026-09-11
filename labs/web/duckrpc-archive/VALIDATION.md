@@ -163,7 +163,7 @@ duckrpc.ArchiveService/SearchDocuments
 Expected result contains:
 
 ```text
-duck{sqli_with_grpc_is_fantastic}
+duck{}
 ```
 
 ---

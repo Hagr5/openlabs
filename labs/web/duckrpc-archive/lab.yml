@@ -1,4 +1,4 @@
-name: duckrpc_archive
+name: duckrpc-archive
 track: web
 difficulty: medium
 description: A gRPC document archive with authentication and a SQL injection vulnerability.

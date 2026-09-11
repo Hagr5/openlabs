@@ -59,7 +59,17 @@ except ImportError as exc:
 USERNAME = "alice"
 PASSWORD = "AliceArchive2026!"
 
-EXPECTED_FLAG = "duck{sqli_with_grpc_is_fantastic}"
+def is_valid_flag(value):
+    """
+    Validate the expected flag format without hardcoding
+    the challenge flag value.
+    """
+
+    return (
+        isinstance(value, str)
+        and value.startswith("duck{")
+        and value.endswith("}")
+    )
 
 EXPECTED_SERVICES = {
     "duckrpc.ArchiveService",
@@ -430,12 +440,10 @@ def validate_flag_retrieval(channel, token):
             "Flag was not retrieved through the intended SQL injection path."
         )
 
-    if retrieved_flag != EXPECTED_FLAG:
+    if not is_valid_flag(retrieved_flag):
         fatal(
-            "A flag-like value was retrieved, but it does not match "
-            "the expected challenge flag.\n"
-            f"Expected: {EXPECTED_FLAG}\n"
-            f"Received: {retrieved_flag}"
+            "A value was retrieved, but it does not match "
+            "the expected flag format."
         )
 
     success(

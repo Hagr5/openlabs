@@ -548,7 +548,8 @@ duck{...}
 The configured challenge flag is:
 
 ```text
-duck{sqli_with_grpc_is_fantastic}
+The final result contains a value following the expected format:
+duck{...}
 ```
 
 ---
