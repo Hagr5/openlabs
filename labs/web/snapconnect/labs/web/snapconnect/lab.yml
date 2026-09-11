@@ -1,5 +1,0 @@
-name: snapconnect
-track: web
-difficulty: medium
-description: SnapConnect is a small social app with profiles and avatars, served by a GraphQL API.
-flag_hash: b09e06a5dcd9f8d3084d361919bd55ff32346a67cf07351011156fefc7754708
