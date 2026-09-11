@@ -1,0 +1,76 @@
+---
+title: Invoiceportal
+description: InvoicePortal is a SaaS platform for managing company invoices.
+track: web
+difficulty: medium
+port: "5000"
+type: lab
+key: lab-invoiceportal
+slug: labs/invoiceportal
+intent: Solve a medium web lab in Docker.
+keywords:
+  primary: Invoiceportal web security lab docker
+  secondary:
+    - medium web practice
+    - openlabs invoiceportal
+verified: true
+score: 78
+score_grade: C
+linksTo:
+  - technique/idor
+author_name: "Mohamed Hossam"
+author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/invoiceportal"
+author_date: "2026-09-10"
+ogImage: /og/labs-invoiceportal.png
+---
+
+{/* Generated from labs/web/invoiceportal/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+`medium` · `web` 
+
+## Brief
+
+Northwind Traders uses InvoicePortal. One invoice has a hidden flag.
+
+Find it.
+
+## Setup
+
+Run these from the lab directory:
+
+```bash
+docker compose up -d
+```
+
+The application will be available at: http://localhost:5000/ 
+
+## Reset 
+
+```
+docker compose down -v && docker compose up -d 
+```
+
+## **API Endpoints**
+
+| **Endpoint** | **Method** | **Auth** | **Description** |
+| --- | --- | --- | --- |
+| /health | GET | None | Health check |
+| /api/auth/login | POST | None | Login |
+| /api/users/me | GET | Bearer | Current user |
+| /api/team/members | GET | Bearer | Team members |
+| /api/invoices | GET | Bearer | List invoices |
+| `/api/invoices/{id}` | GET | Bearer | Invoice details |
+
+## **Goal**
+
+Find the flag. Flag format is `duck{...}`, and verify:
+
+```
+python3 ../../../scripts/check.py .
+```
+## Techniques
+
+Practise in this lab:
+
+- [Broken object-level authorization (IDOR)](/technique/idor)
+

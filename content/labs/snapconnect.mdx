@@ -1,0 +1,82 @@
+---
+title: Snapconnect
+description: SnapConnect is a small social app with profiles and avatars, served by a GraphQL API.
+track: web
+difficulty: easy
+port: "8081"
+type: lab
+key: lab-snapconnect
+slug: labs/snapconnect
+intent: Solve an easy web lab in Docker.
+keywords:
+  primary: Snapconnect web security lab docker
+  secondary:
+    - easy web practice
+    - openlabs snapconnect
+verified: true
+score: 75
+score_grade: C
+author_name: "Ahmed Yasser"
+author_url: "https://github.com/spxios"
+author_avatar: "https://github.com/spxios.png"
+author_date: "2026-09-10"
+ogImage: /og/labs-snapconnect.png
+---
+
+{/* Generated from labs/web/snapconnect/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+EASY · web
+
+## Brief
+
+SnapConnect is a small social app. Members get a profile with a handle, a bio, and an avatar, and everything runs through a GraphQL API at `POST /graphql`.
+
+The app keeps a secret in `/var/www/flag.txt`. That path is outside the web root, so no URL reaches it. Read the file through the application and you have the flag.
+
+Difficulty is easy. Expect to spend 15 to 30 minutes.
+
+## Prerequisites
+
+- GraphQL queries, mutations, and introspection
+- The `graphql-multipart-request` format
+- A tool that sends raw HTTP, such as `curl`, Burp, or Insomnia
+
+## Setup and goal
+
+Start the lab:
+
+```
+ docker compose up -d --build
+```
+
+- App: `http://localhost:8081`
+- Health: `http://localhost:8081/health.php`
+- API: `POST http://localhost:8081/graphql`
+- API reference: `http://localhost:8081/docs`
+
+Registration is open. Create an account to get a session token.
+
+Read `/var/www/flag.txt` through the service. Verify your solve from the repository root:
+
+```
+python3 scripts/check.py labs/web/snapconnect
+```
+
+## Reset
+
+```
+docker compose down -v
+docker compose up -d --build
+```
+
+Reset clears uploads and sessions and reseeds the database.
+
+## Flag format
+
+`duck{...}` with lowercase letters, digits, and underscores between the braces.
+
+## Rules
+
+- The lab runs on your machine. Point your tools at `localhost:8081` only.
+- No brute force is needed.
+- Destroying the service is not the goal. The container resets anyway.

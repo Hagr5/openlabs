@@ -1,0 +1,49 @@
+---
+title: Cafe house rules
+description: A cafe rules site with a report bot and a guarded back-room route.
+track: web
+difficulty: medium
+port: "8388"
+type: lab
+key: lab-cafe-house-rules
+slug: labs/cafe-house-rules
+intent: Solve a medium web lab in Docker.
+keywords:
+  primary: Cafe house rules web security lab docker
+  secondary:
+    - medium web practice
+    - openlabs cafe-house-rules
+verified: true
+score: 74
+score_grade: C
+author_name: "l3b4nk4"
+author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/cafe-house-rules"
+author_date: "2026-09-10"
+ogImage: /og/labs-cafe-house-rules.png
+---
+
+{/* Generated from labs/web/cafe-house-rules/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+`medium` · `web`
+
+## Brief
+
+Quack and Grind Cafe publishes house rules for guests. Staff can review cafe links through an internal browser. Find the back-room route and read the flag.
+
+## Setup
+
+Run these from the lab directory:
+
+```bash
+docker compose up -d
+```
+
+Open `http://localhost:8388`.
+
+## Goal
+
+Find the flag. Verify the solve from the lab directory:
+
+```bash
+python3 ../../../scripts/check.py .
+```

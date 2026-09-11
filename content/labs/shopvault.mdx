@@ -1,0 +1,51 @@
+---
+title: Shopvault
+description: An e-commerce REST API whose authentication, lockout, and JWT signing weaknesses chain into manager-level access.
+track: web
+difficulty: hard
+port: "8080"
+type: lab
+key: lab-shopvault
+slug: labs/shopvault
+intent: Solve a hard web lab in Docker.
+keywords:
+  primary: Shopvault web security lab docker
+  secondary:
+    - hard web practice
+    - openlabs shopvault
+verified: true
+score: 94
+score_grade: A
+author_name: "mirnashams01-star"
+author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/shopvault"
+author_date: "2026-09-10"
+ogImage: /og/labs-shopvault.png
+---
+
+{/* Generated from labs/web/shopvault/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+`hard` · `web`
+
+## Brief
+
+ShopVault is an e-commerce REST API. Three accounts are seeded: a shopper, an administrator, and a manager. The manager's private reports hold the flag. No credentials are provided.
+
+Ops note: seed account usernames are not the ones you'd expect.
+
+## Setup
+
+Run these from the lab directory:
+
+```bash
+docker compose up -d
+```
+
+The API listens on `http://localhost:8080`. All interaction is over HTTP; there is no web UI.
+
+## Goal
+
+Escalate from unauthenticated to the manager role and read the manager-only reports endpoint. Verify the solve from the lab directory:
+
+```bash
+python3 ../../../scripts/check.py .
+```

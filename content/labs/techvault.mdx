@@ -1,0 +1,62 @@
+---
+title: Techvault
+description: An e-commerce GraphQL API with a chained authentication bypass, SSRF, and command injection vulnerability.
+track: web
+difficulty: hard
+port: "4000"
+type: lab
+key: lab-techvault
+slug: labs/techvault
+intent: Solve a hard web lab in Docker.
+keywords:
+  primary: Techvault web security lab docker
+  secondary:
+    - hard web practice
+    - openlabs techvault
+verified: true
+score: 97
+score_grade: A
+linksTo:
+  - technique/auth-bypass
+  - technique/ssrf
+  - technique/command-injection
+author_name: "Hagr5"
+author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/techvault"
+author_date: "2026-09-10"
+ogImage: /og/labs-techvault.png
+---
+
+{/* Generated from labs/web/techvault/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+`hard` · `web`
+
+## Brief
+
+TechVault is an online laptop retailer. The storefront runs entirely on a GraphQL API behind a single `/graphql` endpoint — accounts, catalog, and a few internal tools all live there. You start with outside-customer access only. Find your way to a real account, then work the API toward the hidden internal data.
+
+## Setup
+
+Run these from the lab directory:
+
+```bash
+cp .env.example .env
+docker compose up --build -d
+```
+
+Open `http://localhost:4000/graphql`.
+
+## Goal
+
+Find your way into a real account. Chain what the API gives you from there. Extract the flag. Verify the solve from the lab directory:
+
+```bash
+python3 ../../../scripts/check.py .
+```
+## Techniques
+
+Practise in this lab:
+
+- [Authentication bypass](/technique/auth-bypass)
+- [Server-side request forgery (SSRF)](/technique/ssrf)
+- [Command injection](/technique/command-injection)
+

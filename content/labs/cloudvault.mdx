@@ -1,0 +1,53 @@
+---
+title: Cloudvault
+description: A GraphQL document-ingestion API whose SSRF chain reaches a privileged internal vault.
+track: web
+difficulty: hard
+port: "8080"
+type: lab
+key: lab-cloudvault
+slug: labs/cloudvault
+intent: Solve a hard web lab in Docker.
+keywords:
+  primary: Cloudvault web security lab docker
+  secondary:
+    - hard web practice
+    - openlabs cloudvault
+verified: true
+score: 70
+score_grade: C
+author_name: "mirnashams01-star"
+author_url: "https://github.com/mirnashams01-star"
+author_avatar: "https://github.com/mirnashams01-star.png"
+author_date: "2026-09-10"
+ogImage: /og/labs-cloudvault.png
+---
+
+{/* Generated from labs/web/cloudvault/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+`hard` · `web`
+
+## Brief
+
+CloudVault is a document-ingestion platform. The API accepts URLs and imports documents from them. A low-privileged account is seeded. Retrieve the flag hidden in the CloudVault environment.
+
+## Setup
+
+Run these from the lab directory:
+
+```bash
+docker compose up -d
+```
+
+The GraphQL API listens on `http://localhost:8080/graphql`. A seeded account is provided:
+
+- Username: `player`
+- Password: `changeme123`
+
+## Goal
+
+Authenticate and explore the API. Retrieve the flag. Verify the solve from the lab directory:
+
+```bash
+python3 ../../../scripts/check.py .
+```

@@ -1,0 +1,75 @@
+---
+title: Vault api
+description: "Inspect an internal employee management API and recover a protected employee archive. The lab starts with a low-privileged analyst account and explores how security boundaries are enforced across an API."
+track: web
+difficulty: medium
+port: "8080"
+type: lab
+key: lab-vault-api
+slug: labs/vault-api
+intent: Solve a medium web lab in Docker.
+keywords:
+  primary: Vault api web security lab docker
+  secondary:
+    - medium web practice
+    - openlabs vault-api
+verified: true
+score: 69
+score_grade: D
+author_name: "Ziad Elgohary"
+author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/vault-api"
+author_date: "2026-09-10"
+ogImage: /og/labs-vault-api.png
+---
+
+{/* Generated from labs/web/vault-api/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+**MEDIUM · web**
+
+## Brief
+
+`vault-api` is a fictional internal employee management API. A protected employee archive is stored in the system. You receive a low-privileged analyst account and must find a way to recover the archive and its flag.
+
+## Setup
+
+Copy the environment template, then build and start the challenge:
+
+```bash
+cp .env.example .env
+docker compose up --build -d
+```
+
+Wait for the container to become healthy, then confirm the API responds:
+
+```bash
+curl -s http://localhost:8080/health
+```
+
+The API is available at `http://localhost:8080`.
+
+You start with the following account:
+
+| Username | Password |
+| -------- | -------- |
+| `analyst` | `analyst123` |
+
+## Goal
+
+Recover the flag from the protected employee archive. The flag matches the format `duck{...}`.
+
+## Rules
+
+- Only interact with the provided challenge instance.
+- Do not attempt to escape the container or attack the host system.
+- Do not perform denial-of-service attacks.
+
+## Reset
+
+To reset the challenge to its initial state:
+
+```bash
+docker compose down -v
+docker compose up --build -d
+```
+
+This restores the database and seeded data.

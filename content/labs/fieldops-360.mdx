@@ -1,0 +1,55 @@
+---
+title: Fieldops 360
+description: A tenant portal with email open tracking and an admin export surface.
+track: web
+difficulty: medium
+port: "8080"
+type: lab
+key: lab-fieldops-360
+slug: labs/fieldops-360
+intent: Solve a medium web lab in Docker.
+keywords:
+  primary: Fieldops 360 web security lab docker
+  secondary:
+    - medium web practice
+    - openlabs fieldops-360
+verified: true
+score: 91
+score_grade: A
+author_name: "spxios"
+author_url: "https://github.com/spxios"
+author_avatar: "https://github.com/spxios.png"
+author_date: "2026-09-10"
+ogImage: /og/labs-fieldops-360.png
+---
+
+{/* Generated from labs/web/fieldops-360/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+MEDIUM · web
+
+## Brief
+
+FieldOps 360 is a field service platform for trade companies. Tenants manage
+jobs, customers, and outbound email from one portal. The platform reports
+opens on every message it sends.
+
+You hold a sandbox account for one tenant. The credentials are on the login
+page.
+
+## Setup and goal
+
+Start the lab:
+
+```
+docker compose up -d --build
+```
+
+Open `http://localhost:8080`.
+
+Recover the flag from the admin export.
+
+Verify the solve:
+
+```
+python3 scripts/check.py labs/web/fieldops-360
+```

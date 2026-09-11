@@ -1,0 +1,57 @@
+---
+title: Duck cross
+description: A reports portal with a missing object-level authorization check.
+track: web
+difficulty: easy
+port: "8377"
+type: lab
+key: lab-duck-cross
+slug: labs/duck-cross
+intent: Solve an easy web lab in Docker.
+keywords:
+  primary: Duck cross web security lab docker
+  secondary:
+    - easy web practice
+    - openlabs duck-cross
+verified: true
+score: 97
+score_grade: A
+linksTo:
+  - technique/idor
+author_name: "0xRinx"
+author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/duck-cross"
+author_date: "2026-09-03"
+ogImage: /og/labs-duck-cross.png
+---
+
+{/* Generated from labs/web/duck-cross/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+`easy` · `web`
+
+## Brief
+
+The duck cross portal collects crossing reports from wardens. Five reports are public. One report stays restricted. Read it.
+
+## Setup
+
+Run these from the lab directory:
+
+```bash
+docker compose up -d
+```
+
+Open `http://localhost:8377`.
+
+## Goal
+
+Find the restricted report. Extract its flag. Verify the solve from the lab directory:
+
+```bash
+python3 ../../../scripts/check.py .
+```
+## Techniques
+
+Practise in this lab:
+
+- [Broken object-level authorization (IDOR)](/technique/idor)
+

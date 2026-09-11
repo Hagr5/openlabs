@@ -1,0 +1,75 @@
+---
+title: Duckvault
+description: A records portal leaks an internal reference through broken access control and weak authorization.
+track: web
+difficulty: medium
+port: "8378"
+type: lab
+key: lab-duckvault
+slug: labs/duckvault
+intent: Solve a medium web lab in Docker.
+keywords:
+  primary: Duckvault web security lab docker
+  secondary:
+    - medium web practice
+    - openlabs duckvault
+verified: true
+score: 92
+score_grade: A
+linksTo:
+  - technique/idor
+author_name: "suhila1.c"
+author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/duckvault"
+author_date: "2026-09-09"
+ogImage: /og/labs-duckvault.png
+---
+
+{/* Generated from labs/web/duckvault/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+Difficulty: `medium`  
+Track: `web`
+
+## Brief
+
+DuckVault is an employee records portal.
+
+You have a normal employee account. The portal shows assigned records and loads data from internal API endpoints.
+
+Some records were moved from a legacy archive.
+
+## Setup
+
+Start the lab.
+
+```bash
+docker compose up -d
+```
+
+The lab runs on port `8378`.
+
+Open `http://localhost:8378/login`.
+
+Use this account.
+
+```text
+Username: intern
+Password: intern123
+```
+
+## Goal
+
+Find the flag.
+
+Check your solve from the repository root.
+
+```bash
+python3 scripts/check.py labs/web/duckvault
+```
+
+The flag format is `duck{...}`.
+## Techniques
+
+Practise in this lab:
+
+- [Broken object-level authorization (IDOR)](/technique/idor)
+

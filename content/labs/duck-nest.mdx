@@ -1,0 +1,51 @@
+---
+title: Duck nest
+description: An internal project workspace for staff and interns.
+track: web
+difficulty: medium
+port: "8378"
+type: lab
+key: lab-duck-nest
+slug: labs/duck-nest
+intent: Solve a medium web lab in Docker.
+keywords:
+  primary: Duck nest web security lab docker
+  secondary:
+    - medium web practice
+    - openlabs duck-nest
+verified: true
+score: 94
+score_grade: A
+author_name: "Omar Mohamed"
+author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/duck-nest"
+author_date: "2026-09-10"
+ogImage: /og/labs-duck-nest.png
+---
+
+{/* Generated from labs/web/duck-nest/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
+
+`medium` · `web`
+
+## Brief
+
+The nest is the conservation office's internal project workspace. Staff and interns log in with workspace accounts and keep project documents inside. One project stays restricted. Read its documents.
+
+Sign in with `intern` and `marshroad`.
+
+## Setup
+
+Run these from the lab directory:
+
+```bash
+docker compose up -d
+```
+
+Open `http://localhost:8378`.
+
+## Goal
+
+Extract the flag from the restricted project. Verify the solve from the lab directory:
+
+```bash
+python3 ../../../scripts/check.py .
+```
