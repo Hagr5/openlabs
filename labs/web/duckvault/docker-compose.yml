@@ -1,0 +1,6 @@
+services:
+  duckvault:
+    build: .
+    ports:
+      - "8000:5000"
+    restart: unless-stopped

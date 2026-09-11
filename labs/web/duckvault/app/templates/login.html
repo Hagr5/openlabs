@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>DuckVault | Identity Gateway</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+
+<body class="auth-body">
+  <div class="floating-orb orb-one"></div>
+  <div class="floating-orb orb-two"></div>
+  <div class="floating-orb orb-three"></div>
+
+  <main class="auth-layout">
+    <section class="auth-intro">
+      <div>
+        <div class="brand">duck<span>vault</span></div>
+
+        <p class="eyebrow" style="margin-top: 42px;">
+          ZERO TRUST IDENTITY GATEWAY
+        </p>
+
+        <h1 class="glow-text">
+          Secure records. Controlled access.
+        </h1>
+
+        <p class="muted">
+          A private internal platform for employee records, operational documents,
+          security notes, and restricted administrative workflows.
+        </p>
+
+        <div class="vault-visual">
+          <div class="vault-core"></div>
+          <div class="scan-line"></div>
+          <div class="vault-label">ACCESS GATEWAY</div>
+        </div>
+      </div>
+
+      <div class="audit-box">
+        <div class="audit-row">
+          <span>Environment</span>
+          <strong>Isolated Lab</strong>
+        </div>
+
+        <div class="audit-row">
+          <span>Record API</span>
+          <strong>Online</strong>
+        </div>
+
+        <div class="audit-row">
+          <span>Identity Layer</span>
+          <strong>Active</strong>
+        </div>
+
+        <div class="audit-row">
+          <span>Monitoring</span>
+          <strong>Enabled</strong>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-card">
+      <div class="login-badge">Internal Access Only</div>
+
+      <p class="eyebrow">EMPLOYEE SIGN IN</p>
+
+      <h1>Access Portal</h1>
+
+      <p class="muted">
+        Sign in with your assigned training identity to continue into the
+        DuckVault workspace.
+      </p>
+
+      {% if error %}
+      <div class="error">{{ error }}</div>
+      {% endif %}
+
+      <form method="post" class="stack">
+        <label>
+          Employee Username
+          <input
+            name="username"
+            autocomplete="username"
+            placeholder="intern"
+            required
+          />
+        </label>
+
+        <label>
+          Password
+          <input
+            name="password"
+            type="password"
+            autocomplete="current-password"
+            placeholder="••••••••"
+            required
+          />
+        </label>
+
+        <button type="submit">
+          Unlock Secure Workspace
+        </button>
+      </form>
+
+      <div class="terminal-card">
+        <div class="terminal-top">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+
+        <pre>identity.check()
+session.scope = "employee"
+record_service = "reachable"
+export_jobs = "restricted"</pre>
+      </div>
+
+      <div class="security-feed">
+        <div class="feed-header">
+          <span>Live Security Feed</span>
+          <strong>Monitoring</strong>
+        </div>
+
+        <div class="feed-item">
+          <span class="dot ok"></span>
+          Identity gateway initialized
+        </div>
+
+        <div class="feed-item">
+          <span class="dot ok"></span>
+          Record API health check passed
+        </div>
+
+        <div class="feed-item">
+          <span class="dot warn"></span>
+          Legacy archive mode detected
+        </div>
+
+        <div class="feed-item">
+          <span class="dot ok"></span>
+          Employee access scope loaded
+        </div>
+      </div>
+
+      <div class="hint">
+        <strong>Assigned training account</strong><br />
+        Username: intern<br />
+        Password: intern123
+      </div>
+
+      <p class="footer-note">
+        Authorized local lab use only. Do not test public systems or third-party services.
+      </p>
+    </section>
+  </main>
+</body>
+</html>
