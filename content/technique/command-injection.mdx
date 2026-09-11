@@ -1,0 +1,45 @@
+---
+title: Command injection
+description: User input reaches a shell command unsanitized, letting you run commands alongside the intended one.
+type: technique
+key: technique-command-injection
+slug: technique/command-injection
+intent: Learn what command injection is and which labs exercise it.
+keywords:
+  primary: command injection practice lab
+  secondary:
+    - OS command injection explained
+    - shell metacharacter injection lab
+linksTo:
+  - labs/techvault
+  - labs
+  - play
+  - technique
+ogImage: /og/technique.png
+---
+
+## Overview
+
+Command injection happens when user-supplied input is concatenated into a string that's passed to a system shell, instead of being passed as a discrete, escaped argument. Shell metacharacters (`;`, `|`, `` ` ``, `$()`) let you append or chain additional commands.
+
+## Examples
+
+Watch for features that shell out to system tools: file conversion, network diagnostics (ping, traceroute-style tools), archive extraction. Try metacharacters in any field that ends up looking like a filename, hostname, or path.
+
+## Related labs
+
+Practise on a live target:
+
+- [TechVault](/labs/techvault) — an internal service that builds a shell command from unsanitized input.
+
+Browse all [labs](/labs) when it is solved.
+
+## FAQ
+
+**Is this the same as SQL injection?**
+
+Same family of flaw — unsanitized input reaching an interpreter — but the interpreter here is the OS shell, not a database engine.
+
+**Do I need special tooling?**
+
+A browser or `curl` is enough to start. Read [how to play](/play) for the loop.

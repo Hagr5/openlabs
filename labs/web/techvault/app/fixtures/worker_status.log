@@ -1,0 +1,3 @@
+[worker] preview render pool: 2/2 healthy
+[worker] last job duration: 340ms
+[worker] upstream services reachable: true

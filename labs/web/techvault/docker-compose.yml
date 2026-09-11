@@ -1,0 +1,72 @@
+# =========================================================
+# TechVault — Challenge 2 (GraphQL) — docker-compose.yml
+#
+# Standalone environment: no dependency whatsoever on challenge-1-rest.
+# Only `techvault-api` is reachable from the host. `billing-core` sits on
+# an internal-only Docker network with NO published port and NO route to
+# the outside world — the only way to reach it is through techvault-api's
+# intended SSRF vulnerability (fetchCompetitorPrice).
+#
+# NOTE: no `depends_on` between the two services on purpose. techvault-api
+# does not need billing-core to be healthy to start, and does not know or
+# care whether it's up — exactly like a real SSRF target: the calling
+# service just attempts the request and handles failure gracefully
+# (see competitorPriceService.js). Coupling startup order here would leak
+# an unnecessary hint about billing-core's existence via container logs.
+# =========================================================
+
+services:
+  techvault-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: techvault-api
+    ports:
+      - "${TECHVAULT_PORT:-4000}:4000"
+    environment:
+      - PORT=4000
+      - DB_PATH=/app/data/techvault.db
+    networks:
+      - public_net     # reachable from the host (published port above)
+      - internal_net    # also on the internal segment, so it can reach billing-core
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:4000/health', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+  billing-core:
+    build:
+      context: ./billing-core
+      dockerfile: Dockerfile
+    container_name: billing-core
+    # INTENTIONALLY no `ports:` — this service is not reachable from the
+    # host machine under any circumstance. It exists only on internal_net.
+    environment:
+      - PORT=5000
+      - FLAG=${FLAG:-}
+    networks:
+      internal_net:
+        aliases:
+          - billing-core.techvault.local
+        # ^ realistic internal DNS name (matches billing-gw.conf's
+        #   `upstream =` value) instead of relying on the raw container
+        #   name, which would look like Docker plumbing rather than a
+        #   believable internal hostname.
+    healthcheck:
+      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:5000/health', r => process.exit(r.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped
+
+networks:
+  public_net:
+    driver: bridge
+  internal_net:
+    driver: bridge
+    internal: true   # <-- the load-bearing line: no external routing at all
+                      #     for any container attached only to this network.

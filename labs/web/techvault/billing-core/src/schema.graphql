@@ -1,0 +1,44 @@
+# =========================================================
+# billing-core — Internal GraphQL service
+#
+# This service is NEVER exposed to players directly. It sits on the
+# Docker-internal network only (no published port — see docker-compose.yml
+# in step 8). The only way to reach it is via techvault-api's
+# fetchCompetitorPrice SSRF vulnerability.
+#
+# It is a self-contained microservice: separate codebase, separate process,
+# separate data — it does not share techvault-api's database or code.
+# =========================================================
+
+type AccountBalance {
+  accountId: ID!
+  balance: Float!
+  currency: String!
+  # Internal free-text notes field, normally used by billing staff for
+  # reconciliation remarks. In this lab, the challenge flag lives here —
+  # nowhere else in the codebase, filesystem, or environment is treated as
+  # player-facing.
+  notes: String
+}
+
+type Query {
+  """
+  Liveness probe for the internal service. No auth (internal-only trust
+  boundary — this service is never reachable from outside the Docker
+  network in the first place).
+  """
+  healthCheck: String!
+
+  """
+  Internal billing lookup used by upstream services (e.g. invoicing,
+  competitor price reconciliation) to fetch account balance + notes.
+  No authentication: this endpoint is designed to be called only from
+  other trusted internal services on the same network — it was never
+  meant to be reachable from outside that boundary.
+  """
+  accountBalance(accountId: ID!): AccountBalance
+}
+
+schema {
+  query: Query
+}

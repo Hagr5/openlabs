@@ -1,0 +1,4 @@
+# billing-gw internal configuration
+service: billing-gateway
+upstream = http://billing-core.techvault.local:5000
+account_ref = 39303432

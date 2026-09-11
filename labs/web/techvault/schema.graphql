@@ -1,0 +1,199 @@
+# =========================================================
+# TechVault — GraphQL API Schema
+# Laptop e-commerce platform
+# =========================================================
+
+# -------------------
+# Scalars & Enums
+# -------------------
+
+scalar DateTime
+
+enum UserRole {
+  CUSTOMER
+  SUPPORT
+  ADMIN
+}
+
+enum PreviewStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
+
+# -------------------
+# Core Types
+# -------------------
+
+type User {
+  id: ID!
+  username: String!
+  email: String!
+  role: UserRole!
+  createdAt: DateTime!
+}
+
+type AuthPayload {
+  token: String!
+  user: User!
+}
+
+type Laptop {
+  id: ID!
+  name: String!
+  brand: String!
+  price: Float!
+  stock: Int!
+  specs: LaptopSpecs
+}
+
+type LaptopSpecs {
+  cpu: String!
+  ram: String!
+  storage: String!
+  gpu: String
+}
+
+type Review {
+  id: ID!
+  laptopId: ID!
+  author: String!
+  rating: Int!
+  comment: String!
+}
+
+# -------------------
+# Preview / Report feature
+# (innocent-looking name — this is the command-injection surface)
+# -------------------
+
+# Lightweight metadata only — shown in list views (dashboard, "My Reports").
+# Does NOT include the rendered content itself.
+type PreviewArtifact {
+  id: ID!
+  createdAt: DateTime!
+  status: PreviewStatus!
+  title: String!
+}
+
+# Full content of a single artifact — must be fetched explicitly by id.
+type PreviewArtifactContent {
+  id: ID!
+  createdAt: DateTime!
+  status: PreviewStatus!
+  title: String!
+  content: String
+}
+
+type GeneratePreviewResult {
+  artifactId: ID!
+  status: PreviewStatus!
+  # Short-lived log/summary returned synchronously for convenience.
+  # Full content should be retrieved via `previewArtifact`.
+  message: String
+}
+
+# -------------------
+# Competitor pricing feature
+# (innocent-looking name — this is the SSRF surface)
+# -------------------
+
+type CompetitorPriceResult {
+  success: Boolean!
+  # Intentionally minimal — the service does not proxy back
+  # remote content directly, only whether the lookup completed.
+  checkedAt: DateTime!
+  """
+  Informational note only — no remote data is returned here directly.
+  """
+  note: String
+}
+
+# -------------------
+# Auth input types
+# -------------------
+
+# NOTE: `PasswordInput` supports multiple legacy authentication
+# flows (password grant, delegated/SSO metadata). Kept flexible
+# for backward compatibility with the old mobile clients.
+input PasswordInput {
+  value: String
+  username: String
+  ssoProvider: String
+}
+
+# -------------------
+# Root Query
+# -------------------
+
+type Query {
+  """
+  Returns the currently authenticated user's profile.
+  Requires a valid session token.
+  """
+  me: User
+
+  """
+  Browse the laptop catalog. Supports basic filtering.
+  """
+  laptops(brand: String, maxPrice: Float): [Laptop!]!
+
+  """
+  Fetch a single laptop by id.
+  """
+  laptop(id: ID!): Laptop
+
+  """
+  Public customer reviews across the storefront. No authentication
+  required — product reviews are public on any e-commerce site.
+  """
+  reviews: [Review!]!
+
+  """
+  Retrieve the full content of a previously generated preview
+  artifact (e.g. a rendered spec-sheet or price-check summary)
+  by id.
+  """
+  previewArtifact(id: ID!): PreviewArtifactContent
+
+  """
+  List preview artifacts belonging to the current session,
+  most recent first. Returns metadata only — use
+  `previewArtifact(id)` to retrieve full content.
+  """
+  myPreviewArtifacts(limit: Int = 10): [PreviewArtifact!]!
+}
+
+# -------------------
+# Root Mutation
+# -------------------
+
+type Mutation {
+  """
+  Authenticate with username and password, returning a session token.
+  """
+  login(username: String!, password: PasswordInput!): AuthPayload!
+
+  """
+  Generate a lightweight preview (spec-sheet render / source snapshot)
+  for a given source. Used internally by product pages and by the
+  competitor price checker to render a shareable summary.
+  Returns an artifact id that can be polled via `previewArtifact`.
+  """
+  generatePreview(sourceUrl: String!, format: String = "html"): GeneratePreviewResult!
+
+  """
+  Retrieves competitor pricing information for a given laptop
+  by checking a partner/competitor data source.
+  """
+  fetchCompetitorPrice(productId: ID!, target: String!): CompetitorPriceResult!
+}
+
+# -------------------
+# Root Schema
+# -------------------
+
+schema {
+  query: Query
+  mutation: Mutation
+}
