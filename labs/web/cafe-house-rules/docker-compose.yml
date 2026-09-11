@@ -1,0 +1,31 @@
+name: cafe-house-rules
+
+services:
+  flask:
+    image: cafe-house-rules-flask
+    build: ./app
+    command: python flask_app.py
+    restart: always
+
+  cherrypy:
+    image: cafe-house-rules-cherrypy
+    build: ./app
+    command: python cherrypy_app.py
+    restart: always
+
+  bot:
+    image: cafe-house-rules-bot
+    build: ./bot
+    restart: always
+    depends_on:
+      - nginx
+
+  nginx:
+    image: cafe-house-rules-nginx
+    build: ./nginx
+    ports:
+      - "8388:80"
+    restart: always
+    depends_on:
+      - flask
+      - cherrypy
