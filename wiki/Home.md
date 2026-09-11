@@ -12,8 +12,8 @@
     <img src="https://raw.githubusercontent.com/Duckurity/openlabs/main/.github/assets/badges/content-license-light.svg?v=b42ada1f" alt="content: CC-BY-4.0" height="20">
   </picture>
   <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Duckurity/openlabs/main/.github/assets/badges/labs-count-dark.svg?v=5a5aee28">
-    <img src="https://raw.githubusercontent.com/Duckurity/openlabs/main/.github/assets/badges/labs-count-light.svg?v=91d62f45" alt="labs: 1 live" height="20">
+    <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Duckurity/openlabs/main/.github/assets/badges/labs-count-dark.svg?v=ba17c239">
+    <img src="https://raw.githubusercontent.com/Duckurity/openlabs/main/.github/assets/badges/labs-count-light.svg?v=21a61df4" alt="labs: 1 live" height="20">
   </picture>
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/Duckurity/openlabs/main/.github/assets/badges/docker-dark.svg?v=2b6c885f">
