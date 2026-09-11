@@ -11,7 +11,7 @@
 
 **RoomReserve · Behind every meeting is a story.**
 
-[The story](#scenario) · [Your objective](#objective) · [Get started](#quick-start) · [Check a flag](#check-a-captured-flag) · [Reset](#reset-the-lab) · [Rules](#player-rules)
+[The story](#brief) · [Your goal](#goal) · [Setup](#setup) · [Check a flag](#check-a-captured-flag) · [Reset](#reset-the-lab) · [Rules](#player-rules)
 
 </div>
 
@@ -132,10 +132,11 @@ flags. Each flag uses this format:
 
 ## Check a captured flag
 
-After collecting either flag, verify it locally from the `firmdrama` directory:
+After collecting either flag, verify it locally from the `firmdrama` directory
+with the shared repository checker:
 
 ```powershell
-python scripts/check.py
+python ../../../scripts/check.py .
 ```
 
 Paste one captured value at the prompt. The checker reports `checkpoint solved`

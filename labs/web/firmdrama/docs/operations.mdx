@@ -154,7 +154,7 @@ the remaining metadata and comments.
 
 `flag_hash` retains the original single-flag field name. The additional
 `checkpoint_flag_hash` identifies the intermediate stage. The helper only
-synchronizes metadata. The separate host-side [checker](../scripts/check.py)
+synchronizes metadata. The shared host-side [checker](../../../../scripts/check.py)
 compares one player-supplied value against both current digests and reports
 either `checkpoint solved`, `solved`, or `not solved`; it does not call the
 application or retain plaintext flags.
@@ -187,7 +187,7 @@ host. If your system uses `python3`, substitute it for `python`.
 From the challenge root, after initializing `lab.yml`, run:
 
 ```powershell
-python scripts/check.py
+python ../../../scripts/check.py .
 ```
 
 The zero-dependency checker prompts for one flag and compares its SHA-256
@@ -201,8 +201,8 @@ The hashes describe this local instance only. Another installation generates
 its own flags and must run the helper against that instance.
 
 Host-side regression checks cover metadata preservation, invalid or incomplete
-hash pairs, write failures, Docker failures, one-time synchronization, checker stages,
-and checker metadata failures:
+hash pairs, write failures, Docker failures, one-time synchronization, reset locking,
+reset ordering, failure handling, and the rule that reset never downloads images:
 
 ```powershell
 python -m unittest discover -s docs/tools -p test_*.py

@@ -24,9 +24,9 @@ Broken object-level authorization is an access-control failure. The application 
 
 An object can be an invoice, support case, user profile, document, booking, file, message, or nested resource. The identifier can be a number, UUID, filename, slug, GraphQL variable, or a value hidden in a request body. Its format does not decide security. The server-side authorization check does.
 
-:::callout{type="important" title="Authentication is not authorization"}
-A valid session proves who sent the request. It does not prove that the sender owns, manages, or may act on the requested object.
-:::
+> **Authentication is not authorization**
+>
+> A valid session proves who sent the request. It does not prove that the sender owns, manages, or may act on the requested object.
 
 OWASP calls this issue [broken object-level authorization](https://owasp.org/API-Security/editions/2023/en/0xa1-broken-object-level-authorization/). It is part of the broader broken-access-control family.
 
@@ -89,14 +89,12 @@ IDOR is not limited to reading data. A customer-service API might correctly show
 
 Use accounts and objects that the lab provides. Begin with a normal request. Understand its expected response before changing one object reference.
 
-:::steps
 1. Capture a request for an object that belongs to the current test account.
 2. Record the method, object reference, response status, and meaningful fields.
 3. Identify a second permitted test object with a different owner, tenant, or role boundary.
 4. Change only the object reference. Keep the session and every unrelated field unchanged.
 5. Compare the response with the baseline. Check ownership fields and returned content, not only the status code.
 6. Repeat separately for read, create, update, and delete flows when the lab exposes them.
-:::
 
 A `200 OK` is not proof by itself. The endpoint may return a generic success wrapper, an empty object, or the current user's data. A `403` or `404` can both be valid defensive behaviour. What matters is whether the protected object or action becomes available to the wrong principal.
 
@@ -149,16 +147,18 @@ Browse all [labs](/labs), then read [how to play](/play) before starting a lab.
 
 ## FAQ
 
-:::faq
-::faq-item{question="Is IDOR the same as broken access control?"}
+### Is IDOR the same as broken access control?
+
 IDOR is a common object-level form of broken access control. Broken access control also includes missing function-level checks and other authorization failures.
 
-::faq-item{question="Can a random identifier prevent IDOR?"}
+### Can a random identifier prevent IDOR?
+
 No. It can reduce casual guessing, but it cannot decide whether the requester may use an identifier they already know.
 
-::faq-item{question="Should a secure API return 403 or 404?"}
+### Should a secure API return 403 or 404?
+
 Either can be valid. Many APIs return `404` for an inaccessible object to reduce existence disclosure. The important control is that the server does not return or modify an unauthorized object.
 
-::faq-item{question="What should I keep in a lab writeup?"}
+### What should I keep in a lab writeup?
+
 Keep the baseline request, the single changed reference, the response evidence, and a concise statement of the crossed authorization boundary.
-:::
