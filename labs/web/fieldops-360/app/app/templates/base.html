@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="FieldOps 360 — scheduling, dispatch and invoicing for field service companies.">
+  <title>{% block title %}FieldOps 360 — Field Service Management Platform{% endblock %}</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+{% block body %}
+<header class="navbar">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">
+      <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 21V10l9-7 9 7v11a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg></span>
+      FieldOps<em>360</em>
+    </a>
+    <nav class="nav-links">
+      <a href="/#platform">Platform</a>
+      <a href="/#features">Features</a>
+      <a href="/Dashboard">Customer portal</a>
+    </nav>
+    <div class="nav-cta">
+      <a class="btn btn-ghost" href="/Login">Sign in</a>
+      <a class="btn btn-primary" href="/Login">Get started</a>
+    </div>
+  </div>
+</header>
+{% block content %}{% endblock %}
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <a class="brand" href="/">
+          <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M3 21V10l9-7 9 7v11a1 1 0 0 1-1 1h-5v-7h-6v7H4a1 1 0 0 1-1-1z"/></svg></span>
+          FieldOps<em>360</em>
+        </a>
+        <p style="margin-top:16px;max-width:300px">The operating system for trade businesses. Schedule, dispatch, invoice and grow — from one dark, fast console.</p>
+      </div>
+      <div>
+        <h4>Product</h4>
+        <ul>
+          <li><a href="/#platform">Platform</a></li>
+          <li><a href="/#features">Features</a></li>
+          <li><a href="/Login">Customer portal</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/#">About</a></li>
+          <li><a href="/#">Careers</a></li>
+          <li><a href="/#">Press</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="/health">Status</a></li>
+          <li><a href="/#">Help center</a></li>
+          <li><a href="/#">Support</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 FieldOps Systems Ltd. All rights reserved.</span>
+      <span>Lab environment — all data is simulated</span>
+    </div>
+  </div>
+</footer>
+{% endblock %}
+<script src="/static/portal.js"></script>
+</body>
+</html>
