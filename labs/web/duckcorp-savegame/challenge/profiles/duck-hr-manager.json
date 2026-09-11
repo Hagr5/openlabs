@@ -1,0 +1,41 @@
+{
+    "playerName": "HR Manager",
+    "avatarName": "duck-hr-manager",
+    "level": 20,
+    "points": 50000,
+    "inventory": {
+        "items": [
+            {"name": "Employee Records", "quantity": 1},
+            {"name": "Warning Letter", "quantity": 10}
+        ],
+        "currency": {"name": "Duck Coin", "quantity": 4000}
+    },
+    "questsCompleted": [
+        "Hire Muhammad Wael",
+        "Send Onboarding Emails"
+    ],
+    "highScores": [
+        {"score": 45000, "date": "2026-09-01"}
+    ],
+    "options": {
+        "difficulty": "easy",
+        "graphicsQuality": "medium",
+        "soundVolume": 0.8
+    },
+    "Rig_data": {
+        "rig_name": "HR-Terminal",
+        "rig_serial_number": "DC-HR-102",
+        "rig_features": ["payroll-access"]
+    },
+    "suit_details": {
+        "name": "Corporate Suit",
+        "type": "formal suit",
+        "features": ["charisma"],
+        "upgrades": []
+    },
+    "integrity_checks": {
+        "md5_hash": "098f6bcd4621d373cade4e832627b4f6",
+        "sha256_hash": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+    },
+    "notes": "Employee records updated. The new cybersecurity intern is starting this week."
+}

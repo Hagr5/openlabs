@@ -1,0 +1,39 @@
+{
+    "playerName": "Muhammad Wael Farahat Abdullah",
+    "avatarName": "muhammadibn3bdullah",
+    "level": 1,
+    "points": 0,
+    "inventory": {
+        "items": [
+            {"name": "basic lockpick", "quantity": 1},
+            {"name": "energy drink", "quantity": 3}
+        ],
+        "currency": {"name": "Duck Coin", "quantity": 100}
+    },
+    "questsCompleted": [
+        "Join DuckCorp Cybersecurity Team"
+    ],
+    "highScores": [
+        {"score": 0, "date": "2026-09-10"}
+    ],
+    "options": {
+        "difficulty": "hard",
+        "graphicsQuality": "ultra",
+        "soundVolume": 0.9
+    },
+    "Rig_data": {
+        "rig_name": "CTF-Starter-Laptop",
+        "rig_serial_number": "DC-2026-INT",
+        "rig_features": ["basic-recon", "packet-capture"]
+    },
+    "suit_details": {
+        "name": "Intern Hoodie",
+        "type": "stealth suit",
+        "features": ["caffeine boost"],
+        "upgrades": []
+    },
+    "integrity_checks": {
+        "md5_hash": "e10adc3949ba59abbe56e057f20f883e",
+        "sha256_hash": "8d969eef6ecad3c29a3a629280e686cf0c3f5d5a86aff3ca12020c923adc6c92"
+    }
+}

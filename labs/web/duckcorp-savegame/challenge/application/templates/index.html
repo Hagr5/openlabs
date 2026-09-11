@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+   <head>
+      <meta charset="utf-8">
+      <title>DuckCorp SaveGame Manager</title>
+      <meta name="author" content="muhammadibn3bdullah">
+      <link rel="stylesheet" href="/static/css/index.css">
+      <link rel="stylesheet" href="/static/css/emoji.css">
+      <link rel="stylesheet" href="/static/css/cyberpunk.css">
+      <link rel="stylesheet" href="/static/css/admin.css">
+   </head>
+   <body>
+      <div class="flex row w-100 ml-2" style="max-width:1200px;margin: auto;">
+         <div class="column w-65 p-1">
+            <h2 class="play-once">Savegame Manager</h2>
+            <div class="row w-100">
+               <div class="field w-100">
+                  <label class="glow text">Profile Editor</label>
+                  <textarea rows="25" id="profile-editor" spellcheck="false" autofocus></textarea>
+                  <input type="hidden" id="profile-id">
+               </div>
+            </div>
+            <h2></h2>
+            <div class="flex row mt-1">
+               <div class="column">
+                  <button class="green" onclick="updateProfile()">Update Profile</button>
+               </div>
+               <div class="column ml-1">
+                  <p class="glow resp-msg" id="update-resp">Please Wait</p>
+               </div>
+            </div>
+            <div class="flex row w-100 " style="max-width:1200px;margin: auto;">
+               <div class="column w-100 pt-1">
+                  <div class="row w-100">
+                     <div class="field w-100">
+                        <label class="glow text">Profile Importer</label>
+                        <input type="text" placeholder="URL" style="max-width: 760px;" spellcheck="false" id="profile-url"/>
+                     </div>
+                  </div>
+                  <h2></h2>
+                  <div class="flex row mt-1">
+                     <div class="column">
+                        <button class="red" onclick="importProfile()">Import Profile</button>
+                     </div>
+                     <div class="column ml-1">
+                        <p class="glow resp-msg" id="import-resp">Please Wait</p>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="flex column w-32 p-1">
+            <h2>Profile List</h2>
+            <div class="side-menu">
+               <div class="flex column mb-1 hoverable red">
+                  <div class="flex column module right reveal mt-2">
+                     <button class="green fill" onclick="loadProfile('muhammadibn3bdullah')">
+                     LOAD
+                     </button>
+                     <a href="/profiles/muhammadibn3bdullah" target="_blank"><button class="blue fill">
+                     EXPORT
+                     </button>
+                     </a>
+                  </div>
+                  <div class="flex justify-space-between w-100 glow text">
+                     <strong>
+                     Muhammad
+                     </strong>
+                     <strong>
+                     Intern
+                     </strong>
+                  </div>
+                  <div class="glow flex row justify-space-between p-1 pb-2 flex-wrap">
+                     <div class="flex column px-1">
+                        <strong>level</strong>
+                        <span class="glow text">1</span>
+                     </div>
+                     <div class="flex column px-1">
+                        <strong>points</strong>
+                        <span class="glow text">0</span>
+                     </div>
+                  </div>
+               </div>
+               <div class="flex column mb-1 hoverable yellow">
+                  <div class="flex column module right reveal mt-2">
+                     <button class="green fill" onclick="loadProfile('duck-admin-sys')">
+                     LOAD
+                     </button>
+                     <a href="/profiles/duck-admin-sys" target="_blank"><button class="blue fill">
+                     EXPORT
+                     </button>
+                     </a>
+                  </div>
+                  <div class="flex justify-space-between w-100 glow text">
+                     <strong>
+                     DuckCorp Admin
+                     </strong>
+                     <strong>
+                     Admin
+                     </strong>
+                  </div>
+                  <div class="glow flex row justify-space-between p-1 pb-2 flex-wrap">
+                     <div class="flex column px-1">
+                        <strong>level</strong>
+                        <span class="glow text">99</span>
+                     </div>
+                     <div class="flex column px-1">
+                        <strong>points</strong>
+                        <span class="glow text">999999</span>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="flex column mb-1 hoverable">
+               <div class="glow text flex row justify-space-between">
+                  <strong>
+                  Development Lead
+                  </strong>
+                  <strong>
+                  Lead
+                  </strong>
+               </div>
+               <div class="glow flex row justify-space-between p-1 pb-2 flex-wrap">
+                  <div class="flex column px-1">
+                     <strong>level</strong>
+                     <span class="glow text">50</span>
+                  </div>
+                  <div class="flex column px-1">
+                     <strong>points</strong>
+                     <span class="glow text">150000</span>
+                  </div>
+               </div>
+               <div class="flex column module right reveal mt-2">
+                  <button class="green fill" onclick="loadProfile('duck-dev-lead')">
+                  LOAD
+                  </button>
+                  <a href="/profiles/duck-dev-lead" target="_blank"><button class="blue fill">
+                  EXPORT
+                  </button>
+                  </a>
+               </div>
+            </div>
+            <div class="flex column mb-1 hoverable blue">
+               <div class="flex column module right reveal mt-2">
+                  <button class="green fill" onclick="loadProfile('duck-hr-manager')">
+                  LOAD
+                  </button>
+                  <a href="/profiles/duck-hr-manager" target="_blank"><button class="blue fill">
+                  EXPORT
+                  </button>
+                  </a>
+               </div>
+               <div class="flex justify-space-between w-100 glow text">
+                  <strong>
+                  HR Manager
+                  </strong>
+                  <strong>
+                  HR
+                  </strong>
+               </div>
+               <div class="glow flex row justify-space-between p-1 pb-2 flex-wrap">
+                  <div class="flex column px-1">
+                     <strong>level</strong>
+                     <span class="glow text">20</span>
+                  </div>
+                  <div class="flex column px-1">
+                     <strong>points</strong>
+                     <span class="glow text">50000</span>
+                  </div>
+               </div>
+            </div>
+            <div class="flex column hoverable purple">
+               <div class="flex column module right reveal mt-2">
+                  <button class="green fill" onclick="loadProfile('duck-it-support')">
+                  LOAD
+                  </button>
+                  <a href="/profiles/duck-it-support" target="_blank"><button class="blue fill">
+                  EXPORT
+                  </button>
+                  </a>
+               </div>
+               <div class="flex justify-space-between w-100 glow text">
+                  <strong>
+                  IT Support
+                  </strong>
+                  <strong>
+                  Support
+                  </strong>
+               </div>
+               <div class="glow flex row justify-space-between p-1 pb-2 flex-wrap">
+                  <div class="flex column px-1">
+                     <strong>level</strong>
+                     <span class="glow text">15</span>
+                  </div>
+                  <div class="flex column px-1">
+                     <strong>points</strong>
+                     <span class="glow text">35000</span>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <script src="/static/js/bootstrap.bundle.min.js"></script>
+      <script src="/static/js/jquery-3.6.0.min.js"></script>
+      <script src="/static/js/admin.js"></script>
+   </body>
+</html>

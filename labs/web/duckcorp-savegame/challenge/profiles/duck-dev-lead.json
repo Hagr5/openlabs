@@ -1,0 +1,43 @@
+{
+    "playerName": "Development Lead",
+    "avatarName": "duck-dev-lead",
+    "level": 50,
+    "points": 150000,
+    "inventory": {
+        "items": [
+            {"name": "Mechanical Keyboard", "quantity": 1},
+            {"name": "Coffee Cup", "quantity": 5}
+        ],
+        "currency": {"name": "Duck Coin", "quantity": 15000}
+    },
+    "questsCompleted": [
+        "Build SaveGame Manager",
+        "Ignore Security Warnings"
+    ],
+    "highScores": [
+        {"score": 140000, "date": "2026-08-15"}
+    ],
+    "options": {
+        "difficulty": "normal",
+        "graphicsQuality": "high",
+        "soundVolume": 0.5
+    },
+    "Rig_data": {
+        "rig_name": "Dev-Workstation-Alpha",
+        "rig_serial_number": "DC-DEV-001",
+        "rig_features": ["auto-deploy", "debug-mode"]
+    },
+    "suit_details": {
+        "name": "Developer Hoodie",
+        "type": "casual suit",
+        "features": ["noise-cancellation"],
+        "upgrades": [
+            {"name": "caffeine tolerance", "level": 5}
+        ]
+    },
+    "integrity_checks": {
+        "md5_hash": "d41d8cd98f00b204e9800998ecf8427e",
+        "sha256_hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "notes": "TODO: Remember to patch the importProfile function, it might be vulnerable to SSRF. Will fix it after the weekend."
+}
