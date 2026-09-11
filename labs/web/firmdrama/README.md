@@ -25,13 +25,13 @@
 
 ---
 
-## Scenario
+## Brief
 
 RoomReserve coordinates confidential meetings, room bookings, and routine
 Facilities requests at the fictional Alder & Vale law firm. You are Mike, an associate with an ordinary firm account. A partner booking has caught
 your attention, and the application may reveal more than it should.
 
-## Objective
+## Goal
 
 Investigate the application's observable REST API behavior and retrieve the
 challenge flags. The browser interface supports everyday RoomReserve tasks;
@@ -54,7 +54,7 @@ the challenge can also be completed entirely with an HTTP client.
 - An available local port `8080`. The first build requires internet access to
   download images and packages; the running lab needs no external service.
 
-## Quick start
+## Setup
 
 ### 1. Start RoomReserve
 
