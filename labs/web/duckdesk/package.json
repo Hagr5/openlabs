@@ -1,0 +1,19 @@
+{
+  "name": "duckdesk",
+  "version": "1.0.0",
+  "description": "Duckurity Internal IT Helpdesk API",
+  "main": "app/index.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node app/index.mjs",
+    "seed": "node app/db/seed.mjs",
+    "test": "node tests/validate.mjs"
+  },
+  "dependencies": {
+    "@apollo/server": "^4.11.0",
+    "better-sqlite3": "^11.7.0",
+    "graphql": "^16.9.0",
+    "graphql-tag": "^2.12.7",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
