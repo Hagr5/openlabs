@@ -1,0 +1,17 @@
+USE firmdrama;
+SET FOREIGN_KEY_CHECKS = 0;
+TRUNCATE TABLE audit_events;
+TRUNCATE TABLE delegation_approvals;
+TRUNCATE TABLE flags;
+TRUNCATE TABLE tickets;
+TRUNCATE TABLE messages;
+TRUNCATE TABLE conversation_participants;
+TRUNCATE TABLE conversations;
+TRUNCATE TABLE bookings;
+TRUNCATE TABLE dashboard_booking_links;
+TRUNCATE TABLE dashboards;
+TRUNCATE TABLE rooms;
+TRUNCATE TABLE sessions;
+TRUNCATE TABLE users;
+TRUNCATE TABLE roles;
+SET FOREIGN_KEY_CHECKS = 1;

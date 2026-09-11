@@ -1,0 +1,44 @@
+# Application build: deny everything, then admit only required source types.
+# Ingress uses its own stricter Dockerfile.ingress.dockerignore.
+**
+!entrypoint.sh
+!src/**/*.py
+!src/requirements.txt
+!src/templates/**/*.html
+!src/static/**/*.css
+!src/static/**/*.js
+!src/static/**/*.svg
+!database/*.sql
+!scripts/*.py
+!scripts/*.sh
+!solver/*.py
+!tests/*.py
+
+# Defense in depth inside admitted directories.
+**/__pycache__/
+**/*.py[cod]
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.venv/
+**/venv/
+**/node_modules/
+**/.git/
+**/.gitkeep
+**/.env
+**/.env.*
+**/*.key
+**/*.pem
+**/*.p12
+**/*.pfx
+**/*.log
+**/*.bak
+**/*.tmp
+
+# Documentation, host-only tools, and local evidence never enter this context.
+scripts/check.py
+scripts/sync_flag_hash.py
+docs/
+tmp/
+output/
+.playwright-cli/

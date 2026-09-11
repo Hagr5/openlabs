@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <title>RoomReserve | Rooms</title>
+</head>
+
+<body data-page="rooms">
+  {% include 'partials/nav.html' %}
+  <main class="page">
+    <section class="hero compact">
+      <div>
+        <p class="eyebrow">Room directory</p>
+        <h1>Book a room</h1>
+        <p class="muted">Select an available room and record the matter details for your meeting.</p>
+      </div>
+    </section>
+    <section class="content-grid split-equal">
+      <article class="panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">Availability</p>
+            <h2>Rooms</h2>
+          </div>
+        </div>
+        <div id="room-list" class="booking-list">
+          <p class="muted">Loading rooms…</p>
+        </div>
+      </article>
+      <article class="panel">
+        <p class="eyebrow">New reservation</p>
+        <h2>Reserve a room</h2>
+        <form id="booking-form" class="stack compact-stack"><label>Room<select id="booking-room" name="room_id"
+              required>
+              <option value="">Loading rooms…</option>
+            </select></label><label>Matter code<input name="matter_code" maxlength="40"
+              required></label><label>Purpose<input name="purpose" maxlength="255" required></label><label>Starts<input
+              name="starts_at" type="datetime-local" required></label><label>Ends<input name="ends_at"
+              type="datetime-local" required></label><button type="submit">Confirm booking</button>
+          <p id="booking-status" class="form-error" role="status"></p>
+        </form>
+      </article>
+    </section>
+  </main>
+  <script src="/static/js/app.js" defer></script>
+</body>
+
+</html>

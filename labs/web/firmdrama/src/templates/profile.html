@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <title>RoomReserve | Profile</title>
+</head>
+
+<body data-page="profile">
+  {% include 'partials/nav.html' %}
+  <main class="page">
+    <section class="hero compact">
+      <div>
+        <p class="eyebrow">Account</p>
+        <h1>Your profile</h1>
+        <p class="muted">Keep your internal contact details current.</p>
+      </div>
+    </section>
+    <section class="panel profile-panel">
+      <p class="eyebrow">Contact details</p>
+      <h2>Profile information</h2>
+      <form id="profile-form" class="stack compact-stack"><label>Display name<input id="profile-display-name"
+            name="display_name" maxlength="120" required></label><label>Department<input id="profile-department"
+            name="department" maxlength="120" required></label><label>Phone extension<input id="profile-phone-extension"
+            name="phone_extension" maxlength="20" required></label><button type="submit">Save profile</button>
+        <p id="profile-status" class="form-error" role="status"></p>
+      </form>
+    </section>
+  </main>
+  <script src="/static/js/app.js" defer></script>
+</body>
+
+</html>

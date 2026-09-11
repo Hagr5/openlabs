@@ -1,0 +1,66 @@
+# Local configuration and private credentials; keep the documented template.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+
+# Python environments, bytecode, caches and packaging output.
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.hypothesis/
+.tox/
+.nox/
+*.egg-info/
+.eggs/
+/build/
+/dist/
+
+# Test coverage and generated browser evidence.
+.coverage
+.coverage.*
+coverage.xml
+htmlcov/
+.playwright-cli/
+playwright-report/
+test-results/
+
+# Scratch work, local reports, logs and database exports.
+/tmp/
+/temp/
+/output/
+/artifacts/
+/backups/
+*.log
+*.log.*
+*.bak
+*.orig
+*.rej
+*.tmp
+*.temp
+*.sql.gz
+*.dump
+*.sqlite
+*.sqlite3
+
+# Editor, operating-system and optional local frontend-tool files.
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+._*
+Thumbs.db
+Desktop.ini
+node_modules/
+.cache/

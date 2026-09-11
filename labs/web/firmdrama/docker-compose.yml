@@ -1,0 +1,81 @@
+services:
+  firmdrama:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: firmdrama:local
+    environment:
+      FIRMDRAMA_ENVIRONMENT: production
+      FIRMDRAMA_DATABASE_REQUIRED: "true"
+      FIRMDRAMA_DB_PASSWORD: ${FIRMDRAMA_DB_PASSWORD:-firmdrama-local-only}
+      FIRMDRAMA_TRUSTED_HOSTS: ${FIRMDRAMA_TRUSTED_HOSTS:-localhost,127.0.0.1,firmdrama}
+      FIRMDRAMA_COOKIE_SECURE: ${FIRMDRAMA_COOKIE_SECURE:-false}
+      FIRMDRAMA_MAX_CONTENT_LENGTH: ${FIRMDRAMA_MAX_CONTENT_LENGTH:-65536}
+    init: true
+    restart: "no"
+    mem_limit: 768m
+    cpus: 1.0
+    pids_limit: 160
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m,mode=1777,uid=10001,gid=10001
+      - /run/mysqld:rw,noexec,nosuid,size=1m,mode=0750,uid=10001,gid=10001
+      - /var/lib/mysql:rw,noexec,nosuid,size=512m,uid=10001,gid=10001
+      - /var/log/mysql:rw,noexec,nosuid,size=16m,uid=10001,gid=10001
+      - /home/olivia/DoNotOpenThisFolder:rw,noexec,nosuid,size=1m,mode=0750,uid=10001,gid=10001
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    networks:
+      - firmdrama_internal
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+
+  firmdrama_ingress:
+    build:
+      context: .
+      dockerfile: Dockerfile.ingress
+    image: firmdrama-ingress:local
+    environment:
+      FIRMDRAMA_MAX_CONNECTIONS: "64"
+      FIRMDRAMA_IDLE_TIMEOUT_SECONDS: "30"
+      FIRMDRAMA_CONNECT_TIMEOUT_SECONDS: "3"
+    ports:
+      - "127.0.0.1:8080:8000"
+    depends_on:
+      firmdrama:
+        condition: service_healthy
+    init: true
+    restart: "no"
+    read_only: true
+    mem_limit: 64m
+    cpus: 0.25
+    pids_limit: 64
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health', timeout=3)"]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 5s
+    networks:
+      - firmdrama_internal
+      - firmdrama_ingress
+
+networks:
+  firmdrama_internal:
+    driver: bridge
+    internal: true
+    enable_ipv6: false
+    driver_opts:
+      com.docker.network.bridge.gateway_mode_ipv4: isolated
+  firmdrama_ingress:
+    driver: bridge

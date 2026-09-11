@@ -1,0 +1,3 @@
+# The ingress image needs only its standard-library proxy module.
+**
+!ingress_proxy.py

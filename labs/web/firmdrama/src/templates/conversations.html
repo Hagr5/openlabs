@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="/static/css/app.css">
+  <title>RoomReserve | Conversations</title>
+</head>
+
+<body data-page="conversations">
+  {% include 'partials/nav.html' %}
+  <main class="page">
+    <section class="hero compact">
+      <div>
+        <p class="eyebrow">Internal communications</p>
+        <h1 id="conversations-title">Conversations</h1>
+        <p id="conversations-meta" class="muted">Keep firm discussions organized and appropriately confidential.</p>
+      </div>
+    </section>
+    <section class="panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">Workspace</p>
+          <h2>Recent conversations</h2>
+        </div>
+      </div>
+      <div id="conversation-list" class="conversation-list">
+        <p class="muted">Loading conversations…</p>
+      </div>
+    </section>
+  </main>
+  <script src="/static/js/app.js" defer></script>
+</body>
+
+</html>
