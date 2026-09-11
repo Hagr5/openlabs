@@ -1,0 +1,56 @@
+services:
+  vault-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: ctf/vault-api:1.0.0
+    container_name: vault-api
+
+    restart: unless-stopped
+
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+
+    tmpfs:
+      - /tmp:size=64m,mode=1777
+      - /home/ctf/tmp:size=32m,mode=1700
+
+    user: "1000:1000"
+
+    mem_limit: 256m
+    memswap_limit: 256m
+    mem_reservation: 128m
+    cpus: 0.5
+    pids_limit: 128
+
+    networks:
+      - ctf_vault_internal
+
+    ports:
+      - "0.0.0.0:8080:8000"
+
+    # FLAG is injected at runtime. Compose auto-loads the sibling .env file
+    # so `cp .env.example .env` (then edit FLAG) is all local setup requires.
+    environment:
+      FLAG: ${FLAG:-duck{flag_not_configured}}
+
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 15s
+
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+networks:
+  ctf_vault_internal:
+    driver: bridge
+
