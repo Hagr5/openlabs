@@ -37,7 +37,7 @@ API-only vulnerabilities remain part of the challenge.
 | Final packaged source | 54 application files and ingress proxy match local source | SHA-256 comparison after the final rebuild |
 | Publication hygiene | 81 retained files scanned; no complete flags or private-key blocks detected | Limited pattern scan; ignore files unchanged and verified against the pre-fix copy |
 | Documentation links | 163 local links and anchors pass | Checked after the current documentation updates |
-| Player checker and reset helper | Both current flags accepted; wrong value rejected | Runtime values stayed in memory and were suppressed from output; 14 host regression tests cover one-time synchronization, reset locking, ordering, and failure handling |
+| Player checker and reset helper | Both current flags accepted; wrong value rejected | Runtime values stayed in memory and were suppressed from output; 11 host regression tests cover one-time synchronization, reset locking, ordering, and failure handling |
 | OpenAPI validator | Passed: 20 operations, 34 schemas, 22 examples | Static route, schema, example, and distribution checks |
 | Updated ingress image, Docker Scout | 0 Critical / 0 High / 0 Medium / 0 Low | Digest prefix `f7f2f736b163`; package upgrade includes libuuid 2.42.3-r1 |
 | Application image, Docker Scout | 0 Critical / 0 High / 0 Medium / 0 Low | Digest prefix `733598548f0c`; 213 packages indexed |

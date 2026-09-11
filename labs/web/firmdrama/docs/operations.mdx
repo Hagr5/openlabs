@@ -201,8 +201,8 @@ The hashes describe this local instance only. Another installation generates
 its own flags and must run the helper against that instance.
 
 Host-side regression checks cover metadata preservation, invalid or incomplete
-hash pairs, write failures, Docker failures, one-time synchronization, checker stages,
-and checker metadata failures:
+hash pairs, write failures, Docker failures, one-time synchronization, reset locking,
+reset ordering, failure handling, and the rule that reset never downloads images:
 
 ```powershell
 python -m unittest discover -s docs/tools -p test_*.py

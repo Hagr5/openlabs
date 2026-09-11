@@ -140,7 +140,6 @@ firmdrama/
     |-- openapi.yaml               # complete maintainer JSON API reference
     |-- tools/
     |   |-- validate_openapi.py    # static documentation checks
-    |   |-- test_check.py           # shared checker regression checks
     |   |-- test_host_reset.py      # host-side reset-helper regression checks
     |   |-- test_sync_flag_hash.py  # host-side hash synchronizer regression checks
     |   `-- requirements.txt      # host-only documentation dependencies
