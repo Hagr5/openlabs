@@ -1,11 +1,10 @@
 #!/usr/bin/env python3
-"""Generate one hash-seeded dither gradient per lab into public/shapes/.
+"""Generate one hash-seeded vector shape per lab into public/shapes/.
 
-Each lab gets a unique Bayer-ordered gradient derived from sha256 of its
-flag_hash (a hash of a hash reveals nothing). Ink field resolving to
-Ember at the sweep peak, on transparent ground. The card banner renders
-the SVG full-bleed with object-cover over a brand wash, then overlays
-the live Ember wave canvas.
+Each lab gets a unique geometric composition derived from sha256 of its
+flag_hash (a hash of a hash reveals nothing). Ink shapes with one Ember
+accent on transparent ground, built for the DitheredObject renderer,
+which extrudes alpha contours and applies the dither at render time.
 
 Deterministic: same lab.yml produces same SVG bytes. No network.
 
@@ -17,7 +16,6 @@ Usage:
 from __future__ import annotations
 
 import hashlib
-import math
 import random
 import sys
 from pathlib import Path
@@ -30,63 +28,6 @@ SIZE = 256
 INK = "#1E1E1E"
 EMBER = "#FF3616"
 
-BAYER_4 = (
-    (0, 8, 2, 10),
-    (12, 4, 14, 6),
-    (3, 11, 1, 9),
-    (15, 7, 13, 5),
-)
-
-
-def dither_dots(
-    seed: int,
-    w: float,
-    h: float,
-    cell: float = 16.0,
-    stops: tuple[tuple[float, str, float], ...] = ((0.0, INK, 1.0), (0.82, EMBER, 1.0)),
-    x0: float = 0.0,
-    y0: float = 0.0,
-    angles: tuple[int, ...] = (0, 45, 90, 135, 180, 225, 270, 315),
-) -> str:
-    """Bayer-ordered gradient dots. Deterministic per seed.
-
-    A linear sweep picks direction at random; each cell fires when the
-    sweep value beats the Bayer threshold. Stops map sweep ranges to
-    (fill, opacity); cells below the first stop stay empty.
-    """
-
-    rng = random.Random(seed)
-    angle = rng.choice(list(angles)) * math.pi / 180
-    dx, dy = math.cos(angle), math.sin(angle)
-    corners = [(x0, y0), (x0 + w, y0), (x0, y0 + h), (x0 + w, y0 + h)]
-    projs = [x * dx + y * dy for x, y in corners]
-    lo, span = min(projs), max(projs) - min(projs) or 1.0
-    parts: list[str] = []
-    row = 0
-    y = y0
-    while y < y0 + h:
-        col = 0
-        x = x0
-        while x < x0 + w:
-            t = ((x + cell / 2) * dx + (y + cell / 2) * dy - lo) / span
-            threshold = (BAYER_4[row % 4][col % 4] + 0.5) / 16.0
-            if t > threshold:
-                fill, op = stops[0][1], stops[0][2]
-                for min_t, f, o in stops:
-                    if t >= min_t:
-                        fill, op = f, o
-                if op > 0:
-                    op_str = f' opacity="{op:g}"' if op < 1 else ""
-                    parts.append(
-                        f'<rect x="{x:g}" y="{y:g}" width="{cell:g}" '
-                        f'height="{cell:g}" fill="{fill}"{op_str}/>'
-                    )
-            x += cell
-            col += 1
-        y += cell
-        row += 1
-    return "\n".join(parts)
-
 
 def seed_for(flag_hash: str, name: str) -> int:
     return int.from_bytes(
@@ -96,18 +37,37 @@ def seed_for(flag_hash: str, name: str) -> int:
 
 
 def compose(seed: int) -> str:
-    """Seeded dither gradient on an 8px grid: Ink field resolving to
-    Ember at the sweep peak. Transparent ground over the brand wash.
-    Sweep runs across the width. The card banner crops vertically,
-    so a vertical sweep would hide the Ember peak."""
-    return dither_dots(seed, SIZE, SIZE, cell=8.0, angles=(0, 180))
+    """Seeded geometric composition: rotated squares, bars, one Ember cell."""
+    rng = random.Random(seed)
+    parts: list[str] = []
+    cells = rng.randint(3, 6)
+    for _ in range(cells):
+        size = rng.choice([32, 48, 64, 96])
+        x = rng.randint(0, (SIZE - size) // 16) * 16
+        y = rng.randint(0, (SIZE - size) // 16) * 16
+        angle = rng.choice([0, 0, 0, 15, 30, 45])
+        if angle:
+            cx, cy = x + size / 2, y + size / 2
+            parts.append(
+                f'<rect x="{x}" y="{y}" width="{size}" height="{size}" '
+                f'fill="{INK}" transform="rotate({angle} {cx:g} {cy:g})"/>'
+            )
+        else:
+            parts.append(
+                f'<rect x="{x}" y="{y}" width="{size}" height="{size}" fill="{INK}"/>'
+            )
+    ax = rng.randint(0, (SIZE - 32) // 16) * 16
+    ay = rng.randint(0, (SIZE - 32) // 16) * 16
+    parts.append(
+        f'<rect x="{ax}" y="{ay}" width="32" height="32" fill="{EMBER}"/>'
+    )
+    return "\n".join(parts)
 
 
 def render(name: str, flag_hash: str) -> bytes:
     shapes = compose(seed_for(flag_hash, name))
     svg = (
         f'<svg width="{SIZE}" height="{SIZE}" viewBox="0 0 {SIZE} {SIZE}" '
-        f'preserveAspectRatio="xMidYMid slice" '
         f'fill="none" xmlns="http://www.w3.org/2000/svg">\n'
         f"{shapes}\n</svg>\n"
     )

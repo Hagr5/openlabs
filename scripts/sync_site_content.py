@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import subprocess
 import sys
 import time
@@ -92,6 +93,36 @@ CACHE_DIR = ROOT / ".cache"
 GITHUB_CACHE = CACHE_DIR / "github.json"
 GITHUB_TTL = 7 * 24 * 3600
 
+MARKDOWN_IMAGE_RE = re.compile(r"!\[([^\]]*)\]\(([^)]+)\)")
+ASSET_URL = "/labs-assets"
+
+
+def rewrite_lab_images(readme: str, lab_dir: Path, lab_name: str) -> str:
+    """Rewrite image srcs that live inside the lab to site assets.
+
+    Lab READMEs reference their own files with relative paths so they
+    render on GitHub. Those relative paths break once the body is copied
+    into content/labs/, so copy the referenced file under public/ and
+    point the generated MDX at that URL. Untouched (http/https or
+    root-absolute) srcs pass through.
+    """
+
+    def repl(match: re.Match) -> str:
+        alt, src = match.group(1), match.group(2).strip()
+        if src.startswith(("http://", "https://", "/", "#", "mailto:")):
+            return match.group(0)
+        candidate = (lab_dir / src).resolve()
+        if not candidate.is_file() or lab_dir.resolve() not in candidate.parents:
+            return match.group(0)
+        rel = candidate.relative_to(lab_dir)
+        dest = PUBLIC / "labs-assets" / lab_name / rel
+        if not dest.exists() or dest.read_bytes() != candidate.read_bytes():
+            dest.parent.mkdir(parents=True, exist_ok=True)
+            shutil.copyfile(candidate, dest)
+        return f"![{alt}]({ASSET_URL}/{lab_name}/{rel.as_posix()})"
+
+    return MARKDOWN_IMAGE_RE.sub(repl, readme)
+
 
 def repo_slug() -> str:
     """Owner/Repo from the origin remote, defaulting to the known repo."""
@@ -147,24 +178,6 @@ def login_from_email(email: str) -> str:
     if email.endswith("@users.noreply.github.com"):
         return email.split("@")[0].split("+")[-1]
     return ""
-
-
-def github_user(login: str, cache: dict) -> dict[str, str]:
-    """Public profile fields for a login, cached. Empty when unresolvable."""
-    key = f"user:{login.lower()}"
-    entry = cache.get(key)
-    if entry and time.time() - entry.get("ts", 0) < GITHUB_TTL:
-        return entry
-    profile: dict[str, str] = {}
-    data = github_api(f"/users/{login}")
-    if isinstance(data, dict):
-        if isinstance(data.get("name"), str) and data["name"].strip():
-            profile["name"] = data["name"].strip()
-        if isinstance(data.get("avatar_url"), str):
-            profile["avatar"] = data["avatar_url"]
-    if profile:
-        cache[key] = {**profile, "ts": time.time()}
-    return profile
 
 
 def commit_login(owner_repo: str, sha: str, cache: dict) -> str:
@@ -253,10 +266,8 @@ def github_people(lab_dir: Path) -> tuple[dict[str, str], dict[str, str]]:
         creator["author_date"] = date.strip()
     login = login_from_email(email.strip()) or commit_login(owner_repo, sha.strip(), cache)
     if login:
-        profile = github_user(login, cache)
-        creator["author_name"] = profile.get("name", login)
         creator["author_url"] = f"https://github.com/{login}"
-        creator["author_avatar"] = profile.get("avatar", f"https://github.com/{login}.png")
+        creator["author_avatar"] = f"https://github.com/{login}.png"
     else:
         creator["author_url"] = (
             f"https://github.com/{owner_repo}/commits/main/{lab_rel}"
@@ -266,11 +277,10 @@ def github_people(lab_dir: Path) -> tuple[dict[str, str], dict[str, str]]:
     pr = introducing_pr(owner_repo, lab_rel, cache)
     merger = pr.get("merger", "")
     if merger and merger != login:
-        profile = github_user(merger, cache)
         verifier = {
-            "verifier_name": profile.get("name", merger),
+            "verifier_name": merger,
             "verifier_url": f"https://github.com/{merger}",
-            "verifier_avatar": profile.get("avatar", f"https://github.com/{merger}.png"),
+            "verifier_avatar": f"https://github.com/{merger}.png",
         }
 
     github_cache_save(cache)
@@ -355,7 +365,15 @@ def sync() -> list[str]:
         track = lab_yml.parent.parent.name
         meta = parse_lab_yml(lab_yml)
         readme_path = lab_yml.parent / "README.md"
-        readme = readme_path.read_text(encoding="utf-8") if readme_path.exists() else ""
+        readme = (
+            rewrite_lab_images(
+                readme_path.read_text(encoding="utf-8"),
+                lab_yml.parent,
+                meta.get("name", lab_yml.parent.name),
+            )
+            if readme_path.exists()
+            else ""
+        )
         port = read_port(track, meta.get("name", lab_yml.parent.name), readme)
         meta.setdefault("name", lab_yml.parent.name)
         meta.setdefault("track", track)

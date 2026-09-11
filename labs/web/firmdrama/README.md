@@ -1,7 +1,7 @@
 ![firmdrama - RoomReserve, a fictional Alder & Vale API security lab](docs/assets/firmdrama-banner.svg)
 
 <p align="center">
-  <strong>Created by Ziad Osama El-Boshy</strong><br>
+  <strong>Created by Ziad Osama El-Boshy</strong><br />
   <sub>Challenge author &amp; creator</sub>
 </p>
 
@@ -191,4 +191,4 @@ Initialize the hashes again after starting the next session.
 
 ---
 
-<p align="center"><strong>firmdrama · Web/API</strong><br>A fictional workplace. A hands-on API investigation.</p>
+<p align="center"><strong>firmdrama · Web/API</strong><br />A fictional workplace. A hands-on API investigation.</p>

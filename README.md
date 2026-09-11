@@ -11,7 +11,7 @@
 <p align="center">
   <a href="LICENSE"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/badges/code-license-dark.svg?v=6164d6e0"><img src=".github/assets/badges/code-license-light.svg?v=d7baa62a" alt="code: Apache-2.0" height="20"></picture></a>
   <a href="LICENSE-CONTENT"><picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/badges/content-license-dark.svg?v=b83304a6"><img src=".github/assets/badges/content-license-light.svg?v=b42ada1f" alt="content: CC-BY-4.0" height="20"></picture></a>
-  <picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/badges/labs-count-dark.svg?v=ba17c239"><img src=".github/assets/badges/labs-count-light.svg?v=21a61df4" alt="labs: 1 live" height="20"></picture>
+  <picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/badges/labs-count-dark.svg?v=5a5aee28"><img src=".github/assets/badges/labs-count-light.svg?v=91d62f45" alt="labs: 1 live" height="20"></picture>
   <picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/badges/docker-dark.svg?v=2b6c885f"><img src=".github/assets/badges/docker-light.svg?v=d7abbc30" alt="docker: compose v2" height="20"></picture>
   <picture><source media="(prefers-color-scheme: dark)" srcset=".github/assets/badges/checker-dark.svg?v=cff908fc"><img src=".github/assets/badges/checker-light.svg?v=6052eb0b" alt="checker: python3" height="20"></picture>
 </p>
@@ -99,7 +99,7 @@ not how long it takes.
 
 </div>
 
-## Labs <sub>24 live</sub>
+## Labs <sub>1 live</sub>
 
 <div align="center">
 

@@ -160,6 +160,97 @@ Source: https://openlabs.duckurity.com/labs
 Open a brief. Run the service. Find the flag.
 Start with an `easy` lab. Read [how to play](/play) when you need the loop. Read the [rules](/rules) before you publish.
 
+## Aegis ctf
+
+Source: https://openlabs.duckurity.com/labs/aegis-ctf
+
+## Scenario
+AEGIS is an internal employee portal for a fictional company. From the outside, it looks like a simple web application with a login page, employee profiles, and self-service features.
+Behind the application, multiple backend services communicate with the same underlying data. Your goal is to investigate how these services interact and identify the trust weaknesses between them.
+## Objective
+Recover the full flag by progressing through the different API services exposed by the application.
+The challenge involves multiple API technologies, including REST, GraphQL, and gRPC.
+## Difficulty
+**Hard**
+Experience with Burp Suite and modifying HTTP requests is recommended.
+## Prerequisites
+* Docker Desktop or Docker Engine with Docker Compose
+* A web browser
+* Burp Suite or another HTTP intercepting proxy
+* Basic knowledge of REST APIs, GraphQL, and gRPC
+## Startup
+From the lab directory, run:
+```bash
+docker compose up --build
+```
+Wait for the application to start.
+## Connection Information
+The challenge is available at:
+```text
+http://localhost:3000
+```
+This is the main entry point to the challenge.
+## Starting Access
+A low-privilege employee account can be discovered from the application. Carefully inspect the starting page and the requests it makes.
+Do not rely on generic credential guessing.
+## Reset
+The challenge state is stored in memory. To reset the challenge, restart the container:
+```bash
+docker compose restart
+```
+## Flag Format
+```text
+duck{...}
+```
+The complete flag requires progress through multiple parts of the application.
+## Rules
+* Only interact with the services exposed by this local challenge.
+* Do not attack external systems.
+* Generic credential brute-forcing is not part of the intended solution.
+* Automated enumeration and fuzzing are allowed where appropriate.
+* Carefully inspect HTTP responses and API behavior for additional information.
+Good luck!
+
+## Cafe house rules
+
+Source: https://openlabs.duckurity.com/labs/cafe-house-rules
+
+`medium` · `web`
+## Brief
+Quack and Grind Cafe publishes house rules for guests. Staff can review cafe links through an internal browser. Find the back-room route and read the flag.
+## Setup
+Run these from the lab directory:
+```bash
+docker compose up -d
+```
+Open `http://localhost:8388`.
+## Goal
+Find the flag. Verify the solve from the lab directory:
+```bash
+python3 ../../../scripts/check.py .
+```
+
+## Cloudvault
+
+Source: https://openlabs.duckurity.com/labs/cloudvault
+
+`hard` · `web`
+## Brief
+CloudVault is a document-ingestion platform. The API accepts URLs and imports documents from them. A low-privileged account is seeded. Retrieve the flag hidden in the CloudVault environment.
+## Setup
+Run these from the lab directory:
+```bash
+docker compose up -d
+```
+The GraphQL API listens on `http://localhost:8080/graphql`. A seeded account is provided:
+- Username: `player`
+- Password: `changeme123`
+## Goal
+Authenticate and explore the API. Retrieve the flag. Verify the solve from the lab directory:
+```bash
+python3 ../../../scripts/check.py .
+```
+
 ## Duck cross
 
 Source: https://openlabs.duckurity.com/labs/duck-cross
@@ -182,12 +273,743 @@ python3 ../../../scripts/check.py .
 Practise in this lab:
 - [Broken object-level authorization (IDOR)](/technique/idor)
 
+## Duck nest
+
+Source: https://openlabs.duckurity.com/labs/duck-nest
+
+`medium` · `web`
+## Brief
+The nest is the conservation office's internal project workspace. Staff and interns log in with workspace accounts and keep project documents inside. One project stays restricted. Read its documents.
+Sign in with `intern` and `marshroad`.
+## Setup
+Run these from the lab directory:
+```bash
+docker compose up -d
+```
+Open `http://localhost:8378`.
+## Goal
+Extract the flag from the restricted project. Verify the solve from the lab directory:
+```bash
+python3 ../../../scripts/check.py .
+```
+
+## Duckrpc_archive
+
+Source: https://openlabs.duckurity.com/labs/duckrpc_archive
+
+## Scenario
+DuckRPC Archive is an internal document archive service used by employees to access and search company documents.
+The application exposes its functionality through a gRPC interface.
+You have been provided with access to a standard employee account.
+Some internal information may be accessible through the available services.
+Your task is to investigate the application and retrieve the challenge flag.
+---
+## Objective
+Investigate the DuckRPC Archive service and retrieve the challenge flag.
+---
+## Difficulty
+Medium
+---
+## Prerequisites
+The following knowledge and tools may be useful:
+* Basic understanding of gRPC
+* API and service enumeration
+* Authentication tokens and request metadata
+* Basic database and input testing concepts
+* Docker and Docker Compose
+* A gRPC client such as `grpcurl`
+---
+## Starting Point
+You have been provided with the following employee credentials:
+```text
+Username: alice
+Password: AliceArchive2026!
+```
+The application exposes a gRPC service locally.
+---
+## Startup
+Start the challenge with:
+```bash
+docker compose up --build
+```
+The gRPC service will be available at:
+```text
+localhost:50051
+```
+---
+## Connection Information
+Protocol:
+```text
+gRPC
+```
+Address:
+```text
+localhost:50051
+```
+The challenge service is configured without TLS for local training purposes.
+Example connection test:
+```bash
+grpcurl -plaintext localhost:50051 list
+```
+---
+## Reset
+To reset the challenge to its initial state:
+```bash
+docker compose down --remove-orphans
+docker compose up --build
+```
+The challenge database is initialized automatically when the application starts.
+Any previously issued authentication tokens become invalid after the service is restarted.
+---
+## Flag Format
+The flag follows this format:
+```text
+duck{...}
+```
+---
+## Rules
+* Perform testing only against the provided local challenge environment.
+* Do not target external systems or services.
+* Do not modify the challenge source code while solving the challenge.
+* Do not inspect or extract the flag directly from configuration files, environment variables, container metadata, or source code.
+* Retrieve the flag through the intended application behavior.
+---
+## Notes
+This challenge is designed as a controlled local training environment.
+The challenge should be solved through investigation and interaction with the exposed gRPC services.
+
+## Duckvault
+
+Source: https://openlabs.duckurity.com/labs/duckvault
+
+Difficulty: `medium`
+Track: `web`
+## Brief
+DuckVault is an employee records portal.
+You have a normal employee account. The portal shows assigned records and loads data from internal API endpoints.
+Some records were moved from a legacy archive.
+## Setup
+Start the lab.
+```bash
+docker compose up -d
+```
+The lab runs on port `8378`.
+Open `http://localhost:8378/login`.
+Use this account.
+```text
+Username: intern
+Password: intern123
+```
+## Goal
+Find the flag.
+Check your solve from the repository root.
+```bash
+python3 scripts/check.py labs/web/duckvault
+```
+The flag format is `duck{...}`.
+## Techniques
+Practise in this lab:
+- [Broken object-level authorization (IDOR)](/technique/idor)
+
+## Duckvault_web_ctf
+
+Source: https://openlabs.duckurity.com/labs/duckvault_web_ctf
+
+## Scenario
+DuckVault is an internal document management API used by employees to store and access company documents.
+You have been provided with access to a standard user account.
+Some sensitive information may be accessible through the application's API.
+## Objective
+Investigate the DuckVault API and retrieve the challenge flag.
+## Difficulty
+Easy
+## Prerequisites
+* Basic knowledge of HTTP and REST APIs
+* Basic API enumeration
+* Familiarity with authentication tokens
+* A tool such as Burp Suite, curl, or a web browser
+## Starting Point
+Use the following credentials:
+```text
+Username: alice
+Password: AliceVault2026!
+```
+The application is available at:
+```text
+http://localhost:8000
+```
+## Startup
+Start the challenge with:
+```bash
+docker compose up --build
+```
+Then access:
+```text
+http://localhost:8000
+```
+## Reset
+To reset the challenge to its initial state:
+```bash
+docker compose down --remove-orphans
+docker compose up --build
+```
+The challenge initializes its data automatically on startup.
+## Flag Format
+The flag follows this format:
+```text
+duck{...}
+```
+## Rules
+* Perform testing only against the provided local challenge environment.
+* Do not target external systems or services.
+* Do not modify the challenge source code while solving it.
+## Techniques
+Practise in this lab:
+- [Broken object-level authorization (IDOR)](/technique/idor)
+
+## Fieldops 360
+
+Source: https://openlabs.duckurity.com/labs/fieldops-360
+
+MEDIUM · web
+## Brief
+FieldOps 360 is a field service platform for trade companies. Tenants manage
+jobs, customers, and outbound email from one portal. The platform reports
+opens on every message it sends.
+You hold a sandbox account for one tenant. The credentials are on the login
+page.
+## Setup and goal
+Start the lab:
+```
+docker compose up -d --build
+```
+Open `http://localhost:8080`.
+Recover the flag from the admin export.
+Verify the solve:
+```
+python3 scripts/check.py labs/web/fieldops-360
+```
+
+## Firmdrama
+
+Source: https://openlabs.duckurity.com/labs/firmdrama
+
+![firmdrama - RoomReserve, a fictional Alder & Vale API security lab](/labs-assets/firmdrama/docs/assets/firmdrama-banner.svg)
+<p align="center">
+  <strong>Created by Ziad Osama El-Boshy</strong><br />
+  <sub>Challenge author &amp; creator</sub>
+</p>
+<div align="center">
+# firmdrama
+**RoomReserve · Behind every meeting is a story.**
+[The story](#scenario) · [Your objective](#objective) · [Get started](#quick-start) · [Check a flag](#check-a-captured-flag) · [Reset](#reset-the-lab) · [Rules](#player-rules)
+</div>
+| Challenge at a glance | Details |
+| :--- | :--- |
+| **Challenge type** | **Web/API** |
+| **Difficulty** | Hard |
+| **Estimated solve time** | 75–120 minutes |
+| **Interface** | REST / JSON API and browser UI |
+| **Environment** | Disposable local lab with fictional data |
+---
+## Scenario
+RoomReserve coordinates confidential meetings, room bookings, and routine
+Facilities requests at the fictional Alder & Vale law firm. You are Mike, an associate with an ordinary firm account. A partner booking has caught
+your attention, and the application may reveal more than it should.
+## Objective
+Investigate the application's observable REST API behavior and retrieve the
+challenge flags. The browser interface supports everyday RoomReserve tasks;
+the challenge can also be completed entirely with an HTTP client.
+> **Your starting point:** an ordinary employee account, a working portal,
+> and the information the application makes available to you.
+## Prerequisites
+- Docker Desktop using Linux containers, or Docker Engine on Linux, with
+  Docker Compose v2 or later.
+- Python 3.10 or later on your host for the one-time hash synchronizer, reset helper, and local
+  checker; no additional Python packages are required.
+- A browser with developer tools, or an HTTP client such as curl, Postman, or
+  Burp Suite.
+- Basic familiarity with HTTP methods, JSON, and bearer-token authentication.
+- A Docker Engine that supports isolated bridge gateway mode (validated with
+  Engine 29.6.2). Unsupported engines must be upgraded; keep the isolation option.
+- An available local port `8080`. The first build requires internet access to
+  download images and packages; the running lab needs no external service.
+## Quick start
+### 1. Start RoomReserve
+Open a terminal in the `firmdrama` directory and run:
+```powershell
+docker compose up -d --build --wait
+docker compose ps
+```
+The first build may take several minutes. Wait until **both services show
+`healthy`** before continuing.
+### 2. Initialize the flag hashes
+Once both services are healthy, run this once in the same terminal:
+```powershell
+python scripts/sync_flag_hash.py
+```
+If your system uses `python3`, substitute it for `python`. The command updates
+both SHA-256 hashes in [lab.yml](lab.yml), or confirms that they already match,
+and exits. It never prints the flags. If it fails, check that the services are
+healthy and rerun it before playing.
+Repeat this command after starting or recreating the lab with Docker directly.
+`python reset.py` updates both hashes itself; no separate sync is needed after
+that command succeeds.
+### 3. Open the portal and sign in
+Open **[RoomReserve → http://127.0.0.1:8080](http://127.0.0.1:8080)**
+and use the supplied challenge account:
+| Connection detail | Value |
+| :--- | :--- |
+| Username | `thisismike` |
+| Password | `mike@123` |
+| Readiness check | [GET /health](http://127.0.0.1:8080/health) |
+The health response is:
+```json
+{"service":"firmdrama","status":"ok"}
+```
+<details>
+<summary><strong>If the page does not open</strong></summary>
+Confirm Docker is running with Linux containers, then check `docker compose ps`.
+Both services must be healthy. If startup fails, inspect the recent logs:
+```powershell
+docker compose logs --tail 100
+```
+If port `8080` is already occupied, stop the conflicting local service and
+retry. Keep the supplied loopback binding for local use.
+</details>
+### 4. Begin your investigation
+Explore the portal and its API, follow the evidence, and collect the challenge
+flags. Each flag uses this format:
+| Flag requirement | Value |
+| :--- | :--- |
+| **Format** | `duck{` + exactly 24 lowercase letters (`a-z`) + `}` |
+| **Total length** | 30 characters |
+| **Number of flags** | 2 |
+---
+## Check a captured flag
+After collecting either flag, verify it locally from the `firmdrama` directory:
+```powershell
+python scripts/check.py
+```
+Paste one captured value at the prompt. The checker reports `checkpoint solved`
+for the intermediate flag and `solved` for the final flag; any other value
+returns `not solved`. It compares a SHA-256 digest only, never sends the flag
+anywhere, and never prints a stored flag.
+The checker uses the current hashes in [lab.yml](lab.yml). Initialize them once
+after Docker startup as described above. `reset.py` refreshes them automatically.
+After a direct Docker restart or recreation, rerun `python scripts/sync_flag_hash.py`
+before checking a flag. In hosted delivery, the checker needs the matching
+instance's `lab.yml`.
+---
+## Reset the lab
+Reset restores the starting records and account state, invalidates active
+sessions, and generates fresh flags. Current progress is discarded; sign in
+again afterward.
+```powershell
+python reset.py
+```
+Run this on the host from the firmdrama directory. It recreates both containers
+from existing images, clears all progress and temporary processes/files, verifies
+fresh state, and refreshes both checker hashes. It does not rebuild or download
+images. Sign in again after the success message. If reset fails, ingress stays
+stopped; resolve the reported error and rerun the command.
+`reset.py` refreshes both hashes before reporting success.
+## Stop the lab
+```powershell
+docker compose down
+```
+The lab uses temporary storage. Stopping its containers discards the in-memory
+data; the next startup initializes a fresh challenge state.
+Initialize the hashes again after starting the next session.
+## Player rules
+- Work only within this authorized, isolated challenge environment.
+- Do not target public systems, third-party services, or real accounts.
+- Do not use persistence, destructive actions, or external callbacks.
+- Keep challenge data and captured flags inside the authorized lab.
+- In hosted delivery, only the assigned HTTP(S) endpoint is in scope. Host,
+  Docker, database, image, source, solver, and reset controls belong to the
+  operator and are not player-accessible assets.
+---
+<p align="center"><strong>firmdrama · Web/API</strong><br />A fictional workplace. A hands-on API investigation.</p>
+## Techniques
+Practise in this lab:
+- [Broken object-level authorization (IDOR)](/technique/idor)
+
+## Invoiceportal
+
+Source: https://openlabs.duckurity.com/labs/invoiceportal
+
+`medium` · `web`
+## Brief
+Northwind Traders uses InvoicePortal. One invoice has a hidden flag.
+Find it.
+## Setup
+Run these from the lab directory:
+```bash
+docker compose up -d
+```
+The application will be available at: http://localhost:5000/
+## Reset
+```
+docker compose down -v && docker compose up -d
+```
+## **API Endpoints**
+| **Endpoint** | **Method** | **Auth** | **Description** |
+| --- | --- | --- | --- |
+| /health | GET | None | Health check |
+| /api/auth/login | POST | None | Login |
+| /api/users/me | GET | Bearer | Current user |
+| /api/team/members | GET | Bearer | Team members |
+| /api/invoices | GET | Bearer | List invoices |
+| `/api/invoices/{id}` | GET | Bearer | Invoice details |
+## **Goal**
+Find the flag. Flag format is `duck{...}`, and verify:
+```
+python3 ../../../scripts/check.py .
+```
+## Techniques
+Practise in this lab:
+- [Broken object-level authorization (IDOR)](/technique/idor)
+
+## Nexora_platform
+
+Source: https://openlabs.duckurity.com/labs/nexora_platform
+
+Nexora — Integration & Developer Platform
+# Scenario
+You have access to Nexora, a SaaS integration and developer platform. Nexora production infrastructure is hosted on Google Cloud Platform.
+# Objective
+Investigate Nexora's infrastructure and identify a way to reach resources that should not be directly accessible from the public application. .
+# Difficulty
+Medium
+# Prerequisites
+Basic web application reconnaissance, HTTP fundamentals, REST API basics, GraphQL basics, DNS basics, familiarity with server-side requests, and basic Docker/networking knowledge are helpful.
+# Startup Instructions
+```sh
+docker compose up --build
+```
+# Connection Information
+Application: http://localhost:8080
+OAST: http://localhost:8081
+# OAST Service
+The challenge includes a local OAST service that you may use to observe DNS and HTTP interactions generated during testing. It is a replareplacement for burp suite collaborator. Open the dashboard to observe interactions.
+# Reset Instructions
+```sh
+docker compose down -v
+docker compose up --build
+```
+# Flag Format
+`duck{****_**_*******}`
+
+## Shopvault
+
+Source: https://openlabs.duckurity.com/labs/shopvault
+
+`hard` · `web`
+## Brief
+ShopVault is an e-commerce REST API. Three accounts are seeded: a shopper, an administrator, and a manager. The manager's private reports hold the flag. No credentials are provided.
+Ops note: seed account usernames are not the ones you'd expect.
+## Setup
+Run these from the lab directory:
+```bash
+docker compose up -d
+```
+The API listens on `http://localhost:8080`. All interaction is over HTTP; there is no web UI.
+## Goal
+Escalate from unauthenticated to the manager role and read the manager-only reports endpoint. Verify the solve from the lab directory:
+```bash
+python3 ../../../scripts/check.py .
+```
+
+## Snapconnect
+
+Source: https://openlabs.duckurity.com/labs/snapconnect
+
+EASY · web
+## Brief
+SnapConnect is a small social app. Members get a profile with a handle, a bio, and an avatar, and everything runs through a GraphQL API at `POST /graphql`.
+The app keeps a secret in `/var/www/flag.txt`. That path is outside the web root, so no URL reaches it. Read the file through the application and you have the flag.
+Difficulty is easy. Expect to spend 15 to 30 minutes.
+## Prerequisites
+- GraphQL queries, mutations, and introspection
+- The `graphql-multipart-request` format
+- A tool that sends raw HTTP, such as `curl`, Burp, or Insomnia
+## Setup and goal
+Start the lab:
+```
+ docker compose up -d --build
+```
+- App: `http://localhost:8081`
+- Health: `http://localhost:8081/health.php`
+- API: `POST http://localhost:8081/graphql`
+- API reference: `http://localhost:8081/docs`
+Registration is open. Create an account to get a session token.
+Read `/var/www/flag.txt` through the service. Verify your solve from the repository root:
+```
+python3 scripts/check.py labs/web/snapconnect
+```
+## Reset
+```
+docker compose down -v
+docker compose up -d --build
+```
+Reset clears uploads and sessions and reseeds the database.
+## Flag format
+`duck{...}` with lowercase letters, digits, and underscores between the braces.
+## Rules
+- The lab runs on your machine. Point your tools at `localhost:8081` only.
+- No brute force is needed.
+- Destroying the service is not the goal. The container resets anyway.
+
+## Snapsync
+
+Source: https://openlabs.duckurity.com/labs/snapsync
+
+`medium` · `web`
+## Brief
+SnapSync is a small internal tool staff use to upload and share work
+photos. Every employee gets an account, can upload photos, and can pull
+back the ones they own. One route in the app sits outside the normal
+employee reach.
+## Setup
+Run this from the lab directory:
+```bash
+docker compose up -d --build
+```
+Open `http://localhost:3000`. Give it a few seconds after startup, then
+confirm it is ready:
+```bash
+curl http://localhost:3000/api/health
+```
+To return to a clean state:
+```bash
+./reset.sh
+```
+## Goal
+Starting from a normal account, reach the restricted route and extract
+its flag. Verify the solve from the lab directory:
+```bash
+python3 ../../../scripts/check.py .
+```
+
+## Switf01 hit3
+
+Source: https://openlabs.duckurity.com/labs/switf01-hit3
+
+`hard` · `web`
+## Brief
+You have read-only access to a task-management platform used by a small development team. Your account is the lowest-privilege tier, you can view projects you belong to and interact with tasks assigned to you.
+The platform exposes three protocols: a REST API, a GraphQL endpoint, and a gRPC service. Each protocol reveals something the others hide. Work through the layers in order. The flag is held behind a limit that the visible interface enforces but the hidden service ignores.
+Starting credentials: `swilam` / `swift123`
+## Setup
+Run these from the lab directory:
+```bash
+docker compose up --build -d
+```
+Wait until all services report ready (about 20–30 seconds on first run).
+| Service | Address |
+|---|---|
+| Web application | `http://localhost:3000` |
+| GraphQL endpoint | `http://localhost:4000/graphql` |
+| gRPC service | `localhost:50051` |
+To reset the environment to its original state:
+```bash
+docker compose down -v && docker compose up --build -d
+```
+## Goal
+Obtain the flag that appears in the gRPC admin list when the admin count reaches six. Verify the solve from the lab directory:
+```bash
+python3 ../../../scripts/check.py .
+```
+## Techniques
+Practise in this lab:
+- [Broken object-level authorization (IDOR)](/technique/idor)
+
+## Techvault
+
+Source: https://openlabs.duckurity.com/labs/techvault
+
+`hard` · `web`
+## Brief
+TechVault is an online laptop retailer. The storefront runs entirely on a GraphQL API behind a single `/graphql` endpoint — accounts, catalog, and a few internal tools all live there. You start with outside-customer access only. Find your way to a real account, then work the API toward the hidden internal data.
+## Setup
+Run these from the lab directory:
+```bash
+cp .env.example .env
+docker compose up --build -d
+```
+Open `http://localhost:4000/graphql`.
+## Goal
+Find your way into a real account. Chain what the API gives you from there. Extract the flag. Verify the solve from the lab directory:
+```bash
+python3 ../../../scripts/check.py .
+```
+## Techniques
+Practise in this lab:
+- [Authentication bypass](/technique/auth-bypass)
+- [Server-side request forgery (SSRF)](/technique/ssrf)
+- [Command injection](/technique/command-injection)
+
+## Threadline
+
+Source: https://openlabs.duckurity.com/labs/threadline
+
+**Category:** Web / API Security
+**Difficulty:** Medium
+---
+## Scenario
+ThreadLine is an online clothing store rolling out a new REST API. During a
+private beta, a customer's account was quietly given a **loyalty retention
+offer** after they threatened to close their account. The offer was never
+meant to be public, and it was never meant to be discoverable by anyone but
+the customer themselves.
+You've been dropped into the beta as a regular shopper with one goal:
+**get the Premium Leather Jacket for free**, the way it was never supposed to
+happen.
+---
+## What you're given
+A running instance of the ThreadLine API at:
+```
+http://<target-host>:8000/api/v1
+```
+There is no web frontend — this is an API-only challenge. Use `curl`,
+`httpie`, Postman, Burp Repeater, or a script; whatever you're comfortable
+driving raw HTTP requests with.
+## Getting started
+1. Register your own account:
+   ```
+   POST /api/v1/auth/register
+   { "username": "...", "email": "...", "password": "..." }
+   ```
+2. Log in — the API uses a session cookie, not a bearer token:
+   ```
+   POST /api/v1/auth/login
+   { "email": "...", "password": "..." }
+   ```
+3. Explore from there. Every account starts with a small balance, but that's
+   not enough to buy anything on its own.
+## Endpoints (non-exhaustive — some may not matter, some might matter a lot)
+| Method | Path                          | Notes                         |
+|--------|-------------------------------|--------------------------------|
+| POST   | `/api/v1/auth/register`       | Create an account              |
+| POST   | `/api/v1/auth/login`          | Get a session cookie           |
+| POST   | `/api/v1/auth/logout`         | Invalidate your session        |
+| GET    | `/api/v1/users/<id>`          | View a user's public profile   |
+| GET    | `/api/v1/products`            | List products                  |
+| GET    | `/api/v1/products/<id>`       | View a single product          |
+| POST   | `/api/v1/coupons`             | Request a coupon by email      |
+| POST   | `/api/v1/cart/items`          | Add a product to your cart     |
+| POST   | `/api/v1/cart/apply-coupon`   | Apply a coupon to your cart    |
+| POST   | `/api/v1/orders`              | Checkout your cart             |
+| GET    | `/api/v1/health`              | Liveness check                 |
+## Goal
+Get a cart's `final_price` down to **0**, then check out. If you got there
+the *right* way, checkout will hand you a flag.
+## Rules
+- Don't attack anything outside this container (it has no internet access
+  anyway).
+- Don't brute-force passwords or run heavy fuzzing that could take the
+  service down for other players — this is a logic challenge, not a
+  denial-of-service exercise.
+- The flag format is `duck{...}`.
+## Hints
+<details>
+<summary>Hint 1</summary>
+Not every endpoint that requires "being logged in" also checks that you're
+looking at *your own* data.
+</details>
+<details>
+<summary>Hint 2</summary>
+If an endpoint tells you "no offer found for this email," ask yourself
+exactly how it's comparing the email you sent against the one it has on
+file.
+</details>
+<details>
+<summary>Hint 3</summary>
+One coupon might not be enough to hit zero. Is there anything stopping you
+from having more than one?
+</details>
+---
+Good luck — and remember: the interesting bug is rarely the loudest one.
+
+## Vault api
+
+Source: https://openlabs.duckurity.com/labs/vault-api
+
+**MEDIUM · web**
+## Brief
+`vault-api` is a fictional internal employee management API. A protected employee archive is stored in the system. You receive a low-privileged analyst account and must find a way to recover the archive and its flag.
+## Setup
+Copy the environment template, then build and start the challenge:
+```bash
+cp .env.example .env
+docker compose up --build -d
+```
+Wait for the container to become healthy, then confirm the API responds:
+```bash
+curl -s http://localhost:8080/health
+```
+The API is available at `http://localhost:8080`.
+You start with the following account:
+| Username | Password |
+| -------- | -------- |
+| `analyst` | `analyst123` |
+## Goal
+Recover the flag from the protected employee archive. The flag matches the format `duck{...}`.
+## Rules
+- Only interact with the provided challenge instance.
+- Do not attempt to escape the container or attack the host system.
+- Do not perform denial-of-service attacks.
+## Reset
+To reset the challenge to its initial state:
+```bash
+docker compose down -v
+docker compose up --build -d
+```
+This restores the database and seeded data.
+
 ## Techniques
 
 Source: https://openlabs.duckurity.com/technique
 
 Vulnerability classes, defined once. Each technique links every lab that exercises it.
-Start with [broken object-level authorization](/technique/idor). Browse all [labs](/labs) when it is solved.
+Start with [broken object-level authorization](/technique/idor). See also [authentication bypass](/technique/auth-bypass), [SSRF](/technique/ssrf), and [command injection](/technique/command-injection). Browse all [labs](/labs) when it is solved.
+
+## Authentication bypass
+
+Source: https://openlabs.duckurity.com/technique/auth-bypass
+
+## Overview
+Authentication bypass happens when a login or session check accepts something other than a genuine, verified credential — a field the client controls, a comparison that isn't actually enforced, or a code path that skips verification under specific input.
+## Examples
+Watch for login flows that echo back or accept unexpected fields, GraphQL mutations with more arguments than the UI sends, or endpoints that behave differently when a field is omitted versus empty. Test with malformed, missing, or unexpected input types.
+## Related labs
+Practise on a live target:
+- [TechVault](/labs/techvault) — a GraphQL login that doesn't verify what it should.
+Browse all [labs](/labs) when it is solved.
+## FAQ
+**Is this the same as broken access control?**
+No. Access control (like IDOR) is about authorization after you're already authenticated. Auth bypass is about getting authenticated (or treated as authenticated) without a valid credential.
+**Do I need special tooling?**
+A GraphQL client or `curl` is enough. Read [how to play](/play) for the loop.
+
+## Command injection
+
+Source: https://openlabs.duckurity.com/technique/command-injection
+
+## Overview
+Command injection happens when user-supplied input is concatenated into a string that's passed to a system shell, instead of being passed as a discrete, escaped argument. Shell metacharacters (`;`, `|`, `` ` ``, `$()`) let you append or chain additional commands.
+## Examples
+Watch for features that shell out to system tools: file conversion, network diagnostics (ping, traceroute-style tools), archive extraction. Try metacharacters in any field that ends up looking like a filename, hostname, or path.
+## Related labs
+Practise on a live target:
+- [TechVault](/labs/techvault) — an internal service that builds a shell command from unsanitized input.
+Browse all [labs](/labs) when it is solved.
+## FAQ
+**Is this the same as SQL injection?**
+Same family of flaw — unsanitized input reaching an interpreter — but the interpreter here is the OS shell, not a database engine.
+**Do I need special tooling?**
+A browser or `curl` is enough to start. Read [how to play](/play) for the loop.
 
 ## Broken object-level authorization (IDOR)
 
@@ -206,3 +1028,21 @@ Browse all [labs](/labs) when it is solved.
 IDOR is one shape of it. The family covers missing function-level checks too. This page covers the object-level shape only.
 **Do I need special tooling?**
 No. A browser and a willingness to edit one number suffice. Read [how to play](/play) for the loop.
+
+## Server-side request forgery (SSRF)
+
+Source: https://openlabs.duckurity.com/technique/ssrf
+
+## Overview
+SSRF happens when a server-side feature fetches a URL that you supply, and that server has network access you don't. Point it at an internal hostname or port and the response comes back through the feature that was only meant to fetch public resources.
+## Examples
+Watch for any field that fetches a resource by URL: image imports, webhook URLs, PDF generators, link previews. Try internal hostnames, `localhost`, alternate ports, and cloud metadata addresses. Compare response timing and content for signs the request actually reached an internal target.
+## Related labs
+Practise on a live target:
+- [TechVault](/labs/techvault) — an internal service reachable only through a chained request.
+Browse all [labs](/labs) when it is solved.
+## FAQ
+**Is SSRF only useful for reading internal web pages?**
+No. It's often a stepping stone — reaching an internal API, metadata endpoint, or service that then exposes a further flaw.
+**Do I need special tooling?**
+A browser or `curl` is enough to start. Read [how to play](/play) for the loop.

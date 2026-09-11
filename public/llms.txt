@@ -7,7 +7,25 @@ Read a page in full at its URL. Open a brief, run the service, find the flag. Ve
 ## Labs
 
 - [Labs](https://openlabs.duckurity.com/labs): Every lab is one vulnerable service, one brief, one flag.
+- [Aegis ctf](https://openlabs.duckurity.com/labs/aegis-ctf): Chained API trust vulnerabilities across REST, GraphQL, and gRPC.
+- [Cafe house rules](https://openlabs.duckurity.com/labs/cafe-house-rules): A cafe rules site with a report bot and a guarded back-room route.
+- [Cloudvault](https://openlabs.duckurity.com/labs/cloudvault): A GraphQL document-ingestion API whose SSRF chain reaches a privileged internal vault.
 - [Duck cross](https://openlabs.duckurity.com/labs/duck-cross): A reports portal with a missing object-level authorization check.
+- [Duck nest](https://openlabs.duckurity.com/labs/duck-nest): An internal project workspace for staff and interns.
+- [Duckrpc_archive](https://openlabs.duckurity.com/labs/duckrpc_archive): A gRPC document archive with authentication and a SQL injection vulnerability.
+- [Duckvault](https://openlabs.duckurity.com/labs/duckvault): A records portal leaks an internal reference through broken access control and weak authorization.
+- [Duckvault_web_ctf](https://openlabs.duckurity.com/labs/duckvault_web_ctf): A document management API with a broken object-level authorization check.
+- [Fieldops 360](https://openlabs.duckurity.com/labs/fieldops-360): A tenant portal with email open tracking and an admin export surface.
+- [Firmdrama](https://openlabs.duckurity.com/labs/firmdrama): A law firm's meeting-room portal with chained API authorization flaws and a vulnerable legacy template rendere
+- [Invoiceportal](https://openlabs.duckurity.com/labs/invoiceportal): InvoicePortal is a SaaS platform for managing company invoices.
+- [Nexora_platform](https://openlabs.duckurity.com/labs/nexora_platform): Nexora is a deliberately vulnerable B2B SaaS CTF that simulates a realistic Blind SSRF attack using GraphQL, O
+- [Shopvault](https://openlabs.duckurity.com/labs/shopvault): An e-commerce REST API whose authentication, lockout, and JWT signing weaknesses chain into manager-level acce
+- [Snapconnect](https://openlabs.duckurity.com/labs/snapconnect): SnapConnect is a small social app with profiles and avatars, served by a GraphQL API.
+- [Snapsync](https://openlabs.duckurity.com/labs/snapsync): A staff photo tool where a forged token and a hidden internal route reach the flag.
+- [Switf01 hit3](https://openlabs.duckurity.com/labs/switf01-hit3): A task-management platform with a chained REST, GraphQL, and gRPC attack path.
+- [Techvault](https://openlabs.duckurity.com/labs/techvault): An e-commerce GraphQL API with a chained authentication bypass, SSRF, and command injection vulnerability.
+- [Threadline](https://openlabs.duckurity.com/labs/threadline): A clothing store REST API. One customer sees more than they should.
+- [Vault api](https://openlabs.duckurity.com/labs/vault-api): Inspect an internal employee management API and recover a protected employee archive. The lab starts with a lo
 
 ## Guides
 
@@ -15,7 +33,10 @@ Read a page in full at its URL. Open a brief, run the service, find the flag. Ve
 - [How to play](https://openlabs.duckurity.com/play): Clone, run, solve. Verify each flag from the repo root.
 - [Tracks](https://openlabs.duckurity.com/tracks): Five lab families. Start with web.
 - [Techniques](https://openlabs.duckurity.com/technique): Vulnerability classes, defined once and exercised across labs.
+- [Authentication bypass](https://openlabs.duckurity.com/technique/auth-bypass): The server trusts a client-supplied field instead of verifying identity against a real credential check.
+- [Command injection](https://openlabs.duckurity.com/technique/command-injection): User input reaches a shell command unsanitized, letting you run commands alongside the intended one.
 - [Broken object-level authorization (IDOR)](https://openlabs.duckurity.com/technique/idor): The server checks who you are but not whether the object is yours. Change the identifier, read someone else's 
+- [Server-side request forgery (SSRF)](https://openlabs.duckurity.com/technique/ssrf): The server fetches a URL you control, letting you reach internal services it can see but you normally can't.
 
 ## Rules
 

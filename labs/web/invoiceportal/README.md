@@ -33,11 +33,11 @@ docker compose down -v && docker compose up -d
 | /api/users/me | GET | Bearer | Current user |
 | /api/team/members | GET | Bearer | Team members |
 | /api/invoices | GET | Bearer | List invoices |
-| /api/invoices/{id} | GET | Bearer | Invoice details |
+| `/api/invoices/{id}` | GET | Bearer | Invoice details |
 
 ## **Goal**
 
-Find the flag,Flag format duck{...}, and verify:
+Find the flag. Flag format is `duck{...}`, and verify:
 
 ```
 python3 ../../../scripts/check.py .

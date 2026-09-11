@@ -29,7 +29,6 @@ import { PageGithubLinkButton } from '@/components/page-github-link-button'
 import { PageActions } from '@/components/layout/page-actions'
 import { LabList } from '@/components/lab/lab-list'
 import { LabGrid, LabCards } from '@/components/lab/lab-grid'
-import { SponsorSection } from '@/components/lab/sponsor-section'
 import { LabCreator } from '@/components/lab/lab-creator'
 import { StatusIndicator } from '@/components/status-indicator'
 import { CopyButton } from '@/components/copy-button'
@@ -93,17 +92,6 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
     verifierUrl: page.data.verifier_url as string | undefined,
     verifierAvatar: page.data.verifier_avatar as string | undefined,
   }
-  const creatorCard = isLab ? (
-    <LabCreator
-      name={creator.name}
-      url={creator.url}
-      avatar={creator.avatar}
-      date={creator.date}
-      verifierName={creator.verifierName}
-      verifierUrl={creator.verifierUrl}
-      verifierAvatar={creator.verifierAvatar}
-    />
-  ) : null
   const sheetPath =
     isLab && track && existsSync(join(process.cwd(), 'labs', track, slug, `${slug}.pdf`))
       ? `labs/${track}/${slug}/${slug}.pdf`
@@ -274,12 +262,6 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
           <PageActions className="sm:hidden" content={raw} />
         </div>
 
-        {creatorCard && (
-          <div className="mt-6 xl:hidden">
-            {creatorCard}
-          </div>
-        )}
-
         <div className="prose mt-10 flex-1">
           <MDX
             components={getMDXComponents({
@@ -297,8 +279,6 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
             <LabCards labs={getLabs().map(toLabCardData)} />
           </LabGrid>
         )}
-
-        {isHome && <SponsorSection />}
 
         {related.length > 0 && (
           <div className="mt-16">
@@ -321,7 +301,19 @@ export default async function Page(props: PageProps<'/[[...slug]]'>) {
 
       {hasToc && (
         <TOC
-          footer={creatorCard ?? undefined}
+          footer={
+            isLab ? (
+              <LabCreator
+                name={creator.name}
+                url={creator.url}
+                avatar={creator.avatar}
+                date={creator.date}
+                verifierName={creator.verifierName}
+                verifierUrl={creator.verifierUrl}
+                verifierAvatar={creator.verifierAvatar}
+              />
+            ) : undefined
+          }
         />
       )}
     </TOCProvider>
