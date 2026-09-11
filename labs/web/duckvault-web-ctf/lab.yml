@@ -1,4 +1,4 @@
-name: duckvault_web_ctf
+name: duckvault-web-ctf
 track: web
 difficulty: easy
 description: A document management API with a broken object-level authorization check.

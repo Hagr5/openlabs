@@ -35,7 +35,7 @@ services:
       - /tmp:size=64m,mode=1777
       - /home/ctf/tmp:size=32m,mode=1700
 
-    user: "1000:1000"
+    user: 1000:1000
 
     # ------------------------- RESOURCES ---------------------------------
     mem_limit: 256m
