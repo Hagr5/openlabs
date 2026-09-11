@@ -1,0 +1,7 @@
+name: switf01-hit3
+track: web
+difficulty: hard
+port: 3000
+description: A task-management platform with a chained REST, GraphQL, and gRPC attack path.
+flag_hash: fc3a518570783726e646fb41f8e7c94b361fff3413301be2d79dffbcd2304379
+techniques: [idor]

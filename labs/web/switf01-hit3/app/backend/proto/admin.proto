@@ -1,0 +1,54 @@
+syntax = "proto3";
+
+package admin;
+
+// ── AdminService ─────────────────────────────────────────────────────────────
+// Exposed in the frontend UI (Add Admin button calls AddAdmin).
+// AddAdmin enforces a hard 5-admin limit.
+// ListAdmins is how the flag is retrieved after exploitation.
+service AdminService {
+  rpc AddAdmin (AddAdminRequest) returns (AddAdminResponse);
+  rpc RemoveAdmin (RemoveAdminRequest) returns (RemoveAdminResponse);
+  rpc ListAdmins (Empty) returns (AdminList);
+}
+
+// ── SuperAdminService ────────────────────────────────────────────────────────
+// NOT referenced in the frontend code.
+// Discoverable only via gRPC server reflection.
+// AddUnlimitedAdmin has no admin count check — intentional vulnerability.
+service SuperAdminService {
+  rpc AddUnlimitedAdmin (AddAdminRequest) returns (AddAdminResponse);
+}
+
+// ── Messages ──────────────────────────────────────────────────────────────────
+
+message AddAdminRequest {
+  string name = 1;
+  string role = 2;
+  string email = 3;
+}
+
+message AddAdminResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message RemoveAdminRequest {
+  string name = 1;
+}
+
+message RemoveAdminResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message Empty {}
+
+message Admin {
+  string name = 1;
+  string role = 2;
+}
+
+message AdminList {
+  repeated Admin admins = 1;
+}

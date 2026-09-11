@@ -1,0 +1,31 @@
+{
+  "name": "SwiTF01-hit3-frontend",
+  "version": "1.0.0",
+  "description": "SwiTF01-hit3 CTF challenge frontend",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start -p 3000",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.11.0",
+    "@grpc/grpc-js": "^1.11.0",
+    "@grpc/proto-loader": "^0.7.13",
+    "graphql": "^16.9.0",
+    "jose": "^6.2.12",
+    "next": "^15.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/node": "^22.5.0",
+    "@types/react": "^18.3.5",
+    "@types/react-dom": "^18.3.0",
+    "typescript": "^5.5.4"
+  },
+  "allowScripts": {
+    "protobufjs@7.6.6": true
+  }
+}
