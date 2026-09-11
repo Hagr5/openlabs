@@ -512,11 +512,11 @@ Source: https://openlabs.duckurity.com/labs/firmdrama
 | **Interface** | REST / JSON API and browser UI |
 | **Environment** | Disposable local lab with fictional data |
 ---
-## Scenario
+## Brief
 RoomReserve coordinates confidential meetings, room bookings, and routine
 Facilities requests at the fictional Alder & Vale law firm. You are Mike, an associate with an ordinary firm account. A partner booking has caught
 your attention, and the application may reveal more than it should.
-## Objective
+## Goal
 Investigate the application's observable REST API behavior and retrieve the
 challenge flags. The browser interface supports everyday RoomReserve tasks;
 the challenge can also be completed entirely with an HTTP client.
@@ -534,7 +534,7 @@ the challenge can also be completed entirely with an HTTP client.
   Engine 29.6.2). Unsupported engines must be upgraded; keep the isolation option.
 - An available local port `8080`. The first build requires internet access to
   download images and packages; the running lab needs no external service.
-## Quick start
+## Setup
 ### 1. Start RoomReserve
 Open a terminal in the `firmdrama` directory and run:
 ```powershell
@@ -634,6 +634,9 @@ Initialize the hashes again after starting the next session.
 ## Techniques
 Practise in this lab:
 - [Broken object-level authorization (IDOR)](/technique/idor)
+- [Mass assignment](/technique/mass-assignment)
+- [API version enumeration](/technique/api-version-enumeration)
+- [Server-side template injection (SSTI)](/technique/ssti)
 
 ## Invoiceportal
 
@@ -975,6 +978,24 @@ Source: https://openlabs.duckurity.com/technique
 Vulnerability classes, defined once. Each technique links every lab that exercises it.
 Start with [broken object-level authorization](/technique/idor). See also [authentication bypass](/technique/auth-bypass), [SSRF](/technique/ssrf), and [command injection](/technique/command-injection). Browse all [labs](/labs) when it is solved.
 
+## API version enumeration
+
+Source: https://openlabs.duckurity.com/technique/api-version-enumeration
+
+## Overview
+Improper inventory management means the API catalog is incomplete. The documented version stays current while older versions keep serving traffic, often outside the same review and hardening process. Enumerating `v1`, `v2`, `v3`, or `/api` prefixes surfaces routes nobody told you about.
+## Examples
+Look for a version marker in the URL (`/api/v3/...`), a header, or a hostname. Step the number down. Compare behavior across versions. A retired version may skip the checks the current one enforces.
+## Related labs
+Practise on a live target:
+- [Firmdrama](/labs/firmdrama) — a role-gated Facilities API where the current `v3` works, `v2` is gone, and legacy `v1` still answers.
+Browse all [labs](/labs) when it is solved.
+## FAQ
+**Is version enumeration the same as a shadow API?**
+Shadow APIs are one symptom of poor inventory. This page covers the versioned-surface shape: finding a deprecated deployment that should have been retired.
+**Do I need special tooling?**
+No. `curl` and a scriptable HTTP client are enough. Read [how to play](/play) for the loop.
+
 ## Authentication bypass
 
 Source: https://openlabs.duckurity.com/technique/auth-bypass
@@ -1029,6 +1050,24 @@ IDOR is one shape of it. The family covers missing function-level checks too. Th
 **Do I need special tooling?**
 No. A browser and a willingness to edit one number suffice. Read [how to play](/play) for the loop.
 
+## Mass assignment
+
+Source: https://openlabs.duckurity.com/technique/mass-assignment
+
+## Overview
+Mass assignment happens when a server binds request fields straight onto a database object without an allowlist. The form and the update API accept the same shape, so anything you add to the request is saved. A locked property such as `role_id`, `is_admin`, or `verified` silently changes the object.
+## Examples
+Watch profile update, bulk edit, and registration endpoints. The UI sends ten fields. The update path binds eleven. Try adding `"role_id": "499"` or any field that appears in a response but never appears in the form. Compare the object before and after the request.
+## Related labs
+Practise on a live target:
+- [Firmdrama](/labs/firmdrama) — a meeting-room portal whose profile save accepts a protected role property and a misplaced delegation.
+Browse all [labs](/labs) when it is solved.
+## FAQ
+**Is mass assignment the same as broken object property level authorization?**
+Mass assignment is one way to reach it. The parent issue is that the server never restricts which properties can change together. This page covers the update-binding shape.
+**Do I need special tooling?**
+No. Any HTTP client that can edit a request body is enough. Read [how to play](/play) for the loop.
+
 ## Server-side request forgery (SSRF)
 
 Source: https://openlabs.duckurity.com/technique/ssrf
@@ -1046,3 +1085,21 @@ Browse all [labs](/labs) when it is solved.
 No. It's often a stepping stone — reaching an internal API, metadata endpoint, or service that then exposes a further flaw.
 **Do I need special tooling?**
 A browser or `curl` is enough to start. Read [how to play](/play) for the loop.
+
+## Server-side template injection (SSTI)
+
+Source: https://openlabs.duckurity.com/technique/ssti
+
+## Overview
+Server-side template injection happens when user-supplied text is interpolated into template source instead of passed as data. A renderer that evaluates `{{ expression }}` inside the input runs the expression on the server. Depending on the engine, that leads to property reads, file reads, or code execution.
+## Examples
+Watch preview, invoice, report, and mail-render features. Send `{{7*7}}`. A response of `49` means the input is template source, and the engine is starting to run what you write.
+## Related labs
+Practise on a live target:
+- [Firmdrama](/labs/firmdrama) — a legacy `v1` ticket preview that evaluates submitted text as Jinja source.
+Browse all [labs](/labs) when it is solved.
+## FAQ
+**Is SSTI the same as a cross-site scripting bug?**
+No. XSS runs in a visitor's browser. SSTI runs on the server at the application's privilege level, so the stakes are far higher.
+**Do I need special tooling?**
+No. A browser or `curl` is enough to detect it. Read [how to play](/play) for the loop.

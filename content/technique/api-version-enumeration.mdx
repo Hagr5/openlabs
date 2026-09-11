@@ -1,0 +1,45 @@
+---
+title: API version enumeration
+description: A current API version hides older deployments. Enumerate the versions and find retired routes still answering requests.
+type: technique
+key: technique-api-version-enumeration
+slug: technique/api-version-enumeration
+intent: Learn what API version enumeration is and which labs exercise it.
+keywords:
+  primary: API version enumeration practice lab
+  secondary:
+    - shadow API discovery explained
+    - retired API version lab
+linksTo:
+  - labs/firmdrama
+  - labs
+  - play
+  - technique
+ogImage: /og/technique.png
+---
+
+## Overview
+
+Improper inventory management means the API catalog is incomplete. The documented version stays current while older versions keep serving traffic, often outside the same review and hardening process. Enumerating `v1`, `v2`, `v3`, or `/api` prefixes surfaces routes nobody told you about.
+
+## Examples
+
+Look for a version marker in the URL (`/api/v3/...`), a header, or a hostname. Step the number down. Compare behavior across versions. A retired version may skip the checks the current one enforces.
+
+## Related labs
+
+Practise on a live target:
+
+- [Firmdrama](/labs/firmdrama) — a role-gated Facilities API where the current `v3` works, `v2` is gone, and legacy `v1` still answers.
+
+Browse all [labs](/labs) when it is solved.
+
+## FAQ
+
+**Is version enumeration the same as a shadow API?**
+
+Shadow APIs are one symptom of poor inventory. This page covers the versioned-surface shape: finding a deprecated deployment that should have been retired.
+
+**Do I need special tooling?**
+
+No. `curl` and a scriptable HTTP client are enough. Read [how to play](/play) for the loop.

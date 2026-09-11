@@ -1,0 +1,45 @@
+---
+title: Mass assignment
+description: An update endpoint binds every field you send without an allowlist, so a protected property reaches an object it should never receive.
+type: technique
+key: technique-mass-assignment
+slug: technique/mass-assignment
+intent: Learn what mass assignment is and which labs exercise it.
+keywords:
+  primary: mass assignment practice lab
+  secondary:
+    - object property level authorization explained
+    - BOPLA update binding lab
+linksTo:
+  - labs/firmdrama
+  - labs
+  - play
+  - technique
+ogImage: /og/technique.png
+---
+
+## Overview
+
+Mass assignment happens when a server binds request fields straight onto a database object without an allowlist. The form and the update API accept the same shape, so anything you add to the request is saved. A locked property such as `role_id`, `is_admin`, or `verified` silently changes the object.
+
+## Examples
+
+Watch profile update, bulk edit, and registration endpoints. The UI sends ten fields. The update path binds eleven. Try adding `"role_id": "499"` or any field that appears in a response but never appears in the form. Compare the object before and after the request.
+
+## Related labs
+
+Practise on a live target:
+
+- [Firmdrama](/labs/firmdrama) — a meeting-room portal whose profile save accepts a protected role property and a misplaced delegation.
+
+Browse all [labs](/labs) when it is solved.
+
+## FAQ
+
+**Is mass assignment the same as broken object property level authorization?**
+
+Mass assignment is one way to reach it. The parent issue is that the server never restricts which properties can change together. This page covers the update-binding shape.
+
+**Do I need special tooling?**
+
+No. Any HTTP client that can edit a request body is enough. Read [how to play](/play) for the loop.

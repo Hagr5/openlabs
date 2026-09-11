@@ -13,11 +13,14 @@ keywords:
   secondary:
     - hard web practice
     - openlabs firmdrama
-verified: false
-score: 63
-score_grade: D
+verified: true
+score: 97
+score_grade: A
 linksTo:
   - technique/idor
+  - technique/mass-assignment
+  - technique/api-version-enumeration
+  - technique/ssti
 author_name: "Ziad Osama El-Boshy"
 author_url: "https://github.com/duckurity/openlabs/commits/main/labs/web/firmdrama"
 author_date: "2026-09-10"
@@ -26,7 +29,7 @@ ogImage: /og/labs-firmdrama.png
 
 {/* Generated from labs/web/firmdrama/lab.yml and README.md. Do not edit by hand. Run scripts/sync_site_content.py. */}
 
-![firmdrama - RoomReserve, a fictional Alder & Vale API security lab](assets/firmdrama-banner.svg)
+![firmdrama - RoomReserve, a fictional Alder & Vale API security lab](/labs-assets/firmdrama/docs/assets/firmdrama-banner.svg)
 
 <p align="center">
   <strong>Created by Ziad Osama El-Boshy</strong><br />
@@ -53,13 +56,13 @@ ogImage: /og/labs-firmdrama.png
 
 ---
 
-## Scenario
+## Brief
 
 RoomReserve coordinates confidential meetings, room bookings, and routine
 Facilities requests at the fictional Alder & Vale law firm. You are Mike, an associate with an ordinary firm account. A partner booking has caught
 your attention, and the application may reveal more than it should.
 
-## Objective
+## Goal
 
 Investigate the application's observable REST API behavior and retrieve the
 challenge flags. The browser interface supports everyday RoomReserve tasks;
@@ -82,7 +85,7 @@ the challenge can also be completed entirely with an HTTP client.
 - An available local port `8080`. The first build requires internet access to
   download images and packages; the running lab needs no external service.
 
-## Quick start
+## Setup
 
 ### 1. Start RoomReserve
 
@@ -225,4 +228,7 @@ Initialize the hashes again after starting the next session.
 Practise in this lab:
 
 - [Broken object-level authorization (IDOR)](/technique/idor)
+- [Mass assignment](/technique/mass-assignment)
+- [API version enumeration](/technique/api-version-enumeration)
+- [Server-side template injection (SSTI)](/technique/ssti)
 

@@ -1,0 +1,45 @@
+---
+title: Server-side template injection (SSTI)
+description: The server renders your text as template source, so a template expression runs under the application's own privileges.
+type: technique
+key: technique-ssti
+slug: technique/ssti
+intent: Learn what server-side template injection is and which labs exercise it.
+keywords:
+  primary: server side template injection practice lab
+  secondary:
+    - SSTI explained
+    - Jinja template injection lab
+linksTo:
+  - labs/firmdrama
+  - labs
+  - play
+  - technique
+ogImage: /og/technique.png
+---
+
+## Overview
+
+Server-side template injection happens when user-supplied text is interpolated into template source instead of passed as data. A renderer that evaluates `{{ expression }}` inside the input runs the expression on the server. Depending on the engine, that leads to property reads, file reads, or code execution.
+
+## Examples
+
+Watch preview, invoice, report, and mail-render features. Send `{{7*7}}`. A response of `49` means the input is template source, and the engine is starting to run what you write.
+
+## Related labs
+
+Practise on a live target:
+
+- [Firmdrama](/labs/firmdrama) — a legacy `v1` ticket preview that evaluates submitted text as Jinja source.
+
+Browse all [labs](/labs) when it is solved.
+
+## FAQ
+
+**Is SSTI the same as a cross-site scripting bug?**
+
+No. XSS runs in a visitor's browser. SSTI runs on the server at the application's privilege level, so the stakes are far higher.
+
+**Do I need special tooling?**
+
+No. A browser or `curl` is enough to detect it. Read [how to play](/play) for the loop.
