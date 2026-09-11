@@ -1,0 +1,75 @@
+services:
+  platform:
+    build: ./platform
+    image: duckmarket/platform:1.4.2
+    container_name: duckmarket-platform
+    restart: unless-stopped
+    environment:
+      - SESSION_SECRET=${SESSION_SECRET:-dev-only-session-secret-change-me}
+      - FUNCTION_RUNTIME_BASE_URL=http://fn-runtime:8081
+      - FUNCTION_RUNTIME_SHARED_KEY=${FUNCTION_RUNTIME_SHARED_KEY:-dev-runtime-shared-key}
+      # Test-harness convenience: fixed ops-account password for CI validation.
+      # Unset in player environments (a strong random value is generated then).
+      - SEED_ADMIN_PASSWORD=${SEED_ADMIN_PASSWORD:-}
+      - SEED_PARTNER_PASSWORD=${SEED_PARTNER_PASSWORD:-}
+      - NODE_ENV=production
+      - PORT=4000
+    ports:
+      - "4000:4000"
+    volumes:
+      - platform-data:/data
+    depends_on:
+      fn-runtime:
+        condition: service_healthy
+    networks:
+      - ducknet
+      - backend
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://localhost:4000/api/healthz').then(r=>{if(!r.ok)process.exit(1);process.exit(0)}).catch(()=>process.exit(1))"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 20s
+    read_only: false
+
+  fn-runtime:
+    build: ./fn-runtime
+    image: duckmarket/fn-runtime:1.4.2
+    container_name: duckmarket-fn-runtime
+    restart: unless-stopped
+    environment:
+      - FLAG=${FLAG:-DUCK{local_dev_placeholder}}
+      - FUNCTION_RUNTIME_SHARED_KEY=${FUNCTION_RUNTIME_SHARED_KEY:-dev-runtime-shared-key}
+      - NODE_ENV=production
+    volumes:
+      - fn-packages:/packages
+    networks:
+      - backend
+    # No published ports: the runtime is reachable only from the platform
+    # over the internal backend network, and has no external egress.
+    healthcheck:
+      test: ["CMD", "node", "/app/healthcheck.mjs"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+      start_period: 15s
+    # Note: the runtime materializes its workspace secret at /flag.txt during
+    # bootstrap (before privilege drop), so the root filesystem is writable;
+    # everything the sandbox touches (/tmp, /packages) is tmpfs/volume-backed.
+    read_only: false
+    tmpfs:
+      - /tmp
+
+networks:
+  ducknet:
+    driver: bridge
+  # Internal-only network for platform <-> runtime traffic. The runtime is
+  # attached to this network alone, giving it service-to-service connectivity
+  # without any external egress.
+  backend:
+    driver: bridge
+    internal: true
+
+volumes:
+  platform-data:
+  fn-packages:
