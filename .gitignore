@@ -4,6 +4,7 @@ __pycache__/
 .DS_Store
 .github/assets/badges/MANIFEST.json
 labs/**/*.pdf
+!labs/web/firmdrama/firmdrama.pdf
 node_modules/
 .next/
 out/
