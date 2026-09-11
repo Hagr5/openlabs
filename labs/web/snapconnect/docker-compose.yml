@@ -1,0 +1,8 @@
+services:
+  snapconnect:
+    build: .
+    image: snapconnect:2.0.0
+    container_name: snapconnect
+    ports:
+      - "8081:80"
+    restart: unless-stopped
