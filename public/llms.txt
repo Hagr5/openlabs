@@ -13,6 +13,7 @@ Read a page in full at its URL. Open a brief, run the service, find the flag. Ve
 - [Duck cross](https://openlabs.duckurity.com/labs/duck-cross): A reports portal with a missing object-level authorization check.
 - [Duck nest](https://openlabs.duckurity.com/labs/duck-nest): An internal project workspace for staff and interns.
 - [Duckexchange](https://openlabs.duckurity.com/labs/duckexchange): A tenant document API with a gRPC transcoding authorization bypass.
+- [Duckleak](https://openlabs.duckurity.com/labs/duckleak): An internal vault app that keeps its PIN and promo code inside the APK.
 - [Duckrpc archive](https://openlabs.duckurity.com/labs/duckrpc-archive): A gRPC document archive with authentication and a SQL injection vulnerability.
 - [Duckvault web ctf](https://openlabs.duckurity.com/labs/duckvault-web-ctf): A document management API with a broken object-level authorization check.
 - [Duckvault](https://openlabs.duckurity.com/labs/duckvault): A records portal leaks an internal reference through broken access control and weak authorization.
