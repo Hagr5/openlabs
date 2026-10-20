@@ -61,7 +61,7 @@ services:
     expose:
       - "5000"
     environment:
-      FLAG: ${FLAG:-duck{PLACEHOLDER_REPLACE_ME}}
+      FLAG: ${FLAG:-duck{2a620374fa685d95fee37f59}}
     networks:
       - internal
     restart: unless-stopped
