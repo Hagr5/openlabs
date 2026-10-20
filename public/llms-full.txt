@@ -396,6 +396,9 @@ Unlock the vault, reach the employee discount, and recover the flag. Verify the 
 python3 ../../../scripts/check.py .
 ```
 See [how to play](/play) for the usual solve loop.
+## Techniques
+Practise in this lab:
+- [Hardcoded secrets](/technique/hardcoded-secrets)
 
 ## Duckrpc archive
 
@@ -1209,6 +1212,24 @@ Browse all [labs](/labs) when it is solved.
 Same family of flaw — unsanitized input reaching an interpreter — but the interpreter here is the OS shell, not a database engine.
 **Do I need special tooling?**
 A browser or `curl` is enough to start. Read [how to play](/play) for the loop.
+
+## Hardcoded secrets
+
+Source: https://openlabs.duckurity.com/technique/hardcoded-secrets
+
+## Overview
+A hardcoded secret is a value the app needs to check something, such as a PIN, password, API key, or promo code, written straight into its code or resources. The app ships to every user, so every user also receives the secret. Client-side checks only hide it from people who never look.
+## Examples
+Unpack the app and read what it contains. Decompile the code and search it for strings, constants, and comparisons that look like credentials. Check resource files and build settings too, since values often live there instead of in the code.
+## Related labs
+Practise on a live target:
+- [Duckleak](/labs/duckleak) — an Android app that keeps its PIN and promo code inside the APK.
+Browse all [labs](/labs) when it is solved.
+## FAQ
+**Is a secret safe if the app is obfuscated?**
+No. Obfuscation only slows a reader down. If the app can use the value, someone with the app can recover it.
+**Do I need special tooling?**
+A decompiler such as JADX is enough for an Android app. Read [how to play](/play) for the loop.
 
 ## Broken object-level authorization (IDOR)
 
