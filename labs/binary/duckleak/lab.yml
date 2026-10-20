@@ -5,4 +5,4 @@ difficulty: easy
 description: An internal vault app that keeps its PIN and promo code inside the APK.
 flag_hash: 75813d6daaab7a8445d7f0c575982545d021c56b6d424e3db9a28e9c2ac349ea
 status: experimental
-techniques: []
+techniques: [hardcoded-secrets]
