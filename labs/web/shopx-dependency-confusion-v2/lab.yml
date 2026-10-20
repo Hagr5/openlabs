@@ -3,4 +3,5 @@ track: web
 difficulty: hard
 description: an npm scope mapping gap sends an internal package name to the wrong registry
 flag_hash: 510c980aae26d94721aca1181bcf4e0ff227f56336f505b0862784c99f180723
+contract_version: 1
 techniques: [ssrf]
