@@ -20,7 +20,7 @@ Open `http://localhost:8080` and download `duckleak.apk`. Install it on an Andro
 adb install duckleak.apk
 ```
 
-You need a decompiler such as JADX. No other tooling is required.
+You need a decompiler such as JADX. Static analysis of the APK is enough for a full solve. Running the app needs an emulator or device plus adb (Android platform-tools).
 
 ## Goal
 

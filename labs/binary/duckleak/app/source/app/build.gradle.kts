@@ -14,7 +14,7 @@ android {
         targetSdk = 37
         versionCode = 1
         versionName = "1.0"
-        buildConfigField("String", "CTF_FLAG", "\"duck{hardcoded_secrets_win}\"")
+        buildConfigField("String", "CTF_FLAG", "\"duck{ukwyy3f2d3v0k3jormqivp7l}\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
