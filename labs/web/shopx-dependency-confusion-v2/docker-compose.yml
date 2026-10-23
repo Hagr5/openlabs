@@ -69,6 +69,7 @@ services:
 networks:
   edge:
   internal:
+    internal: true
 
 volumes:
   ci-shared:
