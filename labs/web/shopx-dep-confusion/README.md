@@ -1,4 +1,4 @@
-# shopx-dependency-confusion-v2
+# shopx-dep-confusion
 
 `HARD` · `web`
 
