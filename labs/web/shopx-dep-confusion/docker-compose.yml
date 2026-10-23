@@ -61,7 +61,7 @@ services:
     expose:
       - "5000"
     environment:
-      FLAG: ${FLAG:-duck{2a620374fa685d95fee37f59}}
+      FLAG: ${FLAG:?FLAG environment variable must be set}
     networks:
       - internal
     restart: unless-stopped
