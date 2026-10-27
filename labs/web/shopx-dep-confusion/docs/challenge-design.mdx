@@ -44,9 +44,8 @@ version comparison across sources happens at all.
                      list then finds pipeline.yml.bak and npmrc.bak inside it
 4. SSRF (local-read) /static/asset?url=... with a trailing-slash /static/
                      target reads local directory listings instead of
-                     making a real network request; without the trailing
-                     slash, or with a non-/static/ URL, the endpoint makes
-                     a genuine outbound fetch() - see Appendix B
+                     making a real network request; non-local hosts on the
+                     fetch branch are rejected - see Appendix B
 5. Header-gated file /static/js/*.bak requires X-Internal: build-mirror-2024,
                      leaked in pipeline.yml.bak
 6. Scope misrouting  npmrc.bak shows @shopx:registry -> private,
@@ -94,7 +93,7 @@ Internet / player
 |---|---|---|
 | Player to web-app | Normal storefront recon, no auth | Static dotfile-free asset proxy exists for "incident response convenience" |
 | web-app to registry-public | Reverse-proxied publish/read, `/registry/` only | None beyond the proxy itself |
-| web-app to internal network | No membership on the `internal` Docker network | A same-process "asset proxy" can attempt an outbound `fetch()`, but has no DNS path to `internal-service` or `registry-private` - confirmed by direct testing, not just asserted |
+| web-app to internal network | No membership on the `internal` Docker network | Asset-proxy fetch branch rejects non-local hosts before calling `fetch()` |
 | ci-runner to registries | Resolves `shopx-utils` per `.npmrc`; scope exclusive | The unscoped name was never going to reach `registry-private`, regardless of that registry's own correctness |
 | ci-runner to internet | None - `internal` network is Docker `internal: true` | N/A |
 | ci-runner to internal-service | One fixed, logged GET from inside a resolved package's `healthcheck()` | This is the intended path to the flag |
@@ -137,25 +136,21 @@ The `/static/asset?url=<url>` endpoint on `web-app` has two code paths:
   joins it to the local static directory, and reads that local path
   directly (directory listing or, for `.bak` files outside `js/`, raw file
   content). This is a local path-read, not SSRF.
-- Otherwise, it makes a genuine outbound `fetch(url)` and returns the
-  response (base64-encoded) to the caller.
+- Otherwise, it may make a real `fetch(url)`, but only when the hostname is
+  `localhost` or `127.0.0.1`. Any other host returns `403`.
 
 **Allowed (intended):** `url=http://localhost:8080/static/` (trailing slash
 required to hit the local-read path) - returns a directory listing of the
 static tree, which is how a player discovers the `backup` and `js`
 subdirectories without needing a lucky wordlist hit on both levels at once.
 
-**Blocked (tested, not just asserted):** a URL without `/static/` in it
-targeting an internal hostname - e.g.
-`url=http://internal-service:5000/internal/data` - takes the real-fetch
-branch but fails with a network error, because `web-app` has no membership
-on the `internal` Docker network and cannot resolve or route to
-`internal-service` or `registry-private` by name. This was confirmed by
-direct testing against a running instance, not inferred from the code alone.
+**Blocked:** non-local hosts (including Docker service names such as
+`internal-service`) are rejected before `fetch`. External SSRF is not part
+of the intended chain; the endpoint's value to a player is the local
+directory-listing behavior.
 
 **Intended bypass, and only this one:** none. There is no outbound-fetch
-path that reaches the internal network from `web-app`; the entire value of
-the endpoint to a player is the local directory-listing behavior.
+path that reaches the internal network from `web-app`.
 
 ---
 

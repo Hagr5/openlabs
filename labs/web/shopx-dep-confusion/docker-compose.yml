@@ -2,7 +2,7 @@ services:
   gateway:
     build: ./gateway
     ports:
-      - "8080:80"
+      - "127.0.0.1:8080:80"
     depends_on:
       - web-app
       - registry-public
@@ -61,7 +61,8 @@ services:
     expose:
       - "5000"
     environment:
-      FLAG: ${FLAG:?FLAG environment variable must be set}
+      # Optional override. Unset uses the default baked into internal-service.
+      FLAG: ${FLAG:-}
     networks:
       - internal
     restart: unless-stopped

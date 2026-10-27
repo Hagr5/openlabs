@@ -22,3 +22,7 @@ outside it.
 Retrieve the flag held by ShopX's internal billing service.
 
 Check a solve from the repository root:
+
+```bash
+python3 scripts/check.py labs/web/shopx-dep-confusion
+```

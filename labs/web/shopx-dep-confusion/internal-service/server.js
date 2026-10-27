@@ -1,12 +1,8 @@
 const http = require("http");
 
 const PORT = process.env.PORT || 5000;
-const FLAG = process.env.FLAG;
-
-if (!FLAG) {
-  console.error("FLAG environment variable is not set");
-  process.exit(1);
-}
+// Default lives in-lab so a clean clone can start without a shell/env file.
+const FLAG = process.env.FLAG || "duck{2a620374fa685d95fee37f59}";
 
 const server = http.createServer((req, res) => {
   if (req.url === "/internal/data" && req.method === "GET") {

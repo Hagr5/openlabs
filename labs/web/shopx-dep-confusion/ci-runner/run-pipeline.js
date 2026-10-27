@@ -27,7 +27,7 @@ function runPipeline() {
 
   log("[install] npm install");
   try {
-    const out = execFileSync("npm", ["install", "--no-audit", "--no-fund"], {
+    const out = execFileSync("npm", ["install", "--ignore-scripts", "--no-audit", "--no-fund"], {
       cwd: PROJECT_DIR,
       encoding: "utf8",
       timeout: 60000,

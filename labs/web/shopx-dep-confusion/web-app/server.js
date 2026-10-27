@@ -55,7 +55,8 @@ app.post("/login", (req, res) => {
 
 app.get("/products", (req, res) => {
   const rows = PRODUCTS.map((p) => `<li>${p.name} - $${p.price.toFixed(2)}</li>`).join("");
-  res.send(layout(`<h2>Products</h2><ul>${rows}</ul><p>See the <a href="/api/products">product API</a>.</p>`));
+  res.send(layout(`<h2>Products</h2><ul>${rows}</ul><p>See the <a href="/api/products">product API</a>.</p>
+<script src="/static/js/main.js"></script>`));
 });
 
 app.get("/api/products", (req, res) => {
@@ -135,6 +136,16 @@ app.get("/static/asset", async (req, res) => {
         }
       }
     } else {
+      let parsed;
+      try {
+        parsed = new URL(target);
+      } catch {
+        return res.status(400).json({ error: "invalid url" });
+      }
+      const host = parsed.hostname.toLowerCase();
+      if (host !== "127.0.0.1" && host !== "localhost") {
+        return res.status(403).json({ error: "forbidden: non-local target" });
+      }
       const response = await fetch(target, { timeout: 5000 });
       status = response.status;
       content = await response.text();
@@ -153,15 +164,21 @@ app.get("/static/asset", async (req, res) => {
 
 app.get("/static/js/:file", (req, res, next) => {
   const file = req.params.file;
-  if (!file.endsWith(".bak")) return next();
-
-  if (req.header(INTERNAL_HEADER) !== INTERNAL_HEADER_VALUE) {
-    return res.status(403).send("forbidden: X-Internal header required");
+  const jsDir = path.join(STATIC_DIR, "js");
+  const full = path.normalize(path.join(jsDir, file));
+  if (!full.startsWith(jsDir + path.sep) || !fs.existsSync(full)) {
+    return next();
   }
 
-  const full = path.join(STATIC_DIR, "js", file);
-  if (!fs.existsSync(full)) return res.status(404).send("not found");
-  res.type("text/plain").send(fs.readFileSync(full, "utf8"));
+  if (file.endsWith(".bak")) {
+    if (req.header(INTERNAL_HEADER) !== INTERNAL_HEADER_VALUE) {
+      return res.status(403).send("forbidden: X-Internal header required");
+    }
+    return res.type("text/plain").send(fs.readFileSync(full, "utf8"));
+  }
+
+  res.type(path.extname(file) === ".js" ? "application/javascript" : "text/plain");
+  res.send(fs.readFileSync(full, "utf8"));
 });
 
 app.get("/static/backup/:file", (req, res, next) => {
